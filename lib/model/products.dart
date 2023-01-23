@@ -1,15 +1,13 @@
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
-@Sync()
-
 class TovarDetail {
   int id;
   String uid;
   String naim;
   String ed;
-  @Unique(onConflict: ConflictStrategy.replace)
   @Index()
+  @Unique(onConflict: ConflictStrategy.replace)
   String sh;
   String cod;
 

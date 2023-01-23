@@ -1,44 +1,25 @@
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-
-
 
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
-
-import 'tovar.dart';
- import 'main.dart';
-
-import 'package:tsd_estel/view_tovar.dart';
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+import '../main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tsd_estel/UI/home_screen.dart';
+class AuthScreen extends StatefulWidget {
+  const AuthScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _AuthScreenState extends State<AuthScreen> {
 
 
   final TextEditingController _controller = TextEditingController();
 
   String? _barcode;
-  String? _tovar;
+
   late bool visible;
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-   // if (index == 1){operation();}
-    if (index == 1){
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const TovarScreen()),
-      );}
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
 
   @override
   void initState() {
@@ -60,10 +41,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
     super.dispose();
   }
+  @override
+  void save_sklad(String _sklad) async{
+    sklad = _sklad;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('estel_sklad', _sklad);
+
+}
+  void _doOpenPage() {
+    Navigator.pushReplacement(
+        context,
+        new MaterialPageRoute(
+            builder: (BuildContext context) => new HomeScreen()));
+    }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Estel'),
+        title: const Text('Estel'),
       ),
       body: Center(
         // Add visiblity detector to handle barcode
@@ -74,17 +69,13 @@ class _HomeScreenState extends State<HomeScreen> {
           },
           key: Key('visible-detector-key'),
           child: BarcodeKeyboardListener(
-            bufferDuration: Duration(milliseconds: 200),
+            bufferDuration: Duration(milliseconds: 400),
             onBarcodeScanned: (barcode) {
               if (!visible) return;
-              var tovar = objectBox.getinfo(barcode);
-
-              print(barcode);
-              print(tovar);
 
               setState(() {
-                _barcode = barcode;
-                _tovar = tovar;
+                save_sklad(barcode);
+                _doOpenPage();
               });
             },
             child: Column(
@@ -92,13 +83,10 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  _barcode == null ? 'Отсканируйте товар' : 'Штрихкод: $_barcode ',
+                  _barcode == null ? 'Отсканируйте qr для авторизации' : 'Склад: $_barcode ',
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
-                Text(
-                  _tovar == null ? '' : 'Товар: $_tovar ',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
+
                 TextFormField(        controller: _controller,
                   decoration: const InputDecoration(border: OutlineInputBorder()),
                 ),
@@ -107,21 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
-            label: 'Товары',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
-      ),
+
     );
   }
 

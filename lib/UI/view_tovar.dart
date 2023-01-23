@@ -1,13 +1,13 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:tsd_estel/tovar.dart';
+import 'package:tsd_estel/Helpers/tovar.dart';
 
-import 'main.dart';
-import 'package:tsd_estel/model/user.dart';
+import '../main.dart';
+import 'package:tsd_estel/model/products.dart';
 
 
-
+import 'package:tsd_estel/UI/second_screen.dart';
 
 
 class TovarScreen extends StatefulWidget {
@@ -25,7 +25,7 @@ class _TovarScreenState extends State<TovarScreen> {
   @override
   void initState() {
     super.initState();
-    streamUsers = objectBox.gettovar();
+    streamUsers = objectBox.getTovar();
   }
 
   @override
@@ -54,17 +54,6 @@ class _TovarScreenState extends State<TovarScreen> {
                 title: Text(user.naim),
                 subtitle: Text(user.sh),
 
-
- //               trailing: IconButton(
-//                  icon: const Icon(Icons.delete),
-//                  onPressed: () => print(user.naim),//objectBox.deleteUser(user.naim)   ,
-//                ),
-                //onTap: () {
-                //  user.name = Faker().person.firstName();
-                //  user.email = Faker().internet.email();
-//
-  //                objectBox.insertUser(user);
-    //            },
               );
             },
           );
@@ -76,14 +65,14 @@ class _TovarScreenState extends State<TovarScreen> {
       icon: _isLoading?Icon(Icons.history):Icon(Icons.sync),
       label: _isLoading?Text('Загружаю'):Text('Загрузить'),
       onPressed: () {
-        //setState(() {
-          _isLoading = true; // your loader has started to load
-        //});
+
+        setState(() {
+          _isLoading = true;
+        });
         load_tovar_from_base();
-        //setState(() {
-          _isLoading = false; // your loder will stop to finish after the data fetch
-        print(_isLoading);
-        //});
+  setState(() {
+        _isLoading = false; });
+
       },
 
     ),

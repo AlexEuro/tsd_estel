@@ -7,7 +7,6 @@
       "id": "1:2608236799473055195",
       "lastPropertyId": "6:7966980451908002633",
       "name": "TovarDetail",
-      "flags": 2,
       "properties": [
         {
           "id": "1:1979316920461238032",
@@ -35,7 +34,7 @@
           "name": "sh",
           "type": 9,
           "flags": 34848,
-          "indexId": "1:4381649715443723470"
+          "indexId": "5:834648737492683149"
         },
         {
           "id": "6:7966980451908002633",
@@ -44,17 +43,82 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "2:779602305377452646",
+      "lastPropertyId": "6:7159551846309531715",
+      "name": "DocInventoryModel",
+      "properties": [
+        {
+          "id": "1:1702468698365113831",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "3:7742281343447018694",
+          "name": "user",
+          "type": 9
+        },
+        {
+          "id": "5:7957323652803769430",
+          "name": "dateDoc",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:5249248727728571337",
+      "lastPropertyId": "4:1096679177713893303",
+      "name": "Inventory_line_Model",
+      "properties": [
+        {
+          "id": "1:5043799978771810254",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3455739528122632240",
+          "name": "itemCod",
+          "type": 9
+        },
+        {
+          "id": "3:2143224441419762221",
+          "name": "itemCount",
+          "type": 6
+        },
+        {
+          "id": "4:1096679177713893303",
+          "name": "docId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "3:6030873138007053335",
+          "relationTarget": "DocInventoryModel"
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "1:2608236799473055195",
-  "lastIndexId": "1:4381649715443723470",
+  "lastEntityId": "3:5249248727728571337",
+  "lastIndexId": "6:2284747289999665237",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
-  "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredIndexUids": [
+    4381649715443723470,
+    9177060019622415837,
+    6041786632118251955,
+    2284747289999665237
+  ],
+  "retiredPropertyUids": [
+    4648902447497577875,
+    8348316171775813125,
+    7159551846309531715
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

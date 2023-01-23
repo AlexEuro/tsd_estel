@@ -14,7 +14,9 @@ import 'package:objectbox/internal.dart'; // generated code can access "internal
 import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_sync_flutter_libs/objectbox_sync_flutter_libs.dart';
 
-import 'model/user.dart';
+import 'model/doc_inventory.dart';
+import 'model/inventory_line.dart';
+import 'model/products.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -23,7 +25,7 @@ final _entities = <ModelEntity>[
       id: const IdUid(1, 2608236799473055195),
       name: 'TovarDetail',
       lastPropertyId: const IdUid(6, 7966980451908002633),
-      flags: 2,
+      flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
             id: const IdUid(1, 1979316920461238032),
@@ -50,12 +52,67 @@ final _entities = <ModelEntity>[
             name: 'sh',
             type: 9,
             flags: 34848,
-            indexId: const IdUid(1, 4381649715443723470)),
+            indexId: const IdUid(5, 834648737492683149)),
         ModelProperty(
             id: const IdUid(6, 7966980451908002633),
             name: 'cod',
             type: 9,
             flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(2, 779602305377452646),
+      name: 'DocInventoryModel',
+      lastPropertyId: const IdUid(6, 7159551846309531715),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 1702468698365113831),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(3, 7742281343447018694),
+            name: 'user',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 7957323652803769430),
+            name: 'dateDoc',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(3, 5249248727728571337),
+      name: 'Inventory_line_Model',
+      lastPropertyId: const IdUid(4, 1096679177713893303),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 5043799978771810254),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 3455739528122632240),
+            name: 'itemCod',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 2143224441419762221),
+            name: 'itemCount',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 1096679177713893303),
+            name: 'docId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(3, 6030873138007053335),
+            relationTarget: 'DocInventoryModel')
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
@@ -81,13 +138,22 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(1, 2608236799473055195),
-      lastIndexId: const IdUid(1, 4381649715443723470),
+      lastEntityId: const IdUid(3, 5249248727728571337),
+      lastIndexId: const IdUid(6, 2284747289999665237),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [],
-      retiredIndexUids: const [],
-      retiredPropertyUids: const [],
+      retiredIndexUids: const [
+        4381649715443723470,
+        9177060019622415837,
+        6041786632118251955,
+        2284747289999665237
+      ],
+      retiredPropertyUids: const [
+        4648902447497577875,
+        8348316171775813125,
+        7159551846309531715
+      ],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -136,6 +202,70 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 14, ''));
 
           return object;
+        }),
+    DocInventoryModel: EntityDefinition<DocInventoryModel>(
+        model: _entities[1],
+        toOneRelations: (DocInventoryModel object) => [],
+        toManyRelations: (DocInventoryModel object) => {},
+        getId: (DocInventoryModel object) => object.id,
+        setId: (DocInventoryModel object, int id) {
+          object.id = id;
+        },
+        objectToFB: (DocInventoryModel object, fb.Builder fbb) {
+          final userOffset = fbb.writeString(object.user);
+          final dateDocOffset = fbb.writeString(object.dateDoc);
+          fbb.startTable(7);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(2, userOffset);
+          fbb.addOffset(4, dateDocOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = DocInventoryModel(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              dateDoc: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''),
+              user: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''));
+
+          return object;
+        }),
+    Inventory_line_Model: EntityDefinition<Inventory_line_Model>(
+        model: _entities[2],
+        toOneRelations: (Inventory_line_Model object) => [object.doc],
+        toManyRelations: (Inventory_line_Model object) => {},
+        getId: (Inventory_line_Model object) => object.id,
+        setId: (Inventory_line_Model object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Inventory_line_Model object, fb.Builder fbb) {
+          final itemCodOffset = fbb.writeString(object.itemCod);
+          fbb.startTable(5);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, itemCodOffset);
+          fbb.addInt64(2, object.itemCount);
+          fbb.addInt64(3, object.doc.targetId);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = Inventory_line_Model()
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+            ..itemCod = const fb.StringReader(asciiOptimization: true)
+                .vTableGet(buffer, rootOffset, 6, '')
+            ..itemCount =
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
+          object.doc.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0);
+          object.doc.attach(store);
+          return object;
         })
   };
 
@@ -167,4 +297,39 @@ class TovarDetail_ {
   /// see [TovarDetail.cod]
   static final cod =
       QueryStringProperty<TovarDetail>(_entities[0].properties[5]);
+}
+
+/// [DocInventoryModel] entity fields to define ObjectBox queries.
+class DocInventoryModel_ {
+  /// see [DocInventoryModel.id]
+  static final id =
+      QueryIntegerProperty<DocInventoryModel>(_entities[1].properties[0]);
+
+  /// see [DocInventoryModel.user]
+  static final user =
+      QueryStringProperty<DocInventoryModel>(_entities[1].properties[1]);
+
+  /// see [DocInventoryModel.dateDoc]
+  static final dateDoc =
+      QueryStringProperty<DocInventoryModel>(_entities[1].properties[2]);
+}
+
+/// [Inventory_line_Model] entity fields to define ObjectBox queries.
+class Inventory_line_Model_ {
+  /// see [Inventory_line_Model.id]
+  static final id =
+      QueryIntegerProperty<Inventory_line_Model>(_entities[2].properties[0]);
+
+  /// see [Inventory_line_Model.itemCod]
+  static final itemCod =
+      QueryStringProperty<Inventory_line_Model>(_entities[2].properties[1]);
+
+  /// see [Inventory_line_Model.itemCount]
+  static final itemCount =
+      QueryIntegerProperty<Inventory_line_Model>(_entities[2].properties[2]);
+
+  /// see [Inventory_line_Model.doc]
+  static final doc =
+      QueryRelationToOne<Inventory_line_Model, DocInventoryModel>(
+          _entities[2].properties[3]);
 }
