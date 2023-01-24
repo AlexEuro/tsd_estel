@@ -38,6 +38,13 @@ class _HomeScreenState extends State<HomeScreen> {
       _idDoc = objectBox.addInventory(DateTime.now().toString(),'');
       print(_idDoc);
     }
+    if (index == 3){
+      Navigator.pushReplacement(
+          context,
+          new MaterialPageRoute(
+              builder: (BuildContext context) => new AuthScreen()));
+    }
+
     setState(() {
       _selectedIndex = index;
     });
@@ -68,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Estel'),
+        title: Text('Estel '+sklad),
       ),
       body: Center(
         // Add visiblity detector to handle barcode
@@ -126,7 +133,10 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(Icons.edit_document),
             label: 'СоздатьДокумент',
           ),
-
+          BottomNavigationBarItem(
+            icon: Icon(Icons.exit_to_app),
+            label: 'Сменить склад',
+          ),
          ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
