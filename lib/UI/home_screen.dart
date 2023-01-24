@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tsd_estel/UI/docInventory.dart';
 
 
 
@@ -8,7 +9,12 @@ import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
 import '../main.dart';
 
 import 'package:tsd_estel/UI/view_tovar.dart';
+import 'package:tsd_estel/UI/view_orders.dart';
 import 'package:tsd_estel/UI/Auth.dart';
+
+
+
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -35,16 +41,25 @@ class _HomeScreenState extends State<HomeScreen> {
         MaterialPageRoute(builder: (context) => const TovarScreen()),
       );}
     if (index == 2){
-      _idDoc = objectBox.addInventory(DateTime.now().toString(),'');
-      print(_idDoc);
+     // final docInventory = objectBox.getOrder();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const DocInventoryScreen(docId: 0)),
+      );
+
     }
-    if (index == 3){
+    if (index == 4){
       Navigator.pushReplacement(
           context,
           new MaterialPageRoute(
               builder: (BuildContext context) => new AuthScreen()));
     }
-
+    if (index == 3){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const OrdersScreen()),
+      );
+    }
     setState(() {
       _selectedIndex = index;
     });
@@ -131,14 +146,21 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.edit_document),
-            label: 'СоздатьДокумент',
+            label: 'Создать Документ',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.exit_to_app),
+            label: 'Документы',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.exit_to_app),
             label: 'Сменить склад',
           ),
+
          ],
         currentIndex: _selectedIndex,
+        backgroundColor: Colors.lightBlue,
+        unselectedItemColor: Colors.grey,
         selectedItemColor: Colors.amber[800],
         onTap: _onItemTapped,
       ),

@@ -1,6 +1,6 @@
 import 'package:objectbox/objectbox.dart';
 
-import 'doc_inventory.dart';
+import 'doc_Inventory.dart';
 
 @Entity()
 class Inventory_line_Model {
@@ -8,5 +8,10 @@ class Inventory_line_Model {
   String itemCod='';
   int itemCount=0;
 
-  final doc = ToOne<DocInventoryModel>();
+ //final doc = ToOne<DocInventoryModelPlus>();
+
+  Inventory_line_Model({this.id=0,
+    required this.itemCod,
+    required this.itemCount,
+     });
 }

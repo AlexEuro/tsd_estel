@@ -4,40 +4,40 @@ import 'package:flutter/material.dart';
 import 'package:tsd_estel/Helpers/tovar.dart';
 
 import '../main.dart';
-import 'package:tsd_estel/model/products.dart';
+import 'package:tsd_estel/model/orders.dart';
 
 
-import 'package:tsd_estel/UI/second_screen.dart';
 
-
-class TovarScreen extends StatefulWidget {
-  const TovarScreen({Key? key}) : super(key: key);
+class OrdersScreen extends StatefulWidget {
+  const OrdersScreen({Key? key}) : super(key: key);
 
   @override
-  State<TovarScreen> createState() => _TovarScreenState();
+  State<OrdersScreen> createState() => _OrdersScreenState();
 }
 
-class _TovarScreenState extends State<TovarScreen> {
-  late Stream<List<TovarDetail>> streamUsers;
+class _OrdersScreenState extends State<OrdersScreen> {
+  late Stream<List<OrderModel>> streamUsers;
+
   bool _isLoading = false; // This is initially false where no loading stat
 
 
   @override
   void initState() {
     super.initState();
-    streamUsers = objectBox.getTovar();
+    streamUsers = objectBox.getorder();
+ //   streamUsers_dop = objectBox.getorder_list();
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
     appBar: AppBar(
-      title: const Text('Товары'),
+      title: const Text('Инвентаризации'),
       centerTitle: true,
     ),
     body:
-         StreamBuilder<List<TovarDetail>>(
+    StreamBuilder<List<OrderModel>>(
       stream: streamUsers,
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot<List<OrderModel>> snapshot) {
         if (!snapshot.hasData) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -51,8 +51,8 @@ class _TovarScreenState extends State<TovarScreen> {
               final user = users[index];
 
               return ListTile(
-                title: Text(user.naim),
-                subtitle: Text(user.sh),
+                title: Text(user.dateDoc),
+                subtitle: Text(user.user),
 
               );
             },
@@ -69,13 +69,13 @@ class _TovarScreenState extends State<TovarScreen> {
         setState(() {
           _isLoading = true;
         });
-        load_tovar_from_base();
-  setState(() {
-        _isLoading = false; });
+       // load_tovar_from_base();
+        setState(() {
+          _isLoading = false; });
 
       },
 
     ),
   );
-  }
+}
 

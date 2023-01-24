@@ -4,40 +4,88 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:2608236799473055195",
-      "lastPropertyId": "6:7966980451908002633",
-      "name": "TovarDetail",
+      "id": "1:6015077569082527311",
+      "lastPropertyId": "3:8139272876594537419",
+      "name": "DocInventoryModel",
       "properties": [
         {
-          "id": "1:1979316920461238032",
+          "id": "1:4876312182464825867",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:6077274265345614564",
+          "id": "2:2026129668401485967",
+          "name": "dateDoc",
+          "type": 9
+        },
+        {
+          "id": "3:8139272876594537419",
+          "name": "user",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:4632691237960483433",
+      "lastPropertyId": "3:7913652677828231474",
+      "name": "Inventory_line_Model",
+      "properties": [
+        {
+          "id": "1:5487142237138569586",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1004307156911162246",
+          "name": "itemCod",
+          "type": 9
+        },
+        {
+          "id": "3:7913652677828231474",
+          "name": "itemCount",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:4304724916667015854",
+      "lastPropertyId": "6:4318451834241312975",
+      "name": "TovarDetail",
+      "properties": [
+        {
+          "id": "1:2879185971574498140",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:4701235605609955393",
           "name": "uid",
           "type": 9
         },
         {
-          "id": "3:9110578484844879930",
+          "id": "3:5128338598487419096",
           "name": "naim",
           "type": 9
         },
         {
-          "id": "4:8981876772377124508",
+          "id": "4:2764840503465411133",
           "name": "ed",
           "type": 9
         },
         {
-          "id": "5:7352432274802612791",
+          "id": "5:3236544610871054136",
           "name": "sh",
           "type": 9,
           "flags": 34848,
-          "indexId": "5:834648737492683149"
+          "indexId": "1:4832911136025939858"
         },
         {
-          "id": "6:7966980451908002633",
+          "id": "6:4318451834241312975",
           "name": "cod",
           "type": 9
         }
@@ -45,79 +93,87 @@
       "relations": []
     },
     {
-      "id": "2:779602305377452646",
-      "lastPropertyId": "6:7159551846309531715",
-      "name": "DocInventoryModel",
+      "id": "6:7865686015255139639",
+      "lastPropertyId": "4:9072381108795352534",
+      "name": "ItemModel",
+      "flags": 2,
       "properties": [
         {
-          "id": "1:1702468698365113831",
+          "id": "1:4846462559062455178",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "3:7742281343447018694",
-          "name": "user",
+          "id": "2:2245131223248252927",
+          "name": "itemName",
           "type": 9
         },
         {
-          "id": "5:7957323652803769430",
-          "name": "dateDoc",
-          "type": 9
+          "id": "3:7187576993885623324",
+          "name": "itemCount",
+          "type": 6
+        },
+        {
+          "id": "4:9072381108795352534",
+          "name": "orderModelId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "3:4538368992845807142",
+          "relationTarget": "OrderModel"
         }
       ],
       "relations": []
     },
     {
-      "id": "3:5249248727728571337",
-      "lastPropertyId": "4:1096679177713893303",
-      "name": "Inventory_line_Model",
+      "id": "7:1035935039992077224",
+      "lastPropertyId": "4:7892275245849358768",
+      "name": "OrderModel",
+      "flags": 2,
       "properties": [
         {
-          "id": "1:5043799978771810254",
+          "id": "1:8790534327641745547",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:3455739528122632240",
-          "name": "itemCod",
+          "id": "2:4245673108810367446",
+          "name": "ordered",
+          "type": 1
+        },
+        {
+          "id": "3:1545556014793902598",
+          "name": "dateDoc",
           "type": 9
         },
         {
-          "id": "3:2143224441419762221",
-          "name": "itemCount",
-          "type": 6
-        },
-        {
-          "id": "4:1096679177713893303",
-          "name": "docId",
-          "type": 11,
-          "flags": 520,
-          "indexId": "3:6030873138007053335",
-          "relationTarget": "DocInventoryModel"
+          "id": "4:7892275245849358768",
+          "name": "user",
+          "type": 9
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "3:5249248727728571337",
-  "lastIndexId": "6:2284747289999665237",
+  "lastEntityId": "7:1035935039992077224",
+  "lastIndexId": "3:4538368992845807142",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [],
-  "retiredIndexUids": [
-    4381649715443723470,
-    9177060019622415837,
-    6041786632118251955,
-    2284747289999665237
+  "retiredEntityUids": [
+    2843137606981206170,
+    2951546399477514165
   ],
+  "retiredIndexUids": [],
   "retiredPropertyUids": [
-    4648902447497577875,
-    8348316171775813125,
-    7159551846309531715
+    6353778055886196502,
+    5403566294848047219,
+    8028213615140867069,
+    8458409687519734795,
+    4116218598716315319,
+    3546925273186852158
   ],
   "retiredRelationUids": [],
   "version": 1
