@@ -6,7 +6,7 @@ import 'package:tsd_estel/Helpers/tovar.dart';
 import '../main.dart';
 import 'package:tsd_estel/model/orders.dart';
 
-
+import 'package:tsd_estel/UI/docInventory.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({Key? key}) : super(key: key);
@@ -54,26 +54,34 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 title: Text(user.dateDoc),
                 subtitle: Text(user.user),
 
-              );
+                onTap: () {
+
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DocInventoryScreen(docId: user.id)),
+                  );
+
+
+
+                },);
+
             },
           );
         }
       },
+
     ),
     floatingActionButton: FloatingActionButton.extended(
       splashColor: Colors.blueAccent,
-      icon: _isLoading?Icon(Icons.history):Icon(Icons.sync),
-      label: _isLoading?Text('Загружаю'):Text('Загрузить'),
+      icon: Icon(Icons.add),
+      label: Text('Создать'),
       onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const DocInventoryScreen(docId: 0)),
+        );
 
-        setState(() {
-          _isLoading = true;
-        });
-       // load_tovar_from_base();
-        setState(() {
-          _isLoading = false; });
-
-      },
+      }
 
     ),
   );

@@ -25,7 +25,8 @@ class _TovarScreenState extends State<TovarScreen> {
   @override
   void initState() {
     super.initState();
-    streamUsers = objectBox.getTovar();
+   streamUsers = objectBox.getTovar();
+
   }
 
   @override
@@ -69,7 +70,7 @@ class _TovarScreenState extends State<TovarScreen> {
         setState(() {
           _isLoading = true;
         });
-        load_tovar_from_base();
+        load_tovar_from_http();
   setState(() {
         _isLoading = false; });
 

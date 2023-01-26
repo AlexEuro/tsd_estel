@@ -296,8 +296,16 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.2.0"
-  http:
+  hex:
     dependency: transitive
+    description:
+      name: hex
+      sha256: "4e7cd54e4b59ba026432a6be2dd9d96e4c5205725194997193bf871703b82c4a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
+  http:
+    dependency: "direct main"
     description:
       name: http
       sha256: "6aa2946395183537c8b880962d935877325d6a09a2867c3970c05c0fed6ac482"
@@ -320,6 +328,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  http_requests:
+    dependency: "direct main"
+    description:
+      name: http_requests
+      sha256: d7b7f5ee70f1032b4865b2ee9b191057b7c639f170965f34bdeb1e7bd570b4ff
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.6.0"
   io:
     dependency: transitive
     description:
@@ -552,6 +568,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.1"
+  quiver:
+    dependency: transitive
+    description:
+      name: quiver
+      sha256: b1c1ac5ce6688d77f65f3375a9abb9319b3cb32486bdc7a1e0fdf004d7ba4e47
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.1"
+  requests:
+    dependency: "direct main"
+    description:
+      name: requests
+      sha256: "18b5511c2d6cca922260d0c38e78ed76d4a359fea966fcb4aebe30d8351638ef"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.7.0"
   sasl_scram:
     dependency: transitive
     description:
@@ -693,6 +725,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  tcp_socket_connection:
+    dependency: "direct main"
+    description:
+      name: tcp_socket_connection
+      sha256: "9b11a30791464a6ed5263d9879c267f672cc4b0c3f716d953be2a1703325c7d7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1"
   term_glyph:
     dependency: transitive
     description:
