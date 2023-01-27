@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:tsd_estel/UI/Auth_new.dart';
 
 import '../main.dart';
 
 import 'package:tsd_estel/UI/view_tovar.dart';
 import 'package:tsd_estel/UI/view_orders.dart';
 import 'package:tsd_estel/UI/Auth.dart';
+import 'package:tsd_estel/UI/Auth_new.dart';
 
+import 'package:material_dialogs/material_dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
-
-
+import 'bg_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -24,41 +27,25 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   late bool visible;
-  int _selectedIndex = 0;
-    void _onItemTapped(int index) {
 
-    if (index == 1){
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const TovarScreen()),
-      );}
-    if (index == 2){
-     // final docInventory = objectBox.getOrder();
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const OrdersScreen()),
-      );
-
-    }
-    if (index == 3){
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => AuthScreen()));
-    }
-    if (index == 4){
-
-    }
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
+  late String skladCod;
+  late String skladNaim;
+  late String fio;
 
   @override
   void initState() {
     super.initState();
+    var _str = sklad.split('#');
+    if (_str.length>2) {
+      skladCod =_str[0];
+      skladNaim =_str[1];
+      fio =_str[2];}
+    else{
+      fio ='';
+      skladCod ='';
+      skladNaim ='';
 
+    }
 
   }
   @override
@@ -74,7 +61,21 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Estel '+sklad),
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(
+                Icons.apps,
+                color: Colors.lightBlueAccent, // Change Custom Drawer Icon Color
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
+        ),
+        title: const Text('Estel'),
       ),
       body: Center(
              child: Column(
@@ -86,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 Text(
-                  sklad == null ? '' : 'Склад: $sklad ',
+                  sklad == null ? '' : 'Склад: $skladNaim ( $skladCod ) ',
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
 
@@ -94,36 +95,80 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+      drawer: Drawer(
+        child: CustomPaint(
+          painter: BackgroundDrawer(),
+          child: Column(
+            children: [
+              Expanded(
+                  child: ListView(
+                    children: [
+                      DrawerHeader(child:
+                      UserAccountsDrawerHeader(
+                        accountName: Text(skladNaim),
+                        accountEmail: Text(fio),
+                        currentAccountPicture: const CircleAvatar(
+                          backgroundImage: AssetImage('images/logo3.jpg'),
+                        ),
+                        decoration: const BoxDecoration(),
+
+                      ),
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.account_balance),
+                        title: const Text('Инвентаризации'),
+                        subtitle:const Text('открыть список документов'),
+                        onTap: (){
+                          Navigator.push(    context,      MaterialPageRoute(builder: (context) => const OrdersScreen()),);
+                        },
+                      ),
+                      ListTile(
+                        leading: const Icon(Icons.mail),
+                        title: const Text('Список товаров'),
+                      onTap:(){Navigator.push( context, MaterialPageRoute(builder: (context) => const TovarScreen()),
+                      );},),
+
+                      ListTile(
+                        leading: const Icon(Icons.logout),
+                        title: const Text('Сменить склад'),
+                        subtitle: const Text('Sub title test'),
+                      onTap: (){Dialogs.materialDialog(
+                          msg: 'Сменить склад?',
+                          title: "Авторизация",
+                          color: Colors.white,
+                          context: context,
+                          actions: [
+                            IconsOutlineButton(
+                              onPressed: () { },
+                              text: 'Нет',
+                              iconData: Icons.cancel_outlined,
+                              textStyle: TextStyle(color: Colors.grey),
+                              iconColor: Colors.grey,
+                            ),
+                            IconsOutlineButton(
+                              onPressed: () {Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) => LoginPage()));},
+                              text: 'Да',
+                              iconData: Icons.done,
+                              color: Colors.red,
+                              textStyle: TextStyle(color: Colors.white),
+                              iconColor: Colors.white,
+                            ),
+                          ]);},),
+                    ],
+
+                  ))
+            ],
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
-            label: 'Товары',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance),
-            label: 'Документы',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.exit_to_app),
-            label: 'Сменить склад',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.connecting_airports),
-            label: 'Go',
-          ),
-         ],
-        currentIndex: _selectedIndex,
-        backgroundColor: Colors.lightBlue,
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
+        ),
       ),
+
+
     backgroundColor: Colors.blueGrey,);
   }
 
 }
+
+

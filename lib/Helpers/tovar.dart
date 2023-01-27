@@ -74,16 +74,12 @@ void load_tovar_from_http() async {
     var person = TovarDetail(uid: row['uid'], naim: row['naim'], ed: row['ed'],sh: row['shtrihcode'],cod:row['cod']);
     addList.add(person);
 
-    // var id =objectBox.addTovar(person);
-
-    // debugPrint(row[3]);
     _tekPosition =results.indexOf(row);
 
   }
+
   objectBox.addManyTovar(addList);
 debugPrint(addList.length.toString());
  }
 
-Future load() async {
 
-}

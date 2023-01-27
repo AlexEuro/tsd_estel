@@ -44,6 +44,7 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   void save_sklad(String _sklad) async{
     sklad = _sklad;
+
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('estel_sklad', _sklad);
 
@@ -57,8 +58,10 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         title: const Text('Estel'),
+
       ),
       body: Center(
         // Add visiblity detector to handle barcode
@@ -71,9 +74,12 @@ class _AuthScreenState extends State<AuthScreen> {
           child: BarcodeKeyboardListener(
             bufferDuration: Duration(milliseconds: 400),
             onBarcodeScanned: (barcode) {
-              if (!visible) return;
 
+              if (!visible) return;
+              if (barcode=='') {barcode = _controller.text;}
               setState(() {
+                var _str = barcode.split('#');
+
                 save_sklad(barcode);
                 _doOpenPage();
               });

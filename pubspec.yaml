@@ -45,10 +45,13 @@ dependencies:
   path: ^1.8.3
   path_provider: ^2.0.11
   shared_preferences: any
-  tcp_socket_connection: ^0.3.1
-  http_requests: ^2.6.0
+
+  flutter_riverpod: ^2.1.1
+
   requests: ^4.7.0
   http: ^0.13.5
+
+  material_dialogs: ^1.1.4
 
 
 dev_dependencies:
@@ -75,7 +78,11 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
-
+  assets:
+    - images/logo.png
+    - images/logo3.jpg
+    - images/logo2.jpg
+    - images/logo1.jpg
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

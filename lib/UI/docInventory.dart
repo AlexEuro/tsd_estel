@@ -62,10 +62,13 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff21254A),
       appBar: AppBar(
         title: const Text('Estel'),
       ),
-      body:Container(
+      body:
+      Container(
+
         margin:EdgeInsets.all(0),
         padding:EdgeInsets.all(0),
         width:MediaQuery.of(context).size.width,
@@ -120,7 +123,8 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                           }
                         },
 
-                      ),),
+                      ),
+                    ),
                     Center(
 
                       child:
