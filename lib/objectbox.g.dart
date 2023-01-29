@@ -73,7 +73,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(3, 4304724916667015854),
       name: 'TovarDetail',
-      lastPropertyId: const IdUid(6, 4318451834241312975),
+      lastPropertyId: const IdUid(8, 4151892562979858137),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -106,6 +106,16 @@ final _entities = <ModelEntity>[
             id: const IdUid(6, 4318451834241312975),
             name: 'cod',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 718640889729493807),
+            name: 'art',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 4151892562979858137),
+            name: 'inPack',
+            type: 6,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -113,7 +123,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(6, 7865686015255139639),
       name: 'ItemModel',
-      lastPropertyId: const IdUid(4, 9072381108795352534),
+      lastPropertyId: const IdUid(5, 8463883531267366558),
       flags: 2,
       properties: <ModelProperty>[
         ModelProperty(
@@ -137,7 +147,12 @@ final _entities = <ModelEntity>[
             type: 11,
             flags: 520,
             indexId: const IdUid(3, 4538368992845807142),
-            relationTarget: 'OrderModel')
+            relationTarget: 'OrderModel'),
+        ModelProperty(
+            id: const IdUid(5, 8463883531267366558),
+            name: 'sh',
+            type: 9,
+            flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
@@ -289,13 +304,16 @@ ModelDefinition getObjectBoxModel() {
           final edOffset = fbb.writeString(object.ed);
           final shOffset = fbb.writeString(object.sh);
           final codOffset = fbb.writeString(object.cod);
-          fbb.startTable(7);
+          final artOffset = fbb.writeString(object.art);
+          fbb.startTable(9);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, uidOffset);
           fbb.addOffset(2, naimOffset);
           fbb.addOffset(3, edOffset);
           fbb.addOffset(4, shOffset);
           fbb.addOffset(5, codOffset);
+          fbb.addOffset(6, artOffset);
+          fbb.addInt64(7, object.inPack);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -309,6 +327,10 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 6, ''),
               naim: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 8, ''),
+              art: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 16, ''),
+              inPack:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0),
               ed: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 10, ''),
               sh: const fb.StringReader(asciiOptimization: true)
@@ -328,11 +350,13 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (ItemModel object, fb.Builder fbb) {
           final itemNameOffset = fbb.writeString(object.itemName);
-          fbb.startTable(5);
+          final shOffset = fbb.writeString(object.sh);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, itemNameOffset);
           fbb.addInt64(2, object.itemCount);
           fbb.addInt64(3, object.orderModel.targetId);
+          fbb.addOffset(4, shOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -341,6 +365,8 @@ ModelDefinition getObjectBoxModel() {
           final rootOffset = buffer.derefObject(0);
 
           final object = ItemModel(
+              sh: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''),
               itemCount:
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
               itemName: const fb.StringReader(asciiOptimization: true)
@@ -453,6 +479,14 @@ class TovarDetail_ {
   /// see [TovarDetail.cod]
   static final cod =
       QueryStringProperty<TovarDetail>(_entities[2].properties[5]);
+
+  /// see [TovarDetail.art]
+  static final art =
+      QueryStringProperty<TovarDetail>(_entities[2].properties[6]);
+
+  /// see [TovarDetail.inPack]
+  static final inPack =
+      QueryIntegerProperty<TovarDetail>(_entities[2].properties[7]);
 }
 
 /// [ItemModel] entity fields to define ObjectBox queries.
@@ -471,6 +505,9 @@ class ItemModel_ {
   /// see [ItemModel.orderModel]
   static final orderModel =
       QueryRelationToOne<ItemModel, OrderModel>(_entities[3].properties[3]);
+
+  /// see [ItemModel.sh]
+  static final sh = QueryStringProperty<ItemModel>(_entities[3].properties[4]);
 }
 
 /// [OrderModel] entity fields to define ObjectBox queries.

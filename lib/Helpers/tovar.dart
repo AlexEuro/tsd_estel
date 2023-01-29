@@ -38,7 +38,7 @@ void load_tovar_from_base() async {
 
   for (final row in results) {
 
-    var person = TovarDetail(uid: row[0], naim: row[1], ed: row[2],sh: row[3],cod:row[4]);
+    var person = TovarDetail(uid: row[0], art: row[5], inPack:row[6],naim: row[1], ed: row[2],sh: row[3],cod:row[4]);
     addList.add(person);
 
    // var id =objectBox.addTovar(person);
@@ -71,7 +71,7 @@ Future<bool> load_tovar_from_http() async {
 
   for (final row in results) {
 
-    var person = TovarDetail(uid: row['uid'], naim: row['naim'], ed: row['ed'],sh: row['shtrihcode'],cod:row['cod']);
+    var person = TovarDetail(uid: row['uid'], naim: row['naim'], ed: row['ed'],art: row['art'],inPack:row['inPack'],sh: row['shtrihcode'],cod:row['cod']);
     addList.add(person);
 
     _tekPosition =results.indexOf(row);

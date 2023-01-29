@@ -35,7 +35,7 @@ class ObjectBoxBase {
   static Future<ObjectBoxBase> init() async {
     final docsDir = await getApplicationDocumentsDirectory();
     final syncServerIp = Platform.isAndroid ? '10.0.2.2' : '127.0.0.1';
-    final store = await openStore(directory: p.join(docsDir.path, "obx-example7"));
+    final store = await openStore(directory: p.join(docsDir.path, "obx-example8"));
     Sync.client(
       store,
       'ws://$syncServerIp:9999', // wss for SSL, ws for unencrypted traffic
@@ -78,7 +78,7 @@ class ObjectBoxBase {
   getinfo(String sh) {
      final res = _personDetailBox.query(TovarDetail_.sh.equals(sh)).build().findFirst();
 
-        return res == null ? 'Не найден' : 'Товар: '+res.naim;
+      return res;
 
   }
   closeStore(){

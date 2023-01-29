@@ -29,12 +29,14 @@ class OrderModel {
 @Sync()
 class ItemModel {
   int id = 0;
+  String sh;
   String itemName;
   int itemCount;
 
   final orderModel = ToOne<OrderModel>();
 
   ItemModel({
+    required this.sh,
     required this.itemCount,
     required this.itemName,
   });

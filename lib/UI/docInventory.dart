@@ -21,7 +21,7 @@ class DocInventoryScreen extends StatefulWidget {
 
 class _DocInventoryScreenState extends State<DocInventoryScreen> {
 
-  late FocusNode myFocusNode;
+  FocusNode _focusNode = FocusNode();
   late OrderModel docInventory;
   late Stream<List<ItemModel>> streamUsers;
 
@@ -40,7 +40,7 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
   void initState() {
     super.initState();
 
-    myFocusNode = FocusNode();
+
     docInventory =  objectBox.getOrder(widget.docId);
     streamUsers = objectBox.getLineorder(docInventory.id );
     _controller.addListener(() {
@@ -56,13 +56,13 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
   @override
   void dispose() {
     _controller.dispose();
-    myFocusNode.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff21254A),
+      backgroundColor: Colors.white54,
       appBar: AppBar(
         title: const Text('Estel'),
       ),
@@ -73,15 +73,8 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
         padding:EdgeInsets.all(0),
         width:MediaQuery.of(context).size.width,
         height:MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
-          color:Color(0x1f000000),
-          shape:BoxShape.rectangle,
-          borderRadius:BorderRadius.zero,
-          border:Border.all(color:Color(0x4d9e9e9e),width:1),
-        ),
+
         child:
-
-
         Column(
           mainAxisAlignment:MainAxisAlignment.start,
           crossAxisAlignment:CrossAxisAlignment.center,
@@ -93,7 +86,6 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
               Container(
                 child: Column(
                   children:
-
                   [
                     Expanded(
                       child:
@@ -107,11 +99,32 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                           } else {
                             final users = snapshot.data!;
 
-                            return ListView.builder(
+                            
+                         return DataTable(columns: [
+                         DataColumn(label: Text('ШК')),
+                          DataColumn(label: Text('Наименование')),
+                          DataColumn(label: Text('Количество')),
+
+                         ],
+                           rows: snapshot.data!
+                               .map(
+                                 (data) => DataRow(
+                               cells: [
+                                 DataCell(Text(data.sh)),
+                                 DataCell(Text(data.itemName)),
+                                 DataCell(Text(data.itemCount.toString())),
+                                 // ...
+                               ],
+                             ),
+                           )
+                               .toList(),
+                         );// ..., rows: rows)
+                            
+                            return ListView.separated(
+                              separatorBuilder: (context, index) => Divider(color: Colors.black),
                               itemCount: users.length,
                               itemBuilder: (context, index) {
                                 final user = users[index];
-
                                 return ListTile(
                                   title: Text(user.itemName),
                                   subtitle: Text(user.itemCount.toString()),
@@ -148,37 +161,34 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
               height:MediaQuery.of(context).size.height * 0.10,
 
               child:
-              VisibilityDetector(
-                onVisibilityChanged: (VisibilityInfo info) {
-                  visible = info.visibleFraction > 0;
-                },
-                key: Key('visible-detector-key'),
-                child: BarcodeKeyboardListener(
+              BarcodeKeyboardListener(
                   useKeyDownEvent: true,
 
                   bufferDuration: Duration(milliseconds: 400),
-
                   onBarcodeScanned: (barcode) {
-                    if (!visible) return;
-                    //if (docInventory == null) docInventory = objectBox.getOrder(0);//widget.docId
-                    if (barcode == '' ) {barcode = _controller.text;}
+                   if (barcode == '' ) {barcode = _controller.text;}
                     var split_barcode = barcode.split('#');
                     //todo
+                    _controller.clear();
 
-                    var str = ItemModel(itemCount: 1,itemName: barcode);
+
+                    var tovar_info = objectBox.getinfo(barcode);
+                    String itemName;
+                    int itemCount;
+                    if (tovar_info == null || tovar_info=='') {
+                      itemName = '-';
+                      itemCount =1;
+                    } else{
+                      itemName = tovar_info.art;
+                      itemCount =tovar_info.inPack;
+                    }
+                    var str = ItemModel(sh: barcode, itemCount: itemCount,itemName: itemName);
                     docInventory.items.add(str);
                     objectBox.PutOrder(docInventory);
+                   setState(() {
+                     _focusNode.requestFocus();
+                   });
 
-                    if (split_barcode.length == 3) {
-
-                      //-todo
-                    }
-                    else {
-                      _controller.clear();
-                      myFocusNode.unfocus();
-
-                      myFocusNode.requestFocus();
-                    }
 
 
                   },
@@ -188,15 +198,17 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                     children: <Widget>[
                       TextFormField(        controller: _controller,
                         autofocus: true,
-                        focusNode: myFocusNode,
+                        focusNode: _focusNode,
+                        onFieldSubmitted: (_) => _focusNode.requestFocus(),
                         decoration: const InputDecoration(border: OutlineInputBorder()),
+
                       ),
                     ],
                   ),
                 ),
-              ),
-            ),
-          ],),
+                       ),
+          ],
+        ),
       ),
     );
   }
