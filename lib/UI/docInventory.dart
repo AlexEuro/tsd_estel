@@ -22,8 +22,8 @@ class DocInventoryScreen extends StatefulWidget {
 class _DocInventoryScreenState extends State<DocInventoryScreen> {
 
   late FocusNode myFocusNode;
-  final docInventory = objectBox.getOrder( 0);//widget.docId;
-
+  late OrderModel docInventory;
+  late Stream<List<ItemModel>> streamUsers;
 
   final TextEditingController _controller = TextEditingController();
 
@@ -41,7 +41,8 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
     super.initState();
 
     myFocusNode = FocusNode();
-
+    docInventory =  objectBox.getOrder(widget.docId);
+    streamUsers = objectBox.getLineorder(docInventory.id );
     _controller.addListener(() {
       final String text = _controller.text.toLowerCase();
       _controller.value = _controller.value.copyWith(
@@ -61,10 +62,13 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xff21254A),
       appBar: AppBar(
         title: const Text('Estel'),
       ),
-      body:Container(
+      body:
+      Container(
+
         margin:EdgeInsets.all(0),
         padding:EdgeInsets.all(0),
         width:MediaQuery.of(context).size.width,
@@ -77,6 +81,7 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
         ),
         child:
 
+
         Column(
           mainAxisAlignment:MainAxisAlignment.start,
           crossAxisAlignment:CrossAxisAlignment.center,
@@ -85,15 +90,54 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
             Expanded(
               flex: 1,
               child:
-              Center(
+              Container(
+                child: Column(
+                  children:
 
-                child:
-                Text(
-                  _barcode == null ? 'Отсканируйте товар' : 'Товар: $_barcode ',
-                  textAlign: TextAlign.center,
-                  overflow:TextOverflow.clip,
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  [
+                    Expanded(
+                      child:
+                      StreamBuilder<List<ItemModel>>(
+                        stream: streamUsers,
+                        builder: (context, AsyncSnapshot<List<ItemModel>> snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            final users = snapshot.data!;
 
+                            return ListView.builder(
+                              itemCount: users.length,
+                              itemBuilder: (context, index) {
+                                final user = users[index];
+
+                                return ListTile(
+                                  title: Text(user.itemName),
+                                  subtitle: Text(user.itemCount.toString()),
+
+                                  );
+
+                              },
+                            );
+                          }
+                        },
+
+                      ),
+                    ),
+                    Center(
+
+                      child:
+
+                      Text(
+                        _barcode == null ? 'Отсканируйте товар' : 'Товар: $_barcode ',
+                        textAlign: TextAlign.center,
+                        overflow:TextOverflow.clip,
+                        style: Theme.of(context).textTheme.headlineSmall,
+
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -122,8 +166,8 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                     //todo
 
                     var str = ItemModel(itemCount: 1,itemName: barcode);
-                    docInventory.items.add(str                  );
-
+                    docInventory.items.add(str);
+                    objectBox.PutOrder(docInventory);
 
                     if (split_barcode.length == 3) {
 

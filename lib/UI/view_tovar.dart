@@ -20,12 +20,13 @@ class TovarScreen extends StatefulWidget {
 class _TovarScreenState extends State<TovarScreen> {
   late Stream<List<TovarDetail>> streamUsers;
   bool _isLoading = false; // This is initially false where no loading stat
-
+  String buttonLabel = 'Загрузить';
 
   @override
   void initState() {
     super.initState();
-    streamUsers = objectBox.getTovar();
+   streamUsers = objectBox.getTovar();
+
   }
 
   @override
@@ -63,19 +64,22 @@ class _TovarScreenState extends State<TovarScreen> {
     floatingActionButton: FloatingActionButton.extended(
       splashColor: Colors.blueAccent,
       icon: _isLoading?Icon(Icons.history):Icon(Icons.sync),
-      label: _isLoading?Text('Загружаю'):Text('Загрузить'),
+      label: Text(buttonLabel),//isLoading?Text('Загружаю'):Text('Загрузить'),
       onPressed: () {
 
         setState(() {
+          buttonLabel = 'Загружаю';
           _isLoading = true;
         });
-        load_tovar_from_base();
+        load_tovar_from_http();
   setState(() {
+    buttonLabel = 'Загрузить';
         _isLoading = false; });
 
       },
 
     ),
+
   );
   }
 

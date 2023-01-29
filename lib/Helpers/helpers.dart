@@ -19,13 +19,15 @@ class ObjectBoxBase {
   late final Box<DocInventoryModel> _docInventoryBox;
   late final Box<Inventory_line_Model> _lineInventoryBox;
   late final Box<OrderModel> _docInventoryBoxPlus;
+  late final Box<ItemModel> _docInventoryLineBox;
 
   ObjectBoxBase._init(this._store) {
      _personDetailBox = Box<TovarDetail>(_store);
      _docInventoryBox = Box<DocInventoryModel>(_store);
      _docInventoryBoxPlus = Box<OrderModel>(_store);
      _lineInventoryBox = Box<Inventory_line_Model>(_store);
-     _docInventoryBoxPlus.removeAll();
+     _docInventoryLineBox = Box<ItemModel>(_store);
+     //_docInventoryBoxPlus.removeAll();
    //  _personDetailBox.removeAll();
   }
 
@@ -53,12 +55,16 @@ class ObjectBoxBase {
       .watch(triggerImmediately: true)
       .map((query) => query.find()
   );
-
+  Stream<List<ItemModel>> getLineorder(int orderModel) => _docInventoryLineBox
+      .query(ItemModel_.orderModel.equals(orderModel)).order(ItemModel_.id )
+      .watch(triggerImmediately: true)
+      .map((query) => query.find()
+  );
   List<OrderModel> getorder_list() => _docInventoryBoxPlus
       .query().build().find();
 
 
-
+    int PutOrder(OrderModel orderModel) => _docInventoryBoxPlus.put(orderModel);
 //  int insertUser(User user) => _userBox.put(user);
 
   int addTovar(TovarDetail tovarDetail) => _personDetailBox.put(tovarDetail);
