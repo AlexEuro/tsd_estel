@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:tsd_estel/Helpers/tovar.dart';
@@ -63,7 +65,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
 
 
-                },);
+                }
+                ,onLongPress: (){
+                  final j = sendDoc(user);
+                  debugPrint(j.toString());
+                  }
+                ,);
 
             },
           );

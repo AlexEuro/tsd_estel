@@ -5,10 +5,10 @@ import 'package:postgres/postgres.dart';
 
 import 'package:tsd_estel/model/products.dart';
 import '../main.dart';
-
+import 'package:tsd_estel/model/orders.dart';
 import 'package:http/http.dart' as http;
 
-
+import 'dart:io';
 //late ObjectBoxBase _objectBox;
 
 void load_tovar_from_base() async {
@@ -57,9 +57,9 @@ void load_tovar_from_base() async {
   print(DateTime.now());
 }
 
-void load_tovar_from_http() async {
+Future<bool> load_tovar_from_http() async {
 
-  final response = await  http.get(Uri.parse('http://192.168.1.15:3333/gettovar'));
+  final response = await  http.get(Uri.parse('http://62.141.114.156:5557/gettovar'));
 
 
 
@@ -80,6 +80,20 @@ void load_tovar_from_http() async {
 
   objectBox.addManyTovar(addList);
 debugPrint(addList.length.toString());
+    return true;
  }
 
 
+Future<bool> sendDoc(OrderModel doc) async{
+  String j;
+  j = jsonEncode(doc);
+  final response = await http.post(Uri.parse('http://62.141.114.156:5557/putdoc'),
+                  body: j,
+      headers: {'Accept':'application/json','Content-Type': 'application/json'},
+      );
+  if (response.statusCode == 200 && response.body=='1'){
+    debugPrint (j);
+  }
+
+  return true;
+}

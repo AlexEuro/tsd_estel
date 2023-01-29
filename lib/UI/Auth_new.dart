@@ -21,18 +21,23 @@ class MyApp extends StatelessWidget {
 }
 
 class LoginPage extends StatefulWidget {
+
+
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State {
+
   final TextEditingController _controller = TextEditingController();
   late bool visible;
 
+  late bool showInput;
   @override
   void initState() {
     super.initState();
-
+    showInput = false;
     _controller.addListener(() {
       final String text = _controller.text.toLowerCase();
       _controller.value = _controller.value.copyWith(
@@ -64,6 +69,11 @@ class _LoginPageState extends State {
             builder: (BuildContext context) => new HomeScreen()));
   }
 
+void press(){
+    setState(() {
+      showInput = !showInput;
+    });
+}
 
 
   @override
@@ -79,25 +89,52 @@ class _LoginPageState extends State {
                 children: <Widget>[
                   _getHeader(),
                   _getHeader_dop(),
-                  VisibilityDetector(
-                    onVisibilityChanged: (VisibilityInfo info) {
-                      visible = info.visibleFraction > 0;
-                    },
-                    key: Key('visible-detector-key'),
-                    child: BarcodeKeyboardListener(
+                    BarcodeKeyboardListener(
                       bufferDuration: Duration(milliseconds: 400),
                       onBarcodeScanned: (barcode) {
 
-                        if (!visible) return;
                         if (barcode=='') {barcode = _controller.text;}
                         setState(() {
-                                                    save_sklad(barcode);
+                            save_sklad(barcode);
                           _doOpenPage();
                         });
                       },
-                      child:_getInputs(_controller),
+                      child:Expanded(
+                        flex: 4,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[   Row(
+                              mainAxisAlignment:MainAxisAlignment.start,
+                              crossAxisAlignment:CrossAxisAlignment.center,
+                              mainAxisSize:MainAxisSize.max,
+                              children:[
+
+                                Expanded(
+                                  flex: 1,
+                                  child:
+                                  Visibility(
+                                    visible: showInput,
+                                    child:TextFormField(        controller: _controller,
+                                      decoration: const InputDecoration(border: OutlineInputBorder()),
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                                  IconButton(onPressed: (){setState(() {
+                                    showInput = !showInput;
+                                  });},
+                                      icon: Icon(Icons.keyboard),
+                                      color: Colors.amberAccent,
+                                    tooltip: showInput == true ? 'Скрыть' : 'Показать '),
+
+                              ],
+                            ),
+                            ]
+                        ),
+                      )
+                      //_getInputs(_controller,showInput),
                     ),
-                  ),
+
                   //_getSignIn(),
                   //_getBottomRow(),
                 ],
@@ -137,16 +174,36 @@ _getHeader_dop() {
     ),
   );
 }
-_getInputs(_controller) {
+_getInputs(_controller, showInput) {
   return Expanded(
     flex: 4,
     child: Column(
 
       mainAxisAlignment: MainAxisAlignment.end,
-      children: <Widget>[
-        TextFormField(        controller: _controller,
-          decoration: const InputDecoration(border: OutlineInputBorder()),
+      children: <Widget>[   Row(
+    mainAxisAlignment:MainAxisAlignment.start,
+      crossAxisAlignment:CrossAxisAlignment.center,
+      mainAxisSize:MainAxisSize.max,
+      children:[
+
+      Expanded(
+      flex: 1,
+      child:
+      Visibility(
+      visible: showInput,
+      child:TextFormField(        controller: _controller,
+              decoration: const InputDecoration(border: OutlineInputBorder()),
+            ),
+
         ),
+      ),
+        MaterialButton(onPressed: (){showInput = !showInput;}, child: Text("Button", style: TextStyle( fontSize:14,
+          fontWeight:FontWeight.w400,
+          fontStyle:FontStyle.normal,
+        ),),
+          textColor:Color(0xff000000),
+          height:40,
+          minWidth:140,),
         const SizedBox(
           width: 200.0,
           height: 10,
@@ -154,6 +211,9 @@ _getInputs(_controller) {
         )
       ],
     ),
+  ]
+    ),
+
   );
 }
 

@@ -18,7 +18,6 @@ Future main() async {
   final prefs = await SharedPreferences.getInstance();
   sklad = prefs.getString('estel_sklad')??'-';
 
- // await prefs.remove('estel_sklad');
   objectBox = await ObjectBoxBase.init();
   runApp(const MyApp());
 }

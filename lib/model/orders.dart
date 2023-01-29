@@ -3,6 +3,7 @@ import 'package:objectbox/objectbox.dart';
 
 @Entity()
 @Sync()
+
 class OrderModel {
   int id = 0;
   bool ordered = false;
@@ -15,6 +16,13 @@ class OrderModel {
     required this.dateDoc,
     required this.user,
   });
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'ordered': ordered,
+    'dateDoc': dateDoc,
+    'user': user,
+    'items': items,
+  };
 }
 
 @Entity()
@@ -30,4 +38,11 @@ class ItemModel {
     required this.itemCount,
     required this.itemName,
   });
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'itemName': itemName,
+    'itemCount': itemCount,
+  };
 }
+
+
