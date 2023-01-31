@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:tsd_estel/main.dart';
 
 import '../objectbox.g.dart';
@@ -59,11 +60,17 @@ class ObjectBoxBase {
   Stream<List<ItemModel>> getLineorder(int orderModel) => _docInventoryLineBox
       .query(ItemModel_.orderModel.equals(orderModel)).order(ItemModel_.id )
       .watch(triggerImmediately: true)
-      .map((query) => query.find()
-  );
-  List<OrderModel> getorder_list() => _docInventoryBoxPlus
-      .query().build().find();
+      .map((query) => query.find());
 
+
+  Stream<List<ItemModel>> getLineorder_limit(int orderModel) => _docInventoryLineBox
+      .query(ItemModel_.orderModel.equals(orderModel)).order(ItemModel_.id)
+      .watch(triggerImmediately: true)
+      .map((query) {  final qr=query.find();  return qr.getRange(0, max(0, qr.length -5)).toList();}
+  );
+
+  List<OrderModel> getorder_list() => _docInventoryBoxPlus.
+      query().build().find();
 
     int PutOrder(OrderModel orderModel) => _docInventoryBoxPlus.put(orderModel);
 //  int insertUser(User user) => _userBox.put(user);
@@ -75,10 +82,12 @@ class ObjectBoxBase {
     return _personDetailBox.count();
   }
 
-  getinfo(String sh) {
-     final res = _personDetailBox.query(TovarDetail_.sh.equals(sh)).build().findFirst();
-
-      return res;
+  getinfo(String sh,String cod) {
+    if (cod =='') {
+      return _personDetailBox.query(TovarDetail_.sh.equals(sh)).build().findFirst();
+    }else{
+      return _personDetailBox.query(TovarDetail_.cod.equals(cod)).build().findFirst();
+    }
 
   }
   closeStore(){

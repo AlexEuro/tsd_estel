@@ -58,10 +58,26 @@ void load_tovar_from_base() async {
 }
 
 Future<bool> load_tovar_from_http() async {
+  bool isLocal =false;
+   String url='';
+  try {
+    final result = await InternetAddress.lookup('192.168.1.15');
+    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+      print('connected');
+      isLocal = true;
+      url = url = 'http://192.168.1.15:3333/gettovar';
 
-  final response = await  http.get(Uri.parse('http://62.141.114.156:5557/gettovar'));
 
+    }
+  } on SocketException catch (_) {
+    isLocal = false;
+    url = 'http://62.141.114.156:5557/gettovar';
+    print('not connected');
+  }
 
+    final response = await  http.get(Uri.parse(url));
+
+  if (response.statusCode ==200) {debugPrint('connectes');}
 
 
   final List<dynamic> results = jsonDecode(response.body);
