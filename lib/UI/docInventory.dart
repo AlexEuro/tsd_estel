@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
-
+import 'package:input_with_keyboard_control/input_with_keyboard_control.dart';
+import 'package:numeric_keyboard/numeric_keyboard.dart';
 import '../main.dart';
 
 class DocInventoryScreen extends StatefulWidget {
@@ -22,25 +23,37 @@ class DocInventoryScreen extends StatefulWidget {
 class _DocInventoryScreenState extends State<DocInventoryScreen> {
 
   late int tekStage;
-  FocusNode _focusNode = FocusNode();
+
   late OrderModel docInventory;
   late Stream<List<ItemModel>> streamUsers;
 
   final TextEditingController _controller = TextEditingController();
   late bool needcol;
   late bool visible;
-
+  late InputWithKeyboardControlFocusNode _focusNode ;
   @override
   void initState() {
     super.initState();
+
+
     tekStage = 1;
-    SystemChannels.textInput.invokeMethod('TextInput.hide');
     needcol = false;
+    _focusNode =InputWithKeyboardControlFocusNode();
+
+    _focusNode.addListener((){
+      ///Whether the currently listening TextFeild has gained the input focus
+      bool hasFocus = _focusNode.hasFocus;
+      ///Whether the current focusNode has been added
+      bool hasListeners = _focusNode.hasListeners;
+
+      print("focusNode hasFocus:$hasFocus hasListeners:$hasListeners");
+    });
 
     docInventory =  objectBox.getOrder(widget.docId);
     streamUsers = objectBox.getLineorder(docInventory.id );
 
     _controller.addListener(() {
+    //  SystemChannels.textInput.invokeMethod('TextInput.hide');
       final String text = _controller.text.toLowerCase();
       _controller.value = _controller.value.copyWith(
         text: text,
@@ -53,7 +66,7 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
   @override
   void dispose() {
     _controller.dispose();
-    _focusNode.dispose();
+
     super.dispose();
   }
 
@@ -94,13 +107,14 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
     objectBox.PutOrder(docInventory);
 
 
-    _focusNode.requestFocus();
+
+   // SystemChannels.textInput.invokeMethod('TextInput.hide');
   }
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(resizeToAvoidBottomInset:false,
       backgroundColor: Colors.white54,
       appBar: AppBar(
         title: const Text('Estel'),
@@ -118,6 +132,7 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
           mainAxisSize:MainAxisSize.max,
           children: [
             SwitchListTile(
+              autofocus: false,
               title: const Text('Запрашивать количество'),
               value: needcol,
               onChanged: (bool value) {
@@ -137,6 +152,7 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                       child:
                       StreamBuilder<List<ItemModel>>(
                         stream: streamUsers,
+
                         builder: (context, AsyncSnapshot<List<ItemModel>> snapshot) {
                           if (!snapshot.hasData) {
                             return const Center(
@@ -146,6 +162,7 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                             final users = snapshot.data!;
                             return
                               ListView.builder(
+
                                 itemCount: users.length,
                                 itemBuilder: (context, index) {
                                   final user = users[index];
@@ -171,33 +188,51 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
 
               child:
               BarcodeKeyboardListener(
+
                   useKeyDownEvent: true,
+
                   bufferDuration: Duration(milliseconds: 400),
+
                   onBarcodeScanned: (barcode) {
 
                     afterscan(barcode);
+                    _controller.clear();
+                    _focusNode.unfocus();
+                    FocusScope.of(context).requestFocus(_focusNode);
+
                   },
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      TextFormField(
-                        controller: _controller,
-                        focusNode: _focusNode,
-                        keyboardType: TextInputType.number,
 
-                        decoration: const InputDecoration(border: OutlineInputBorder(),
-                            hintText: 'Отсканируйте товар'),
-                        onChanged: afterscan,
 
-                      ),
+                      InputWithKeyboardControl(
+                      focusNode: _focusNode,
+                      onSubmitted: (value) {
+                  //print(value);
+
+                      },
+                      autofocus: true,
+                      controller: _controller,
+                      width: 300,
+                      startShowKeyboard: false,
+                      buttonColorEnabled: Colors.blue,
+                      buttonColorDisabled: Colors.black,
+                      underlineColor: Colors.black,
+                      showUnderline: true,
+                      showButton: false,
+                    ),
+
                     ],
                   ),
                 ),
+
                        ),
           ],
         ),
       ),
+
 
     );
   }

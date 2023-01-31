@@ -21,10 +21,10 @@ packages:
     dependency: transitive
     description:
       name: archive
-      sha256: ed7cc591a948744994714375caf9a2ce89e1d82e8243997c8a2994d57181c212
+      sha256: d6347d54a2d8028e0437e3c099f66fdb8ae02c4720c1e7534c9f24c10351f85d
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.5"
+    version: "3.3.6"
   args:
     dependency: transitive
     description:
@@ -157,10 +157,10 @@ packages:
     dependency: transitive
     description:
       name: collection
-      sha256: cfc915e6923fe5ce6e153b0723c753045de46de1b4d63771530504004a45fae0
+      sha256: "4a07be6cb69c84d677a6c3096fcf960cc3285a8330b4603e0d463d15d9bd934c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.0"
+    version: "1.17.1"
   convert:
     dependency: transitive
     description:
@@ -237,10 +237,10 @@ packages:
     dependency: transitive
     description:
       name: fixnum
-      sha256: "04be3e934c52e082558cc9ee21f42f5c1cd7a1262f4c63cd0357c08d5bba81ec"
+      sha256: "25517a4deb0c03aa0f32fd12db525856438902d9c16536311e76cdc57b31d7d1"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.1.0"
   flat_buffers:
     dependency: transitive
     description:
@@ -412,10 +412,10 @@ packages:
     dependency: transitive
     description:
       name: js
-      sha256: "323b7c70073cccf6b9b8d8b334be418a3293cfb612a560dc2737160a37bf61bd"
+      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.6"
+    version: "0.6.7"
   json_annotation:
     dependency: transitive
     description:
@@ -488,30 +488,38 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
+  numeric_keyboard:
+    dependency: "direct main"
+    description:
+      name: numeric_keyboard
+      sha256: "62d0919de4083bfed260da50c2c526189c35240ada4ba0cf5e2ac27252836cea"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   objectbox:
     dependency: "direct main"
     description:
       name: objectbox
-      sha256: dea353beab74dd3f118a9ae5bc6ebae780d78a97cb94729281089f241ed5cab7
+      sha256: c18d41f4e81e5a30fc0e2200e9e8306f5ccc8a9b61fe3746426359690c33dc7b
       url: "https://pub.dev"
     source: hosted
-    version: "1.7.1"
+    version: "1.7.2"
   objectbox_generator:
     dependency: "direct dev"
     description:
       name: objectbox_generator
-      sha256: cda7366c71d9b1b096ed23f24890cbf6b6e14ee3671017fdd86b8fab12ed7950
+      sha256: "728a9ccf4d6a2ac44a016f6cb9798e4a31ee92b79828526181e0de97a3506c28"
       url: "https://pub.dev"
     source: hosted
-    version: "1.7.1"
+    version: "1.7.2"
   objectbox_sync_flutter_libs:
     dependency: "direct main"
     description:
       name: objectbox_sync_flutter_libs
-      sha256: "545a69f546ba8d885875f885e6faa5eab805b55a463eb2dc1511ead837b47a6a"
+      sha256: "879bc3eaf7761cdb3ab7337fd754d3a6b4d5cee66ffca1114694310408d6c5c0"
       url: "https://pub.dev"
     source: hosted
-    version: "1.7.1"
+    version: "1.7.2"
   package_config:
     dependency: transitive
     description:
@@ -708,10 +716,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_foundation
-      sha256: "1ffa239043ab8baf881ec3094a3c767af9d10399b2839020b9e4d44c0bb23951"
+      sha256: "2b55c18636a4edc529fa5cd44c03d3f3100c00513f518c5127c951978efcccd0"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.2"
+    version: "2.1.3"
   shared_preferences_linux:
     dependency: transitive
     description:
