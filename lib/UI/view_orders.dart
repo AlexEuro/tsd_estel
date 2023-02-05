@@ -47,24 +47,24 @@ class _OrdersScreenState extends State<OrdersScreen> {
         } else {
           final users = snapshot.data!;
 
-          return ListView.builder(
+          return ListView.separated(
+            separatorBuilder: (context, index) => Divider(color: Colors.black),
+
             itemCount: users.length,
             itemBuilder: (context, index) {
               final user = users[index];
 
               return ListTile(
                 title: Text(user.dateDoc),
-                subtitle: Text(user.user),
+                subtitle: Text(user.isSend.toString()),
 
+                tileColor: user.isSend ==true ?Colors.deepOrangeAccent : Colors.white ,
                 onTap: () {
 
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => DocInventoryScreen(docId: user.id)),
                   );
-
-
-
                 }
                 ,onLongPress: (){
                   final j = sendDoc(user);

@@ -159,7 +159,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(7, 1035935039992077224),
       name: 'OrderModel',
-      lastPropertyId: const IdUid(4, 7892275245849358768),
+      lastPropertyId: const IdUid(5, 4713609547231897078),
       flags: 2,
       properties: <ModelProperty>[
         ModelProperty(
@@ -181,6 +181,11 @@ final _entities = <ModelEntity>[
             id: const IdUid(4, 7892275245849358768),
             name: 'user',
             type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 4713609547231897078),
+            name: 'isSend',
+            type: 1,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -391,11 +396,12 @@ ModelDefinition getObjectBoxModel() {
         objectToFB: (OrderModel object, fb.Builder fbb) {
           final dateDocOffset = fbb.writeString(object.dateDoc);
           final userOffset = fbb.writeString(object.user);
-          fbb.startTable(5);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addBool(1, object.ordered);
           fbb.addOffset(2, dateDocOffset);
           fbb.addOffset(3, userOffset);
+          fbb.addBool(4, object.isSend);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -410,7 +416,9 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 10, ''))
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
             ..ordered =
-                const fb.BoolReader().vTableGet(buffer, rootOffset, 6, false);
+                const fb.BoolReader().vTableGet(buffer, rootOffset, 6, false)
+            ..isSend =
+                const fb.BoolReader().vTableGet(buffer, rootOffset, 12, false);
           InternalToManyAccess.setRelInfo(
               object.items,
               store,
@@ -527,4 +535,8 @@ class OrderModel_ {
   /// see [OrderModel.user]
   static final user =
       QueryStringProperty<OrderModel>(_entities[4].properties[3]);
+
+  /// see [OrderModel.isSend]
+  static final isSend =
+      QueryBooleanProperty<OrderModel>(_entities[4].properties[4]);
 }

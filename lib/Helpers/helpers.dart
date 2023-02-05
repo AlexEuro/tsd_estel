@@ -47,20 +47,43 @@ class ObjectBoxBase {
 
 
 
-  Stream<List<TovarDetail>> getTovar() => _personDetailBox
-      .query()
-      .watch(triggerImmediately: true)
-      .map((query) => query.find());
+  Stream<List<TovarDetail>> getTovar(String searchText)
+  {
+    if (searchText =='') {
+      return _personDetailBox
+          .query()
+          .watch(triggerImmediately: true)
+          .map((query) => query.find());
+    }else{
+      return _personDetailBox
+          .query(TovarDetail_.sh.contains(searchText))
+          .watch(triggerImmediately: true)
+          .map((query) => query.find());
+    }
+
+  }
+
+
+
+  List<TovarDetail> getTovar_list() => _personDetailBox
+      .query().build().find();
 
   Stream<List<OrderModel>> getorder() => _docInventoryBoxPlus
       .query()
       .watch(triggerImmediately: true)
       .map((query) => query.find()
   );
+
+
   Stream<List<ItemModel>> getLineorder(int orderModel) => _docInventoryLineBox
       .query(ItemModel_.orderModel.equals(orderModel)).order(ItemModel_.id )
       .watch(triggerImmediately: true)
-      .map((query) => query.find());
+      .map((query) {
+        var res = query.find();
+        if (res.length ==0) {return res;}
+        else{
+          return res.getRange(max (res.length-5,0),res.length ).toList();}}
+  );
 
 
   Stream<List<ItemModel>> getLineorder_limit(int orderModel) => _docInventoryLineBox
@@ -73,6 +96,8 @@ class ObjectBoxBase {
       query().build().find();
 
     int PutOrder(OrderModel orderModel) => _docInventoryBoxPlus.put(orderModel);
+
+    int linePutOrder(ItemModel itemModel) {return _docInventoryLineBox.put(itemModel); }
 //  int insertUser(User user) => _userBox.put(user);
 
   int addTovar(TovarDetail tovarDetail) => _personDetailBox.put(tovarDetail);

@@ -61,7 +61,7 @@ Future<bool> load_tovar_from_http() async {
   bool isLocal =false;
    String url='';
   try {
-    final result = await InternetAddress.lookup('192.168.1.15');
+    final result = await InternetAddress.lookup('1s'); //15
     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
       print('connected');
       isLocal = true;
@@ -108,7 +108,10 @@ Future<bool> sendDoc(OrderModel doc) async{
       headers: {'Accept':'application/json','Content-Type': 'application/json'},
       );
   if (response.statusCode == 200 && response.body=='1'){
-    debugPrint (j);
+
+    doc.isSend = true;
+    objectBox.PutOrder(doc);
+
   }
 
   return true;

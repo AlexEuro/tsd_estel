@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tsd_estel/Helpers/tovar.dart';
 import 'package:tsd_estel/model/products.dart';
 
-
+import 'package:searchable_listview/searchable_listview.dart';
 
 import '../main.dart';
 
@@ -17,6 +17,7 @@ class TovarScreen extends StatefulWidget {
 
 class _TovarScreenState extends State<TovarScreen> {
   late Stream<List<TovarDetail>> streamUsers;
+
   String query ='';
   bool _isLoading = false; // This is initially false where no loading stat
   String buttonLabel = 'Загрузить';
@@ -26,7 +27,7 @@ class _TovarScreenState extends State<TovarScreen> {
   void initState() {
     super.initState();
 
-   streamUsers = objectBox.getTovar();
+   streamUsers = objectBox.getTovar('');
   }
 
   @override
@@ -39,28 +40,20 @@ class _TovarScreenState extends State<TovarScreen> {
     body:Container(
   child: Column(
   children: <Widget>[
-  Padding(
-  padding: const EdgeInsets.all(8.0),
-  child: Visibility(
-    visible: false,
-    child: TextField(
-  onChanged: (value) {
+    TextFormField(autofocus: false,
+      decoration: InputDecoration(hintText:'поиск'),
+      onChanged:(value){
+      setState(() {
+        streamUsers = objectBox.getTovar(value);
+      });
 
-  },
-  controller: editingController,
+    },),
 
-  decoration: InputDecoration(
-  labelText: "поиск",
-  hintText: "поиск",
-  prefixIcon: Icon(Icons.search),
-  border: OutlineInputBorder(
-  borderRadius: BorderRadius.all(Radius.circular(25.0)))),
-  ),
-  ),
-  ),
+
+
   Expanded(child:
     StreamBuilder<List<TovarDetail>>(
-     // initialData: _dataFromQuerySnapShot,
+
       stream: streamUsers,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
@@ -114,3 +107,20 @@ class _TovarScreenState extends State<TovarScreen> {
   );
   }
 
+class EmptyView extends StatelessWidget {
+  const EmptyView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: const [
+        Icon(
+          Icons.error,
+          color: Colors.red,
+        ),
+        Text('no actor is found with this name'),
+      ],
+    );
+  }
+}

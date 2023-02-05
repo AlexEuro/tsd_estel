@@ -9,16 +9,20 @@ class OrderModel {
   bool ordered = false;
   String dateDoc= '';
   String user= '';
+  bool isSend = false;
+
 
   @Backlink()
   final items = ToMany<ItemModel>();
   OrderModel({
     required this.dateDoc,
     required this.user,
+
   });
   Map<String, dynamic> toJson() => {
     'id': id,
     'ordered': ordered,
+    'isSend': isSend,
     'dateDoc': dateDoc,
     'user': user,
     'items': items,

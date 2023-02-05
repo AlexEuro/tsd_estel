@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tsd_estel/model/orders.dart';
 
-import 'package:flutter/services.dart';
-
-import 'package:visibility_detector/visibility_detector.dart';
-import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
-
 
 import '../main.dart';
 
@@ -31,6 +26,7 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
   late bool needcol;
   late bool visible;
   late FocusNode _focusNode ;
+  int editLine = -1;
   @override
   void initState() {
     super.initState();
@@ -42,18 +38,19 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
 
 
     docInventory =  objectBox.getOrder(widget.docId);
+
     streamUsers = objectBox.getLineorder(docInventory.id );
 
-    _controller.addListener(() {
+    //_controller.addListener(() {
     //  SystemChannels.textInput.invokeMethod('TextInput.hide');
-      final String text = _controller.text.toLowerCase();
-      _controller.value = _controller.value.copyWith(
-        text: text,
-        selection:
-        TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
-      );
-    });
+    //      final String text = _controller.text.toLowerCase();
+    //  _controller.value = _controller.value.copyWith(
+    //    text: text,
+    //    selection:
+    //    TextSelection(baseOffset: text.length, extentOffset: text.length),
+    //    composing: TextRange.empty,
+    //  );
+    //});
   }
   @override
   void dispose() {
@@ -77,6 +74,7 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
       } else {
         tovar_cod = '';
       };
+
       var tovar_info = objectBox.getinfo(bar, tovar_cod);
       String itemName;
       int itemCount;
@@ -88,21 +86,33 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
         itemCount = tovar_info.inPack;
       }
       var str = ItemModel(sh: bar, itemCount: itemCount, itemName: itemName);
+
+
+
       docInventory.items.add(str);
-      if (tekStage ==1&&needcol ==true){tekStage =2;
-        _focusNode.requestFocus();
-      }
-    }else{
-      var allItems = docInventory.items;
+      editLine = docInventory.items.length-1;
+      objectBox.PutOrder(docInventory);
+      if (needcol == true&&tekStage == 1) {
+        setState(() {
 
-      docInventory.items[allItems.length-1].itemCount =  int.parse(bar);
-      tekStage = 1;   }
+          tekStage =2;})
+        ;}
 
-    objectBox.PutOrder(docInventory);
+    }
+    else{
 
 
+
+       var lastLine =docInventory.items[editLine];
+       lastLine.itemCount =  int.parse(bar);
+       tekStage = 1;
+       docInventory.items.add(lastLine);
+       objectBox.PutOrder(docInventory);
+
+
+    }
     _controller.clear();
-   // SystemChannels.textInput.invokeMethod('TextInput.hide');
+    _focusNode.requestFocus();
   }
 
 
@@ -132,18 +142,13 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
               onChanged: (bool value) {
                 setState(() {
                   needcol = value;
+                  _focusNode.requestFocus();
                 });
               },
             ),
             Expanded(
               flex: 1,
               child:
-              Container(
-                child: Column(
-                  children:
-                  [
-                    Expanded(
-                      child:
                       StreamBuilder<List<ItemModel>>(
                         stream: streamUsers,
 
@@ -155,25 +160,34 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                           } else {
                             final users = snapshot.data!;
                             return
-                              ListView.builder(
-
+                              ListView.separated(
+                                separatorBuilder: (context, index) => Divider(color: Colors.black),
                                 itemCount: users.length,
                                 itemBuilder: (context, index) {
                                   final user = users[index];
-
                                   return ListTile(
                                     title: Text(user.sh +'('+user.itemName+')'),
                                     subtitle: Text(user.itemCount.toString()),
+                                    trailing:
+                                      IconButton(onPressed: (){
+                                        setState(() {
+                                          tekStage = 2;
+                                          _controller.text = user.itemCount.toString();
+                                        if (docInventory.items.length>5)
+                                        {editLine =  docInventory.items.length -5+index;}
+                                          else{editLine =  index;}
+                                          _focusNode.requestFocus();
+                                        });
+                                        debugPrint(index.toString());}, icon: Icon(Icons.edit)),
 
-                                  );
+
+                                    );
                                 },
                               );
                           }
-                        }),)
-                  ],
-                ),
-              ),
-            ),
+                        }),),
+
+
             Container(
               margin:EdgeInsets.all(0),
               padding:EdgeInsets.all(0),
@@ -181,43 +195,23 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
               height:MediaQuery.of(context).size.height * 0.11,
 
               child:
-              BarcodeKeyboardListener(
-
-                  useKeyDownEvent: true,
-
-                  bufferDuration: Duration(milliseconds: 400),
-
-                  onBarcodeScanned: (barcode) {
-
-                    afterscan(barcode);
-
-
-                  },
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-
-
-                      TextFormField(
+              TextFormField(
                       focusNode: _focusNode,
-
+                      autofocus: true,
                       onFieldSubmitted: (value) {
                         if (value.isNotEmpty){
                           afterscan(value);
                         _controller.clear();}
-                  //print(value);
-
-                      },
-                        textInputAction: TextInputAction.go,
+                        },
+                        //textInputAction: TextInputAction.go,
                       controller: _controller,
                         decoration: InputDecoration(hintText: tekStage==1? 'Отсканируйте штрихкод' : 'Введите количество'),
 
                     ),
 
-                    ],
-                  ),
-                ),
+
+
+               // ),
 
                        ),
           ],

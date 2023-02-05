@@ -157,10 +157,10 @@ packages:
     dependency: transitive
     description:
       name: collection
-      sha256: cfc915e6923fe5ce6e153b0723c753045de46de1b4d63771530504004a45fae0
+      sha256: "4a07be6cb69c84d677a6c3096fcf960cc3285a8330b4603e0d463d15d9bd934c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.17.0"
+    version: "1.17.1"
   convert:
     dependency: transitive
     description:
@@ -254,6 +254,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_barcode_keyboard_listener:
+    dependency: "direct main"
+    description:
+      name: flutter_barcode_keyboard_listener
+      sha256: adb69e53f42b0ac0f159f5a12b57ef989f68fca382473ec0f02a951ae9bd6cc0
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.2"
   flutter_barcode_listener:
     dependency: "direct main"
     description:
@@ -392,14 +400,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
-  input_with_keyboard_control:
-    dependency: "direct main"
-    description:
-      name: input_with_keyboard_control
-      sha256: edd4c1a2868a6fa359e41b33db72a75fd11b724241cc4d930a16d1fe71858fdb
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.8"
   io:
     dependency: transitive
     description:
@@ -412,10 +412,10 @@ packages:
     dependency: transitive
     description:
       name: js
-      sha256: "323b7c70073cccf6b9b8d8b334be418a3293cfb612a560dc2737160a37bf61bd"
+      sha256: f2c445dce49627136094980615a031419f7f3eb393237e4ecd97ac15dea343f3
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.6"
+    version: "0.6.7"
   json_annotation:
     dependency: transitive
     description:
@@ -476,10 +476,10 @@ packages:
     dependency: transitive
     description:
       name: meta
-      sha256: "6c268b42ed578a53088d834796959e4a1814b5e9e164f147f580a386e5decf42"
+      sha256: "12307e7f0605ce3da64cf0db90e5fcab0869f3ca03f76be6bb2991ce0a55e82b"
       url: "https://pub.dev"
     source: hosted
-    version: "1.8.0"
+    version: "1.9.0"
   mime:
     dependency: transitive
     description:
@@ -488,14 +488,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  numeric_keyboard:
-    dependency: "direct main"
-    description:
-      name: numeric_keyboard
-      sha256: "62d0919de4083bfed260da50c2c526189c35240ada4ba0cf5e2ac27252836cea"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.0"
   objectbox:
     dependency: "direct main"
     description:
@@ -696,6 +688,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
+  searchable_listview:
+    dependency: "direct main"
+    description:
+      name: searchable_listview
+      sha256: "024d99933df1a683056743df3c5d7a541c38c0cb7a3e978cb046718fb0858320"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.1"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -777,10 +777,10 @@ packages:
     dependency: transitive
     description:
       name: source_gen
-      sha256: "2d79738b6bbf38a43920e2b8d189e9a3ce6cc201f4b8fc76be5e4fe377b1c38d"
+      sha256: c2bea18c95cfa0276a366270afaa2850b09b4a76db95d546f3d003dcc7011298
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.6"
+    version: "1.2.7"
   source_span:
     dependency: transitive
     description:
@@ -902,7 +902,7 @@ packages:
     source: hosted
     version: "2.3.0"
   win32:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: win32
       sha256: c9ebe7ee4ab0c2194e65d3a07d8c54c5d00bb001b76081c4a04cdb8448b59e46

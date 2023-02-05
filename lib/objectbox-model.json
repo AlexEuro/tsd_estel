@@ -142,7 +142,7 @@
     },
     {
       "id": "7:1035935039992077224",
-      "lastPropertyId": "4:7892275245849358768",
+      "lastPropertyId": "5:4713609547231897078",
       "name": "OrderModel",
       "flags": 2,
       "properties": [
@@ -166,6 +166,11 @@
           "id": "4:7892275245849358768",
           "name": "user",
           "type": 9
+        },
+        {
+          "id": "5:4713609547231897078",
+          "name": "isSend",
+          "type": 1
         }
       ],
       "relations": []
