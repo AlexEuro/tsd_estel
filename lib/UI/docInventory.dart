@@ -5,8 +5,8 @@ import 'package:flutter/services.dart';
 
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
-import 'package:input_with_keyboard_control/input_with_keyboard_control.dart';
-import 'package:numeric_keyboard/numeric_keyboard.dart';
+
+
 import '../main.dart';
 
 class DocInventoryScreen extends StatefulWidget {
@@ -30,7 +30,7 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
   final TextEditingController _controller = TextEditingController();
   late bool needcol;
   late bool visible;
-  late InputWithKeyboardControlFocusNode _focusNode ;
+  late FocusNode _focusNode ;
   @override
   void initState() {
     super.initState();
@@ -38,16 +38,8 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
 
     tekStage = 1;
     needcol = false;
-    _focusNode =InputWithKeyboardControlFocusNode();
+    _focusNode =FocusNode();
 
-    _focusNode.addListener((){
-      ///Whether the currently listening TextFeild has gained the input focus
-      bool hasFocus = _focusNode.hasFocus;
-      ///Whether the current focusNode has been added
-      bool hasListeners = _focusNode.hasListeners;
-
-      print("focusNode hasFocus:$hasFocus hasListeners:$hasListeners");
-    });
 
     docInventory =  objectBox.getOrder(widget.docId);
     streamUsers = objectBox.getLineorder(docInventory.id );
@@ -97,7 +89,9 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
       }
       var str = ItemModel(sh: bar, itemCount: itemCount, itemName: itemName);
       docInventory.items.add(str);
-      if (tekStage ==1&&needcol ==true){tekStage =2;}
+      if (tekStage ==1&&needcol ==true){tekStage =2;
+        _focusNode.requestFocus();
+      }
     }else{
       var allItems = docInventory.items;
 
@@ -107,7 +101,7 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
     objectBox.PutOrder(docInventory);
 
 
-
+    _controller.clear();
    // SystemChannels.textInput.invokeMethod('TextInput.hide');
   }
 
@@ -196,9 +190,7 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                   onBarcodeScanned: (barcode) {
 
                     afterscan(barcode);
-                    _controller.clear();
-                    _focusNode.unfocus();
-                    FocusScope.of(context).requestFocus(_focusNode);
+
 
                   },
                   child: Column(
@@ -207,21 +199,20 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                     children: <Widget>[
 
 
-                      InputWithKeyboardControl(
+                      TextFormField(
                       focusNode: _focusNode,
-                      onSubmitted: (value) {
+
+                      onFieldSubmitted: (value) {
+                        if (value.isNotEmpty){
+                          afterscan(value);
+                        _controller.clear();}
                   //print(value);
 
                       },
-                      autofocus: true,
+                        textInputAction: TextInputAction.go,
                       controller: _controller,
-                      width: 300,
-                      startShowKeyboard: false,
-                      buttonColorEnabled: Colors.blue,
-                      buttonColorDisabled: Colors.black,
-                      underlineColor: Colors.black,
-                      showUnderline: true,
-                      showButton: false,
+                        decoration: InputDecoration(hintText: tekStage==1? 'Отсканируйте штрихкод' : 'Введите количество'),
+
                     ),
 
                     ],
