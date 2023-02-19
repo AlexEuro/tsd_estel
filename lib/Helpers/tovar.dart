@@ -65,7 +65,7 @@ Future<bool> load_tovar_from_http() async {
     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
       print('connected');
       isLocal = true;
-      url = url = 'http://192.168.1.15:3333/gettovar';
+      url = 'http://192.168.1.15:3333/gettovar';
 
 
     }
@@ -103,7 +103,21 @@ debugPrint(addList.length.toString());
 Future<bool> sendDoc(OrderModel doc) async{
   String j;
   j = jsonEncode(doc);
-  final response = await http.post(Uri.parse('http://62.141.114.156:5557/putdoc'),
+  bool isLocal =false;
+  String url='';
+  try {
+    final result = await InternetAddress.lookup('1s'); //15
+    if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+      print('connected');
+      isLocal = true;
+      url = 'http://192.168.1.15:3333/putdoc';
+    }
+  } on SocketException catch (_) {
+    isLocal = false;
+    url = 'http://62.141.114.156:5557/putdoc';
+    print('not connected');
+  }
+  final response = await http.post(Uri.parse(url),
                   body: j,
       headers: {'Accept':'application/json','Content-Type': 'application/json'},
       );
