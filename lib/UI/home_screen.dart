@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 Text(
-                  sklad == null ? '' : 'Склад: $skladNaim ( $skladCod ) ',
+                  sklad == null ? '' : 'Склад: $fio ( $skladNaim ) ',
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
 

@@ -126,9 +126,9 @@ class ObjectBoxBase {
   }
 
 
-  int addlineToInventory(int idDoc, String itemCod, int itemCount) {
+  int addlineToInventory(int idDoc, String itemCod, int itemCount,String uid, String barcode) {
     final doc = _docInventoryBox.get(idDoc);
-    var _line =Inventory_line_Model(itemCod: itemCod,itemCount: itemCount);
+    var _line =Inventory_line_Model(itemCod: itemCod,itemCount: itemCount, uid: uid, shtirhcod:barcode );
 
 
 

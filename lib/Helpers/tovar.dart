@@ -63,7 +63,7 @@ Future<bool> load_tovar_from_http() async {
   try {
     final result = await InternetAddress.lookup('1s'); //15
     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-      print('connected');
+
       isLocal = true;
       url = 'http://192.168.1.15:3333/gettovar';
 
@@ -72,7 +72,7 @@ Future<bool> load_tovar_from_http() async {
   } on SocketException catch (_) {
     isLocal = false;
     url = 'http://62.141.114.156:5557/gettovar';
-    print('not connected');
+
   }
 
     final response = await  http.get(Uri.parse(url));
@@ -125,8 +125,10 @@ Future<bool> sendDoc(OrderModel doc) async{
 
     doc.isSend = true;
     objectBox.PutOrder(doc);
+    return true;
 
   }
+  else
+  {return false;}
 
-  return true;
 }

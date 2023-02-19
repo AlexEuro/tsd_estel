@@ -29,7 +29,7 @@
     },
     {
       "id": "2:4632691237960483433",
-      "lastPropertyId": "3:7913652677828231474",
+      "lastPropertyId": "5:3642768633567617344",
       "name": "Inventory_line_Model",
       "properties": [
         {
@@ -47,6 +47,16 @@
           "id": "3:7913652677828231474",
           "name": "itemCount",
           "type": 6
+        },
+        {
+          "id": "4:3684787499429182579",
+          "name": "uid",
+          "type": 9
+        },
+        {
+          "id": "5:3642768633567617344",
+          "name": "shtirhcod",
+          "type": 9
         }
       ],
       "relations": []
@@ -104,7 +114,7 @@
     },
     {
       "id": "6:7865686015255139639",
-      "lastPropertyId": "5:8463883531267366558",
+      "lastPropertyId": "6:8638696063699723444",
       "name": "ItemModel",
       "flags": 2,
       "properties": [
@@ -135,6 +145,11 @@
         {
           "id": "5:8463883531267366558",
           "name": "sh",
+          "type": 9
+        },
+        {
+          "id": "6:8638696063699723444",
+          "name": "uid",
           "type": 9
         }
       ],
@@ -174,9 +189,33 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "8:5048923316842701673",
+      "lastPropertyId": "3:5054978627514725968",
+      "name": "WarehoseModel",
+      "properties": [
+        {
+          "id": "1:4346299859100652101",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6016311282553156001",
+          "name": "uid",
+          "type": 9
+        },
+        {
+          "id": "3:5054978627514725968",
+          "name": "naim",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "7:1035935039992077224",
+  "lastEntityId": "8:5048923316842701673",
   "lastIndexId": "3:4538368992845807142",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

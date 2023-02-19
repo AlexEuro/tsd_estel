@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:visibility_detector/visibility_detector.dart';
 import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 import 'package:tsd_estel/UI/home_screen.dart';
+import 'package:uuid/uuid.dart';
 
 import 'bg_drawer.dart';
 
@@ -58,8 +58,10 @@ class _LoginPageState extends State {
   void save_sklad(String _sklad) async{
     sklad = _sklad;
 
+    uid_user = Uuid().v1();
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('estel_sklad', _sklad);
+    await prefs.setString('uid_user', uid_user);
 
   }
   void _doOpenPage() {
@@ -86,10 +88,13 @@ class _LoginPageState extends State {
                       bufferDuration: Duration(milliseconds: 400),
                       onBarcodeScanned: (barcode) {
                         if (barcode=='') {barcode = _controller.text;}
+                        var _str = barcode.split('#');
+                       if (_str.length ==3){
                         setState(() {
                           save_sklad(barcode);
                           _doOpenPage();
                         });
+                       };
                       },
                       child:Container(
                       )

@@ -37,15 +37,21 @@ class ItemModel {
   String itemName;
   int itemCount;
 
+  String uid='';
+
+
   final orderModel = ToOne<OrderModel>();
 
   ItemModel({
     required this.sh,
+    required this.uid,
     required this.itemCount,
     required this.itemName,
   });
   Map<String, dynamic> toJson() => {
     'id': id,
+    'sh': sh,
+    'uid': uid,
     'itemName': itemName,
     'itemCount': itemCount,
   };

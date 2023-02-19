@@ -18,6 +18,7 @@ import 'model/doc_inventory.dart';
 import 'model/inventory_line.dart';
 import 'model/orders.dart';
 import 'model/products.dart';
+import 'model/warehouse.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -49,7 +50,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(2, 4632691237960483433),
       name: 'Inventory_line_Model',
-      lastPropertyId: const IdUid(3, 7913652677828231474),
+      lastPropertyId: const IdUid(5, 3642768633567617344),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -66,6 +67,16 @@ final _entities = <ModelEntity>[
             id: const IdUid(3, 7913652677828231474),
             name: 'itemCount',
             type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 3684787499429182579),
+            name: 'uid',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 3642768633567617344),
+            name: 'shtirhcod',
+            type: 9,
             flags: 0)
       ],
       relations: <ModelRelation>[],
@@ -123,7 +134,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(6, 7865686015255139639),
       name: 'ItemModel',
-      lastPropertyId: const IdUid(5, 8463883531267366558),
+      lastPropertyId: const IdUid(6, 8638696063699723444),
       flags: 2,
       properties: <ModelProperty>[
         ModelProperty(
@@ -151,6 +162,11 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(5, 8463883531267366558),
             name: 'sh',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 8638696063699723444),
+            name: 'uid',
             type: 9,
             flags: 0)
       ],
@@ -191,7 +207,31 @@ final _entities = <ModelEntity>[
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[
         ModelBacklink(name: 'items', srcEntity: 'ItemModel', srcField: '')
-      ])
+      ]),
+  ModelEntity(
+      id: const IdUid(8, 5048923316842701673),
+      name: 'WarehoseModel',
+      lastPropertyId: const IdUid(3, 5054978627514725968),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 4346299859100652101),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 6016311282553156001),
+            name: 'uid',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 5054978627514725968),
+            name: 'naim',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[])
 ];
 
 /// Open an ObjectBox store with the model declared in this file.
@@ -214,7 +254,7 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(7, 1035935039992077224),
+      lastEntityId: const IdUid(8, 5048923316842701673),
       lastIndexId: const IdUid(3, 4538368992845807142),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
@@ -275,10 +315,14 @@ ModelDefinition getObjectBoxModel() {
         },
         objectToFB: (Inventory_line_Model object, fb.Builder fbb) {
           final itemCodOffset = fbb.writeString(object.itemCod);
-          fbb.startTable(4);
+          final uidOffset = fbb.writeString(object.uid);
+          final shtirhcodOffset = fbb.writeString(object.shtirhcod);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, itemCodOffset);
           fbb.addInt64(2, object.itemCount);
+          fbb.addOffset(3, uidOffset);
+          fbb.addOffset(4, shtirhcodOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -291,7 +335,11 @@ ModelDefinition getObjectBoxModel() {
               itemCod: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
               itemCount:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0));
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
+              uid: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              shtirhcod: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''));
 
           return object;
         }),
@@ -356,12 +404,14 @@ ModelDefinition getObjectBoxModel() {
         objectToFB: (ItemModel object, fb.Builder fbb) {
           final itemNameOffset = fbb.writeString(object.itemName);
           final shOffset = fbb.writeString(object.sh);
-          fbb.startTable(6);
+          final uidOffset = fbb.writeString(object.uid);
+          fbb.startTable(7);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, itemNameOffset);
           fbb.addInt64(2, object.itemCount);
           fbb.addInt64(3, object.orderModel.targetId);
           fbb.addOffset(4, shOffset);
+          fbb.addOffset(5, uidOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -372,6 +422,8 @@ ModelDefinition getObjectBoxModel() {
           final object = ItemModel(
               sh: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 12, ''),
+              uid: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 14, ''),
               itemCount:
                   const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
               itemName: const fb.StringReader(asciiOptimization: true)
@@ -426,6 +478,37 @@ ModelDefinition getObjectBoxModel() {
                   4, object.id, (ItemModel srcObject) => srcObject.orderModel),
               store.box<OrderModel>());
           return object;
+        }),
+    WarehoseModel: EntityDefinition<WarehoseModel>(
+        model: _entities[5],
+        toOneRelations: (WarehoseModel object) => [],
+        toManyRelations: (WarehoseModel object) => {},
+        getId: (WarehoseModel object) => object.id,
+        setId: (WarehoseModel object, int id) {
+          object.id = id;
+        },
+        objectToFB: (WarehoseModel object, fb.Builder fbb) {
+          final uidOffset = fbb.writeString(object.uid);
+          final naimOffset = fbb.writeString(object.naim);
+          fbb.startTable(4);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, uidOffset);
+          fbb.addOffset(2, naimOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = WarehoseModel(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              uid: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              naim: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''));
+
+          return object;
         })
   };
 
@@ -460,6 +543,14 @@ class Inventory_line_Model_ {
   /// see [Inventory_line_Model.itemCount]
   static final itemCount =
       QueryIntegerProperty<Inventory_line_Model>(_entities[1].properties[2]);
+
+  /// see [Inventory_line_Model.uid]
+  static final uid =
+      QueryStringProperty<Inventory_line_Model>(_entities[1].properties[3]);
+
+  /// see [Inventory_line_Model.shtirhcod]
+  static final shtirhcod =
+      QueryStringProperty<Inventory_line_Model>(_entities[1].properties[4]);
 }
 
 /// [TovarDetail] entity fields to define ObjectBox queries.
@@ -516,6 +607,9 @@ class ItemModel_ {
 
   /// see [ItemModel.sh]
   static final sh = QueryStringProperty<ItemModel>(_entities[3].properties[4]);
+
+  /// see [ItemModel.uid]
+  static final uid = QueryStringProperty<ItemModel>(_entities[3].properties[5]);
 }
 
 /// [OrderModel] entity fields to define ObjectBox queries.
@@ -539,4 +633,19 @@ class OrderModel_ {
   /// see [OrderModel.isSend]
   static final isSend =
       QueryBooleanProperty<OrderModel>(_entities[4].properties[4]);
+}
+
+/// [WarehoseModel] entity fields to define ObjectBox queries.
+class WarehoseModel_ {
+  /// see [WarehoseModel.id]
+  static final id =
+      QueryIntegerProperty<WarehoseModel>(_entities[5].properties[0]);
+
+  /// see [WarehoseModel.uid]
+  static final uid =
+      QueryStringProperty<WarehoseModel>(_entities[5].properties[1]);
+
+  /// see [WarehoseModel.naim]
+  static final naim =
+      QueryStringProperty<WarehoseModel>(_entities[5].properties[2]);
 }

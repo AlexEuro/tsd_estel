@@ -6,6 +6,8 @@ import 'doc_Inventory.dart';
 class Inventory_line_Model {
   int id = 0;
   String itemCod='';
+  String uid='';
+  String shtirhcod='';
   int itemCount=0;
 
  //final doc = ToOne<DocInventoryModelPlus>();
@@ -13,5 +15,7 @@ class Inventory_line_Model {
   Inventory_line_Model({this.id=0,
     required this.itemCod,
     required this.itemCount,
+    required this.uid,
+    required this.shtirhcod
      });
 }

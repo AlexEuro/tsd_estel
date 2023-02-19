@@ -77,15 +77,18 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
 
       var tovar_info = objectBox.getinfo(bar, tovar_cod);
       String itemName;
+      String itemuid;
       int itemCount;
       if (tovar_info == null || tovar_info == '') {
         itemName = '-';
+        itemuid = "";
         itemCount = 1;
       } else {
         itemName = tovar_info.art;
+        itemuid = tovar_info.uid;
         itemCount = tovar_info.inPack;
       }
-      var str = ItemModel(sh: bar, itemCount: itemCount, itemName: itemName);
+      var str = ItemModel(sh: bar, itemCount: itemCount, itemName: itemName,uid:itemuid);
 
 
 

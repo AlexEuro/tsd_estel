@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:tsd_estel/UI/home_screen.dart';
-import 'package:tsd_estel/UI/Auth.dart';
+
 import 'package:tsd_estel/UI/Auth_new.dart';
 import 'package:tsd_estel/helpers/helpers.dart';
 
@@ -11,13 +11,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 late ObjectBoxBase objectBox;
 late String sklad;
+late String uid_user;
 
 Future main() async {
 
   await WidgetsFlutterBinding.ensureInitialized();
   final prefs = await SharedPreferences.getInstance();
   sklad = prefs.getString('estel_sklad')??'-';
-
+  uid_user = prefs.getString('uid_user')??'-';
   objectBox = await ObjectBoxBase.init();
   runApp(const MyApp());
 }
