@@ -81,7 +81,8 @@ class ObjectBoxBase {
         var res = query.find();
         if (res.length ==0) {return res;}
         else{
-          return res.getRange(max (res.length-5,0),res.length ).toList();}}
+          //return res.getRange(max (res.length-5,0),res.length ).toList();}}
+          return res.getRange(0,res.length ).toList();}}
   );
 
 

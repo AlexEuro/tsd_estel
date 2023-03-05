@@ -1,7 +1,9 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:tsd_estel/model/orders.dart';
 
-
+import 'package:flutter_beep/flutter_beep.dart';
 import '../main.dart';
 
 class DocInventoryScreen extends StatefulWidget {
@@ -23,8 +25,10 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
   late Stream<List<ItemModel>> streamUsers;
 
   final TextEditingController _controller = TextEditingController();
+  ScrollController _scrollController = ScrollController();
   late bool needcol;
   late bool visible;
+  late double screenWidth;
   late FocusNode _focusNode ;
   int editLine = -1;
   @override
@@ -40,6 +44,13 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
     docInventory =  objectBox.getOrder(widget.docId);
 
     streamUsers = objectBox.getLineorder(docInventory.id );
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeOut,
+      );
+    }
 
     //_controller.addListener(() {
     //  SystemChannels.textInput.invokeMethod('TextInput.hide');
@@ -51,11 +62,13 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
     //    composing: TextRange.empty,
     //  );
     //});
+
   }
+
   @override
   void dispose() {
     _controller.dispose();
-
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -81,6 +94,7 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
       int itemCount;
       if (tovar_info == null || tovar_info == '') {
         itemName = '-';
+        FlutterBeep.beep(false);
         itemuid = "";
         itemCount = 1;
       } else {
@@ -95,6 +109,15 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
       docInventory.items.add(str);
       editLine = docInventory.items.length-1;
       objectBox.PutOrder(docInventory);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeOut,
+          );
+        }
+      });
       if (needcol == true&&tekStage == 1) {
         setState(() {
 
@@ -115,6 +138,13 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
 
     }
     _controller.clear();
+
+
+
+
+
+
+
     _focusNode.requestFocus();
   }
 
@@ -156,39 +186,134 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                         stream: streamUsers,
 
                         builder: (context, AsyncSnapshot<List<ItemModel>> snapshot) {
+                          print('StreamBuilder is rebuilding');
                           if (!snapshot.hasData) {
                             return const Center(
                               child: CircularProgressIndicator(),
                             );
                           } else {
                             final users = snapshot.data!;
+                            WidgetsBinding.instance.addPostFrameCallback((_) {
+                              if (_scrollController.hasClients) {
+                                _scrollController.animateTo(
+                                  _scrollController.position.maxScrollExtent,
+                                  duration: Duration(milliseconds: 500),
+                                  curve: Curves.easeOut,
+                                );
+                              }
+                            });
                             return
-                              ListView.separated(
-                                separatorBuilder: (context, index) => Divider(color: Colors.black),
-                                itemCount: users.length,
-                                itemBuilder: (context, index) {
-                                  final user = users[index];
-                                  return ListTile(
-                                    title: Text(user.sh +'('+user.itemName+')'),
-                                    subtitle: Text(user.itemCount.toString()),
-                                    trailing:
-                                      IconButton(onPressed: (){
-                                        setState(() {
-                                          tekStage = 2;
-                                          _controller.text = user.itemCount.toString();
-                                        if (docInventory.items.length>5)
-                                        {editLine =  docInventory.items.length -5+index;}
-                                          else{editLine =  index;}
-                                          _focusNode.requestFocus();
-                                        });
-                                        debugPrint(index.toString());}, icon: Icon(Icons.edit)),
+
+                                SingleChildScrollView(
+                                    scrollDirection: Axis.vertical,
+                                  controller: _scrollController,
+                              child:
+                              DataTable(
+                                dataTextStyle: TextStyle(color: Colors.lightGreenAccent),
+
+                                  columnSpacing: 16,
+                                  border: TableBorder.all(width: 1),
+                                  headingRowColor:
+                                  MaterialStateColor.resolveWith((states) => Colors.blue),
+                                columns: <DataColumn>[
+                                  DataColumn(
 
 
+                                    label: SizedBox(width:MediaQuery.of(context).size.width* 0.4, child: Text(
+                                      'ШК',
+                                      style: TextStyle(fontStyle: FontStyle.italic),
+                                    ),
+                                    )
+                                  ),
+
+                                  DataColumn(
+                                    label: SizedBox(width:MediaQuery.of(context).size.width* 0.4, child:Text(
+                                      'Артикул',
+                                      style: TextStyle(fontStyle: FontStyle.italic),
+                                    ),),
+                                    numeric: false,
+                                  ),
+                                  DataColumn(
+                                    label: Text(
+                                      'Кол',
+                                      style: TextStyle(fontStyle: FontStyle.italic),
+                                    ),
+                                    numeric: true
+                                  ),
+                                ],
+                                rows: users.asMap()
+                                    .map((index, item) => MapEntry(
+                                  index,
+                                  DataRow(
+                                    color: MaterialStateColor.resolveWith((Set<MaterialState> states) => states.contains(MaterialState.selected)
+                                      ? Colors.grey
+                                      : Colors.blueGrey
+                                  ),
+
+                                    onLongPress:(){
+                                      //editLine = docInventory.items.singleWhere((id) => id = item.id);
+                                      
+                                    //if (docInventory.items.length>5)
+                                    //{editLine =  docInventory.items.length -5+index;}
+                                    //else{editLine =  index;}
+                                      editLine =  index;
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ListTile(
+                                              leading: Icon(Icons.edit),
+                                              title: Text('Поправить'),
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                                tekStage = 2;
+                                                _controller.text = item.itemCount.toString();
+                                                _focusNode.requestFocus();
+
+                                                _controller.selection = TextSelection.fromPosition(TextPosition(offset: _controller.text.length));
+                                              },
+                                            ),
+                                            ListTile(
+                                              leading: Icon(Icons.delete),
+                                              title: Text('Delete'),
+                                              onTap: () {
+                                                setState(() {
+                                                  Navigator.pop(context);
+                                                  docInventory.items.removeAt(index);
+                                                  docInventory.items.applyToDb();
+                                                  //objectBox.PutOrder(docInventory);
+                                                });
+
+
+                                                // Call your delete function here
+                                              },
+                                            ),
+                                            // Add more options as needed
+                                          ],
+                                        );
+                                      },
                                     );
-                                },
+
+
+
+                                  },
+
+                                    cells: [
+                                      DataCell(Text(item.sh)),
+                                      DataCell(Text(item.itemName)),
+                                      DataCell(Text(item.itemCount.toString())),
+                                    ],
+                                  ),
+                                ))
+                                    .values
+                                    .toList() )
                               );
+
                           }
-                        }),),
+                        }),
+            ),
 
 
             Container(

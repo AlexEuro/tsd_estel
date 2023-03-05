@@ -38,6 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    tryOtaUpdate();
     var _str = sklad.split('#');
     if (_str.length>2) {
       skladCod =_str[0];
@@ -63,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //LINK CONTAINS APK OF FLUTTER HELLO WORLD FROM FLUTTER SDK EXAMPLES
       OtaUpdate()
           .execute(
-        'https://internal1.4q.sk/flutter_hello_world.apk',
+        'http://192.168.1.15:3333/getfile',
         destinationFilename: 'flutter_hello_world.apk',
         //FOR NOW ANDROID ONLY - ABILITY TO VALIDATE CHECKSUM OF FILE:
         sha256checksum: 'd6da28451a1e15cf7a75f2c3f151befad3b80ad0bb232ab15c20897e54f21478',
@@ -163,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           context: context,
                           actions: [
                             IconsOutlineButton(
-                              onPressed: () { },
+                              onPressed: () { Navigator.pop(context);},
                               text: 'Нет',
                               iconData: Icons.cancel_outlined,
                               textStyle: TextStyle(color: Colors.grey),
