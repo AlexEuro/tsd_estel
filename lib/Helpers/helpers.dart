@@ -8,35 +8,34 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 import 'package:tsd_estel/model/products.dart';
-import 'package:tsd_estel/model/doc_inventory.dart';
-import 'package:tsd_estel/model/inventory_line.dart';
+
+
 
 import 'package:tsd_estel/model/orders.dart';
-import 'package:http/http.dart' as http;
+
 
 class ObjectBoxBase {
   late final Store _store;
   //
   late final Box<TovarDetail> _personDetailBox;
-  late final Box<DocInventoryModel> _docInventoryBox;
-  late final Box<Inventory_line_Model> _lineInventoryBox;
+
+
   late final Box<OrderModel> _docInventoryBoxPlus;
   late final Box<ItemModel> _docInventoryLineBox;
 
   ObjectBoxBase._init(this._store) {
      _personDetailBox = Box<TovarDetail>(_store);
-     _docInventoryBox = Box<DocInventoryModel>(_store);
+
      _docInventoryBoxPlus = Box<OrderModel>(_store);
-     _lineInventoryBox = Box<Inventory_line_Model>(_store);
+
      _docInventoryLineBox = Box<ItemModel>(_store);
-     //_docInventoryBoxPlus.removeAll();
-   //  _personDetailBox.removeAll();
+
   }
 
   static Future<ObjectBoxBase> init() async {
     final docsDir = await getApplicationDocumentsDirectory();
     final syncServerIp = Platform.isAndroid ? '10.0.2.2' : '127.0.0.1';
-    final store = await openStore(directory: p.join(docsDir.path, "obx-example8"));
+    final store = await openStore(directory: p.join(docsDir.path, "database_tsd"));
     Sync.client(
       store,
       'ws://$syncServerIp:9999', // wss for SSL, ws for unencrypted traffic
@@ -120,20 +119,6 @@ class ObjectBoxBase {
   return _store.isClosed();
   }
 
-  int addInventory(String docdate, String docUser) {
-    var _doc =DocInventoryModel(dateDoc: docdate,user: docUser);
-   return _docInventoryBox.put(_doc);
-  }
-
-
-  int addlineToInventory(int idDoc, String itemCod, int itemCount,String uid, String barcode) {
-    final doc = _docInventoryBox.get(idDoc);
-    var _line =Inventory_line_Model(itemCod: itemCod,itemCount: itemCount, uid: uid, shtirhcod:barcode );
-
-
-
-    return _lineInventoryBox.put(_line);
-  }
 
   getOrder(int number ){
     if (number ==0 ){

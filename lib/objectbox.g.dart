@@ -14,8 +14,6 @@ import 'package:objectbox/internal.dart'; // generated code can access "internal
 import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_sync_flutter_libs/objectbox_sync_flutter_libs.dart';
 
-import 'model/doc_inventory.dart';
-import 'model/inventory_line.dart';
 import 'model/orders.dart';
 import 'model/products.dart';
 import 'model/warehouse.dart';
@@ -23,64 +21,6 @@ import 'model/warehouse.dart';
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
 final _entities = <ModelEntity>[
-  ModelEntity(
-      id: const IdUid(1, 6015077569082527311),
-      name: 'DocInventoryModel',
-      lastPropertyId: const IdUid(3, 8139272876594537419),
-      flags: 0,
-      properties: <ModelProperty>[
-        ModelProperty(
-            id: const IdUid(1, 4876312182464825867),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        ModelProperty(
-            id: const IdUid(2, 2026129668401485967),
-            name: 'dateDoc',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(3, 8139272876594537419),
-            name: 'user',
-            type: 9,
-            flags: 0)
-      ],
-      relations: <ModelRelation>[],
-      backlinks: <ModelBacklink>[]),
-  ModelEntity(
-      id: const IdUid(2, 4632691237960483433),
-      name: 'Inventory_line_Model',
-      lastPropertyId: const IdUid(5, 3642768633567617344),
-      flags: 0,
-      properties: <ModelProperty>[
-        ModelProperty(
-            id: const IdUid(1, 5487142237138569586),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        ModelProperty(
-            id: const IdUid(2, 1004307156911162246),
-            name: 'itemCod',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(3, 7913652677828231474),
-            name: 'itemCount',
-            type: 6,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 3684787499429182579),
-            name: 'uid',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 3642768633567617344),
-            name: 'shtirhcod',
-            type: 9,
-            flags: 0)
-      ],
-      relations: <ModelRelation>[],
-      backlinks: <ModelBacklink>[]),
   ModelEntity(
       id: const IdUid(3, 4304724916667015854),
       name: 'TovarDetail',
@@ -258,7 +198,12 @@ ModelDefinition getObjectBoxModel() {
       lastIndexId: const IdUid(3, 4538368992845807142),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
-      retiredEntityUids: const [2843137606981206170, 2951546399477514165],
+      retiredEntityUids: const [
+        2843137606981206170,
+        2951546399477514165,
+        6015077569082527311,
+        4632691237960483433
+      ],
       retiredIndexUids: const [],
       retiredPropertyUids: const [
         6353778055886196502,
@@ -266,7 +211,15 @@ ModelDefinition getObjectBoxModel() {
         8028213615140867069,
         8458409687519734795,
         4116218598716315319,
-        3546925273186852158
+        3546925273186852158,
+        4876312182464825867,
+        2026129668401485967,
+        8139272876594537419,
+        5487142237138569586,
+        1004307156911162246,
+        7913652677828231474,
+        3684787499429182579,
+        3642768633567617344
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -274,77 +227,8 @@ ModelDefinition getObjectBoxModel() {
       version: 1);
 
   final bindings = <Type, EntityDefinition>{
-    DocInventoryModel: EntityDefinition<DocInventoryModel>(
-        model: _entities[0],
-        toOneRelations: (DocInventoryModel object) => [],
-        toManyRelations: (DocInventoryModel object) => {},
-        getId: (DocInventoryModel object) => object.id,
-        setId: (DocInventoryModel object, int id) {
-          object.id = id;
-        },
-        objectToFB: (DocInventoryModel object, fb.Builder fbb) {
-          final dateDocOffset = fbb.writeString(object.dateDoc);
-          final userOffset = fbb.writeString(object.user);
-          fbb.startTable(4);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(1, dateDocOffset);
-          fbb.addOffset(2, userOffset);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = DocInventoryModel(
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              dateDoc: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
-              user: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, ''));
-
-          return object;
-        }),
-    Inventory_line_Model: EntityDefinition<Inventory_line_Model>(
-        model: _entities[1],
-        toOneRelations: (Inventory_line_Model object) => [],
-        toManyRelations: (Inventory_line_Model object) => {},
-        getId: (Inventory_line_Model object) => object.id,
-        setId: (Inventory_line_Model object, int id) {
-          object.id = id;
-        },
-        objectToFB: (Inventory_line_Model object, fb.Builder fbb) {
-          final itemCodOffset = fbb.writeString(object.itemCod);
-          final uidOffset = fbb.writeString(object.uid);
-          final shtirhcodOffset = fbb.writeString(object.shtirhcod);
-          fbb.startTable(6);
-          fbb.addInt64(0, object.id);
-          fbb.addOffset(1, itemCodOffset);
-          fbb.addInt64(2, object.itemCount);
-          fbb.addOffset(3, uidOffset);
-          fbb.addOffset(4, shtirhcodOffset);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = Inventory_line_Model(
-              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
-              itemCod: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 6, ''),
-              itemCount:
-                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
-              uid: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 10, ''),
-              shtirhcod: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 12, ''));
-
-          return object;
-        }),
     TovarDetail: EntityDefinition<TovarDetail>(
-        model: _entities[2],
+        model: _entities[0],
         toOneRelations: (TovarDetail object) => [],
         toManyRelations: (TovarDetail object) => {},
         getId: (TovarDetail object) => object.id,
@@ -394,7 +278,7 @@ ModelDefinition getObjectBoxModel() {
           return object;
         }),
     ItemModel: EntityDefinition<ItemModel>(
-        model: _entities[3],
+        model: _entities[1],
         toOneRelations: (ItemModel object) => [object.orderModel],
         toManyRelations: (ItemModel object) => {},
         getId: (ItemModel object) => object.id,
@@ -435,7 +319,7 @@ ModelDefinition getObjectBoxModel() {
           return object;
         }),
     OrderModel: EntityDefinition<OrderModel>(
-        model: _entities[4],
+        model: _entities[2],
         toOneRelations: (OrderModel object) => [],
         toManyRelations: (OrderModel object) => {
               RelInfo<ItemModel>.toOneBacklink(4, object.id,
@@ -480,7 +364,7 @@ ModelDefinition getObjectBoxModel() {
           return object;
         }),
     WarehoseModel: EntityDefinition<WarehoseModel>(
-        model: _entities[5],
+        model: _entities[3],
         toOneRelations: (WarehoseModel object) => [],
         toManyRelations: (WarehoseModel object) => {},
         getId: (WarehoseModel object) => object.id,
@@ -515,137 +399,99 @@ ModelDefinition getObjectBoxModel() {
   return ModelDefinition(model, bindings);
 }
 
-/// [DocInventoryModel] entity fields to define ObjectBox queries.
-class DocInventoryModel_ {
-  /// see [DocInventoryModel.id]
-  static final id =
-      QueryIntegerProperty<DocInventoryModel>(_entities[0].properties[0]);
-
-  /// see [DocInventoryModel.dateDoc]
-  static final dateDoc =
-      QueryStringProperty<DocInventoryModel>(_entities[0].properties[1]);
-
-  /// see [DocInventoryModel.user]
-  static final user =
-      QueryStringProperty<DocInventoryModel>(_entities[0].properties[2]);
-}
-
-/// [Inventory_line_Model] entity fields to define ObjectBox queries.
-class Inventory_line_Model_ {
-  /// see [Inventory_line_Model.id]
-  static final id =
-      QueryIntegerProperty<Inventory_line_Model>(_entities[1].properties[0]);
-
-  /// see [Inventory_line_Model.itemCod]
-  static final itemCod =
-      QueryStringProperty<Inventory_line_Model>(_entities[1].properties[1]);
-
-  /// see [Inventory_line_Model.itemCount]
-  static final itemCount =
-      QueryIntegerProperty<Inventory_line_Model>(_entities[1].properties[2]);
-
-  /// see [Inventory_line_Model.uid]
-  static final uid =
-      QueryStringProperty<Inventory_line_Model>(_entities[1].properties[3]);
-
-  /// see [Inventory_line_Model.shtirhcod]
-  static final shtirhcod =
-      QueryStringProperty<Inventory_line_Model>(_entities[1].properties[4]);
-}
-
 /// [TovarDetail] entity fields to define ObjectBox queries.
 class TovarDetail_ {
   /// see [TovarDetail.id]
   static final id =
-      QueryIntegerProperty<TovarDetail>(_entities[2].properties[0]);
+      QueryIntegerProperty<TovarDetail>(_entities[0].properties[0]);
 
   /// see [TovarDetail.uid]
   static final uid =
-      QueryStringProperty<TovarDetail>(_entities[2].properties[1]);
+      QueryStringProperty<TovarDetail>(_entities[0].properties[1]);
 
   /// see [TovarDetail.naim]
   static final naim =
-      QueryStringProperty<TovarDetail>(_entities[2].properties[2]);
+      QueryStringProperty<TovarDetail>(_entities[0].properties[2]);
 
   /// see [TovarDetail.ed]
   static final ed =
-      QueryStringProperty<TovarDetail>(_entities[2].properties[3]);
+      QueryStringProperty<TovarDetail>(_entities[0].properties[3]);
 
   /// see [TovarDetail.sh]
   static final sh =
-      QueryStringProperty<TovarDetail>(_entities[2].properties[4]);
+      QueryStringProperty<TovarDetail>(_entities[0].properties[4]);
 
   /// see [TovarDetail.cod]
   static final cod =
-      QueryStringProperty<TovarDetail>(_entities[2].properties[5]);
+      QueryStringProperty<TovarDetail>(_entities[0].properties[5]);
 
   /// see [TovarDetail.art]
   static final art =
-      QueryStringProperty<TovarDetail>(_entities[2].properties[6]);
+      QueryStringProperty<TovarDetail>(_entities[0].properties[6]);
 
   /// see [TovarDetail.inPack]
   static final inPack =
-      QueryIntegerProperty<TovarDetail>(_entities[2].properties[7]);
+      QueryIntegerProperty<TovarDetail>(_entities[0].properties[7]);
 }
 
 /// [ItemModel] entity fields to define ObjectBox queries.
 class ItemModel_ {
   /// see [ItemModel.id]
-  static final id = QueryIntegerProperty<ItemModel>(_entities[3].properties[0]);
+  static final id = QueryIntegerProperty<ItemModel>(_entities[1].properties[0]);
 
   /// see [ItemModel.itemName]
   static final itemName =
-      QueryStringProperty<ItemModel>(_entities[3].properties[1]);
+      QueryStringProperty<ItemModel>(_entities[1].properties[1]);
 
   /// see [ItemModel.itemCount]
   static final itemCount =
-      QueryIntegerProperty<ItemModel>(_entities[3].properties[2]);
+      QueryIntegerProperty<ItemModel>(_entities[1].properties[2]);
 
   /// see [ItemModel.orderModel]
   static final orderModel =
-      QueryRelationToOne<ItemModel, OrderModel>(_entities[3].properties[3]);
+      QueryRelationToOne<ItemModel, OrderModel>(_entities[1].properties[3]);
 
   /// see [ItemModel.sh]
-  static final sh = QueryStringProperty<ItemModel>(_entities[3].properties[4]);
+  static final sh = QueryStringProperty<ItemModel>(_entities[1].properties[4]);
 
   /// see [ItemModel.uid]
-  static final uid = QueryStringProperty<ItemModel>(_entities[3].properties[5]);
+  static final uid = QueryStringProperty<ItemModel>(_entities[1].properties[5]);
 }
 
 /// [OrderModel] entity fields to define ObjectBox queries.
 class OrderModel_ {
   /// see [OrderModel.id]
   static final id =
-      QueryIntegerProperty<OrderModel>(_entities[4].properties[0]);
+      QueryIntegerProperty<OrderModel>(_entities[2].properties[0]);
 
   /// see [OrderModel.ordered]
   static final ordered =
-      QueryBooleanProperty<OrderModel>(_entities[4].properties[1]);
+      QueryBooleanProperty<OrderModel>(_entities[2].properties[1]);
 
   /// see [OrderModel.dateDoc]
   static final dateDoc =
-      QueryStringProperty<OrderModel>(_entities[4].properties[2]);
+      QueryStringProperty<OrderModel>(_entities[2].properties[2]);
 
   /// see [OrderModel.user]
   static final user =
-      QueryStringProperty<OrderModel>(_entities[4].properties[3]);
+      QueryStringProperty<OrderModel>(_entities[2].properties[3]);
 
   /// see [OrderModel.isSend]
   static final isSend =
-      QueryBooleanProperty<OrderModel>(_entities[4].properties[4]);
+      QueryBooleanProperty<OrderModel>(_entities[2].properties[4]);
 }
 
 /// [WarehoseModel] entity fields to define ObjectBox queries.
 class WarehoseModel_ {
   /// see [WarehoseModel.id]
   static final id =
-      QueryIntegerProperty<WarehoseModel>(_entities[5].properties[0]);
+      QueryIntegerProperty<WarehoseModel>(_entities[3].properties[0]);
 
   /// see [WarehoseModel.uid]
   static final uid =
-      QueryStringProperty<WarehoseModel>(_entities[5].properties[1]);
+      QueryStringProperty<WarehoseModel>(_entities[3].properties[1]);
 
   /// see [WarehoseModel.naim]
   static final naim =
-      QueryStringProperty<WarehoseModel>(_entities[5].properties[2]);
+      QueryStringProperty<WarehoseModel>(_entities[3].properties[2]);
 }

@@ -92,7 +92,26 @@ class _TovarScreenState extends State<TovarScreen> {
           debugPrint(DateTime.now().toString());
         });
 
-         load_tovar_from_http().then((_) {
+         load_tovar_from_http().then((value) {
+           String textResult='';
+           if (value==0) {textResult='Выгружено успешно!';}
+           else if(value==-1)
+           {textResult='нет связи. попробуйте позже';}
+           else{textResult='Выгрузка не прошла';}
+
+           final snackBar = SnackBar(
+             content: Text(textResult),
+             backgroundColor: value==true?Colors.greenAccent:Colors.redAccent,
+             action: SnackBarAction(
+               label: 'отмена',
+               onPressed: () {
+               },
+             ),
+           );
+
+           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+
            setState(() {
              debugPrint(DateTime.now().toString());
              buttonLabel = 'Загрузить';

@@ -4,64 +4,6 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:6015077569082527311",
-      "lastPropertyId": "3:8139272876594537419",
-      "name": "DocInventoryModel",
-      "properties": [
-        {
-          "id": "1:4876312182464825867",
-          "name": "id",
-          "type": 6,
-          "flags": 1
-        },
-        {
-          "id": "2:2026129668401485967",
-          "name": "dateDoc",
-          "type": 9
-        },
-        {
-          "id": "3:8139272876594537419",
-          "name": "user",
-          "type": 9
-        }
-      ],
-      "relations": []
-    },
-    {
-      "id": "2:4632691237960483433",
-      "lastPropertyId": "5:3642768633567617344",
-      "name": "Inventory_line_Model",
-      "properties": [
-        {
-          "id": "1:5487142237138569586",
-          "name": "id",
-          "type": 6,
-          "flags": 1
-        },
-        {
-          "id": "2:1004307156911162246",
-          "name": "itemCod",
-          "type": 9
-        },
-        {
-          "id": "3:7913652677828231474",
-          "name": "itemCount",
-          "type": 6
-        },
-        {
-          "id": "4:3684787499429182579",
-          "name": "uid",
-          "type": 9
-        },
-        {
-          "id": "5:3642768633567617344",
-          "name": "shtirhcod",
-          "type": 9
-        }
-      ],
-      "relations": []
-    },
-    {
       "id": "3:4304724916667015854",
       "lastPropertyId": "8:4151892562979858137",
       "name": "TovarDetail",
@@ -223,7 +165,9 @@
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [
     2843137606981206170,
-    2951546399477514165
+    2951546399477514165,
+    6015077569082527311,
+    4632691237960483433
   ],
   "retiredIndexUids": [],
   "retiredPropertyUids": [
@@ -232,7 +176,15 @@
     8028213615140867069,
     8458409687519734795,
     4116218598716315319,
-    3546925273186852158
+    3546925273186852158,
+    4876312182464825867,
+    2026129668401485967,
+    8139272876594537419,
+    5487142237138569586,
+    1004307156911162246,
+    7913652677828231474,
+    3684787499429182579,
+    3642768633567617344
   ],
   "retiredRelationUids": [],
   "version": 1

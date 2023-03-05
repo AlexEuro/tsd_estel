@@ -59,6 +59,7 @@ dependencies:
   flutter_barcode_keyboard_listener: ^0.0.2
   searchable_listview: ^2.2.1
   uuid: ^3.0.7
+  ota_update: ^4.0.2
 
 
 dev_dependencies:

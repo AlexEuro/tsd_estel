@@ -27,8 +27,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
   void initState() {
     super.initState();
     streamUsers = objectBox.getorder();
- //   streamUsers_dop = objectBox.getorder_list();
-  }
+   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -67,8 +66,31 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   );
                 }
                 ,onLongPress: (){
-                  final j = sendDoc(user);
-                  debugPrint(j.toString());
+
+                    var j = sendDoc(user).then((value) {
+                    String textResult='';
+
+                    if (value==0) {textResult='Выгружено успешно!';}
+                        else if(value==-1)
+                        {textResult='нет связи. попробуйте позже';}
+                        else{textResult='Выгрузка не прошла';}
+
+                      final snackBar = SnackBar(
+                        content: Text(textResult),
+                        backgroundColor: value==true?Colors.greenAccent:Colors.redAccent,
+                        action: SnackBarAction(
+                          label: 'отмена',
+                          onPressed: () {
+                          },
+                        ),
+                      );
+
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    });
+
+
+
+
                   }
                 ,);
 

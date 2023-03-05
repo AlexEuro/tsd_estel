@@ -22,8 +22,6 @@ class MyApp extends StatelessWidget {
 
 class LoginPage extends StatefulWidget {
 
-
-
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -94,6 +92,7 @@ class _LoginPageState extends State {
                           save_sklad(barcode);
                           _doOpenPage();
                         });
+                        _controller.clear();
                        };
                       },
                       child:Container(
@@ -111,21 +110,13 @@ class _LoginPageState extends State {
                           Expanded(
                             flex: 1,
                             child:
-                            Visibility(
-                              visible: showInput,
-                              child:TextFormField(        controller: _controller,
+                            TextFormField(        controller: _controller,
                                   textInputAction:  TextInputAction.newline,
                                 decoration: const InputDecoration(border: OutlineInputBorder()),
                                 style: TextStyle(color: Colors.white),
                               ),
-                            ),
+
                           ),
-                          IconButton(onPressed: (){setState(() {
-                            showInput = !showInput;
-                          });},
-                              icon: Icon(Icons.keyboard),
-                              color: Colors.amberAccent,
-                              tooltip: showInput == true ? 'Скрыть' : 'Показать '),
 
                         ],
                       ),

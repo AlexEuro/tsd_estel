@@ -5,13 +5,15 @@ import '../main.dart';
 
 import 'package:tsd_estel/UI/view_tovar.dart';
 import 'package:tsd_estel/UI/view_orders.dart';
-import 'package:tsd_estel/UI/Auth.dart';
+
 import 'package:tsd_estel/UI/Auth_new.dart';
 
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
 import 'bg_drawer.dart';
+
+import 'package:ota_update/ota_update.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -22,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  late OtaEvent currentEvent ;
 
   String message="";
 
@@ -46,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
       skladNaim ='';
 
     }
+    tryOtaUpdate();
 
   }
   @override
@@ -54,6 +58,26 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  Future<void> tryOtaUpdate() async {
+    try {
+      //LINK CONTAINS APK OF FLUTTER HELLO WORLD FROM FLUTTER SDK EXAMPLES
+      OtaUpdate()
+          .execute(
+        'https://internal1.4q.sk/flutter_hello_world.apk',
+        destinationFilename: 'flutter_hello_world.apk',
+        //FOR NOW ANDROID ONLY - ABILITY TO VALIDATE CHECKSUM OF FILE:
+        sha256checksum: 'd6da28451a1e15cf7a75f2c3f151befad3b80ad0bb232ab15c20897e54f21478',
+      )
+          .listen(
+            (OtaEvent event) {
+          setState(() => currentEvent = event);
+        },
+      );
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e) {
+      print('Failed to make OTA update. Details: $e');
+    }
+  }
 
 
 
