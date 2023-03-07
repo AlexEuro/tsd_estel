@@ -3,8 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:tsd_estel/model/orders.dart';
 
-import 'package:flutter_beep/flutter_beep.dart';
+//import 'package:flutter_beep/flutter_beep.dart';
 import '../main.dart';
+
+import 'package:audioplayers/audioplayers.dart';
+import 'package:data_table_2/data_table_2.dart';
 
 class DocInventoryScreen extends StatefulWidget {
   const DocInventoryScreen({Key? key,
@@ -18,14 +21,14 @@ class DocInventoryScreen extends StatefulWidget {
 }
 
 class _DocInventoryScreenState extends State<DocInventoryScreen> {
-
+final AudioPlayer audioPlayer = AudioPlayer();
   late int tekStage;
 
   late OrderModel docInventory;
   late Stream<List<ItemModel>> streamUsers;
 
   final TextEditingController _controller = TextEditingController();
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
   late bool needcol;
   late bool visible;
   late double screenWidth;
@@ -47,22 +50,10 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 500),
         curve: Curves.easeOut,
       );
     }
-
-    //_controller.addListener(() {
-    //  SystemChannels.textInput.invokeMethod('TextInput.hide');
-    //      final String text = _controller.text.toLowerCase();
-    //  _controller.value = _controller.value.copyWith(
-    //    text: text,
-    //    selection:
-    //    TextSelection(baseOffset: text.length, extentOffset: text.length),
-    //    composing: TextRange.empty,
-    //  );
-    //});
-
   }
 
   @override
@@ -79,22 +70,25 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
       if (bar == '') {
         bar = _controller.text;
       }
-      var split_barcode = bar.split('#');
+      var splitBarcode = bar.split('#');
       _controller.clear();
-      String tovar_cod;
-      if (split_barcode.length == 5 || split_barcode.length == 6) {
-        tovar_cod = split_barcode[0];
+      String tovarCod;
+      if (splitBarcode.length == 5 || splitBarcode.length == 6) {
+        tovarCod = splitBarcode[0];
       } else {
-        tovar_cod = '';
+        tovarCod = '';
       };
 
-      var tovar_info = objectBox.getinfo(bar, tovar_cod);
+      var tovar_info = objectBox.getinfo(bar, tovarCod);
       String itemName;
       String itemuid;
       int itemCount;
       if (tovar_info == null || tovar_info == '') {
         itemName = '-';
-        FlutterBeep.beep(false);
+
+        audioPlayer.setVolume(100);
+        audioPlayer.play(AssetSource('error.mp3'));
+        //FlutterBeep.playSysSound(soundId).beep(false);
         itemuid = "";
         itemCount = 1;
       } else {
@@ -113,7 +107,7 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
         if (_scrollController.hasClients) {
           _scrollController.animateTo(
             _scrollController.position.maxScrollExtent,
-            duration: Duration(milliseconds: 500),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.easeOut,
           );
         }
@@ -131,20 +125,15 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
 
        var lastLine =docInventory.items[editLine];
        lastLine.itemCount =  int.parse(bar);
-       tekStage = 1;
+
        docInventory.items.add(lastLine);
        objectBox.PutOrder(docInventory);
+      setState(() {tekStage = 1;
 
+      });
 
     }
     _controller.clear();
-
-
-
-
-
-
-
     _focusNode.requestFocus();
   }
 
@@ -186,7 +175,7 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                         stream: streamUsers,
 
                         builder: (context, AsyncSnapshot<List<ItemModel>> snapshot) {
-                          print('StreamBuilder is rebuilding');
+
                           if (!snapshot.hasData) {
                             return const Center(
                               child: CircularProgressIndicator(),
@@ -197,46 +186,42 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                               if (_scrollController.hasClients) {
                                 _scrollController.animateTo(
                                   _scrollController.position.maxScrollExtent,
-                                  duration: Duration(milliseconds: 500),
+                                  duration: Duration(milliseconds: 50),
                                   curve: Curves.easeOut,
                                 );
                               }
                             });
                             return
 
-                                SingleChildScrollView(
-                                    scrollDirection: Axis.vertical,
-                                  controller: _scrollController,
-                              child:
-                              DataTable(
+                              Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child:
+                                  DataTable2(
+                                    scrollController: _scrollController,
                                 dataTextStyle: TextStyle(color: Colors.lightGreenAccent),
-
                                   columnSpacing: 16,
                                   border: TableBorder.all(width: 1),
+
                                   headingRowColor:
                                   MaterialStateColor.resolveWith((states) => Colors.blue),
-                                columns: <DataColumn>[
-                                  DataColumn(
 
-
-                                    label: SizedBox(width:MediaQuery.of(context).size.width* 0.4, child: Text(
-                                      'ШК',
-                                      style: TextStyle(fontStyle: FontStyle.italic),
-                                    ),
-                                    )
+                                columns: <DataColumn2>[
+                                  DataColumn2(
+                                    size:ColumnSize.L,
+                                    label: Text('ШК', style: TextStyle(fontStyle: FontStyle.italic)),
                                   ),
 
-                                  DataColumn(
-                                    label: SizedBox(width:MediaQuery.of(context).size.width* 0.4, child:Text(
-                                      'Артикул',
-                                      style: TextStyle(fontStyle: FontStyle.italic),
-                                    ),),
+                                  DataColumn2(
+                                    label: const Text(                                  'Артикул',
+                                      style: const TextStyle(fontStyle: FontStyle.italic),
+                                    ),
                                     numeric: false,
                                   ),
-                                  DataColumn(
-                                    label: Text(
+                                  DataColumn2(
+                                      size:ColumnSize.S,
+                                    label: const Text(
                                       'Кол',
-                                      style: TextStyle(fontStyle: FontStyle.italic),
+                                      style: const TextStyle(fontStyle: FontStyle.italic),
                                     ),
                                     numeric: true
                                   ),
@@ -276,28 +261,21 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                                               },
                                             ),
                                             ListTile(
-                                              leading: Icon(Icons.delete),
-                                              title: Text('Delete'),
+                                              leading: const Icon(Icons.delete),
+                                              title: const Text('Удалить'),
                                               onTap: () {
                                                 setState(() {
                                                   Navigator.pop(context);
                                                   docInventory.items.removeAt(index);
                                                   docInventory.items.applyToDb();
-                                                  //objectBox.PutOrder(docInventory);
                                                 });
-
-
-                                                // Call your delete function here
-                                              },
+                                                    },
                                             ),
-                                            // Add more options as needed
+
                                           ],
                                         );
                                       },
                                     );
-
-
-
                                   },
 
                                     cells: [
@@ -309,7 +287,10 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                                 ))
                                     .values
                                     .toList() )
-                              );
+
+
+
+                          );
 
                           }
                         }),
@@ -336,9 +317,6 @@ class _DocInventoryScreenState extends State<DocInventoryScreen> {
                         decoration: InputDecoration(hintText: tekStage==1? 'Отсканируйте штрихкод' : 'Введите количество'),
 
                     ),
-
-
-
                // ),
 
                        ),

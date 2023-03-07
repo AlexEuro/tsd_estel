@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-
+import 'package:http/http.dart' as http;
+import 'dart:io';
 import '../main.dart';
 
 import 'package:tsd_estel/UI/view_tovar.dart';
@@ -60,14 +60,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> tryOtaUpdate() async {
+    String url='';
+    try {
+      final result = await InternetAddress.lookup('buhserv2008'); //15
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+
+        url = 'http://192.168.1.15:3333/getfile';
+      }
+    } on SocketException catch (_) {
+
+      url = 'http://62.141.114.156:5557/getfile';
+    }
     try {
       //LINK CONTAINS APK OF FLUTTER HELLO WORLD FROM FLUTTER SDK EXAMPLES
       OtaUpdate()
           .execute(
-        'http://192.168.1.15:3333/getfile',
+        url,
         destinationFilename: 'flutter_hello_world.apk',
+        headers: {'ver':'0.2'},
         //FOR NOW ANDROID ONLY - ABILITY TO VALIDATE CHECKSUM OF FILE:
-        sha256checksum: 'd6da28451a1e15cf7a75f2c3f151befad3b80ad0bb232ab15c20897e54f21478',
+        sha256checksum: 'c3dc2d7bb44ee6f287ca8cbc2d5b7fe3ccb1e89223a9b591db5cf689b429dcb0',
       )
           .listen(
             (OtaEvent event) {
