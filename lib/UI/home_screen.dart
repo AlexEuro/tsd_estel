@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:io';
 import '../main.dart';
-
+import 'package:tsd_estel/Helpers/update.dart';
 import 'package:tsd_estel/UI/view_tovar.dart';
 import 'package:tsd_estel/UI/view_orders.dart';
 
@@ -13,7 +11,7 @@ import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
 import 'bg_drawer.dart';
 
-import 'package:ota_update/ota_update.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -24,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  late OtaEvent currentEvent ;
+
 
   String message="";
 
@@ -59,38 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  Future<void> tryOtaUpdate() async {
-    String url='';
-    try {
-      final result = await InternetAddress.lookup('buhserv2008'); //15
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
 
-        url = 'http://192.168.1.15:3333/getfile';
-      }
-    } on SocketException catch (_) {
-
-      url = 'http://62.141.114.156:5557/getfile';
-    }
-    try {
-      //LINK CONTAINS APK OF FLUTTER HELLO WORLD FROM FLUTTER SDK EXAMPLES
-      OtaUpdate()
-          .execute(
-        url,
-        destinationFilename: 'flutter_hello_world.apk',
-        headers: {'ver':'0.2'},
-        //FOR NOW ANDROID ONLY - ABILITY TO VALIDATE CHECKSUM OF FILE:
-        sha256checksum: 'c3dc2d7bb44ee6f287ca8cbc2d5b7fe3ccb1e89223a9b591db5cf689b429dcb0',
-      )
-          .listen(
-            (OtaEvent event) {
-          setState(() => currentEvent = event);
-        },
-      );
-      // ignore: avoid_catches_without_on_clauses
-    } catch (e) {
-      print('Failed to make OTA update. Details: $e');
-    }
-  }
 
 
 

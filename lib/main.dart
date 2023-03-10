@@ -9,7 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tsd_estel/Helpers/tovar.dart';
-import 'package:ota_update/ota_update.dart';
+
 
 
 
@@ -25,6 +25,7 @@ Future main() async {
   final prefs = await SharedPreferences.getInstance();
   sklad = prefs.getString('estel_sklad')??'-';
   uid_user = prefs.getString('uid_user')??'-';
+
   objectBox = await ObjectBoxBase.init();
   await load_tovar_from_http();
   runApp(const MyApp());
