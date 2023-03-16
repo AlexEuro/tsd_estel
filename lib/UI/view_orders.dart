@@ -1,6 +1,3 @@
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
 import 'package:tsd_estel/Helpers/tovar.dart';
@@ -19,14 +16,12 @@ class OrdersScreen extends StatefulWidget {
 
 class _OrdersScreenState extends State<OrdersScreen> {
   late Stream<List<OrderModel>> streamUsers;
-
-  bool _isLoading = false; // This is initially false where no loading stat
-
-
-  @override
+  late bool allDocs;
+   @override
   void initState() {
     super.initState();
-    streamUsers = objectBox.getorder();
+    allDocs = true;
+    streamUsers = objectBox.getorder(allDocs);
    }
 
   @override
@@ -35,7 +30,26 @@ class _OrdersScreenState extends State<OrdersScreen> {
       title: const Text('Инвентаризации'),
       centerTitle: true,
     ),
-    body:
+    body:Column(
+  mainAxisAlignment:MainAxisAlignment.start,
+  crossAxisAlignment:CrossAxisAlignment.center,
+  mainAxisSize:MainAxisSize.max,
+  children: [
+  SwitchListTile(
+  autofocus: false,
+  title: const Text('Выводить выгруженные'),
+  value: allDocs,
+  onChanged: (bool value) {
+  setState(() {
+  allDocs = value;
+  streamUsers = objectBox.getorder(allDocs);
+  });
+  },
+  ),
+  Expanded(
+  flex: 1,
+  child:
+
     StreamBuilder<List<OrderModel>>(
       stream: streamUsers,
       builder: (context, AsyncSnapshot<List<OrderModel>> snapshot) {
@@ -54,8 +68,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
               final user = users[index];
 
               return ListTile(
-                title: Text(user.dateDoc),
-                subtitle: Text(user.isSend.toString()),
+                title: Text('Инвентразация №' +user.id.toString()),
+                subtitle: Text(user.dateDoc),
 
                 tileColor: user.isSend ==true ?Colors.deepOrangeAccent : Colors.white ,
                 onTap: () {
@@ -66,7 +80,6 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   );
                 }
                 ,onLongPress: (){
-
                     var j = sendDoc(user).then((value) {
                     String textResult='';
 
@@ -87,11 +100,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     });
-
-
-
-
-                  }
+                 }
                 ,);
 
             },
@@ -99,7 +108,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
         }
       },
 
-    ),
+    ),)]),
     floatingActionButton: FloatingActionButton.extended(
       splashColor: Colors.blueAccent,
       icon: Icon(Icons.add),
@@ -109,10 +118,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
           context,
           MaterialPageRoute(builder: (context) => const DocInventoryScreen(docId: 0)),
         );
-
       }
 
     ),
+
   );
+
+
 }
 

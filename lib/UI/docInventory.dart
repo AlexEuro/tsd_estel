@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:tsd_estel/model/orders.dart';
 
-//import 'package:flutter_beep/flutter_beep.dart';
 import '../main.dart';
 
 import 'package:audioplayers/audioplayers.dart';
@@ -79,24 +78,24 @@ final AudioPlayer audioPlayer = AudioPlayer();
         tovarCod = '';
       };
 
-      var tovar_info = objectBox.getinfo(bar, tovarCod);
+      var tovarInfo = objectBox.getinfo(bar, tovarCod);
       String itemName;
-      String itemuid;
+      String itemUid;
       int itemCount;
-      if (tovar_info == null || tovar_info == '') {
+      if (tovarInfo == null || tovarInfo == '') {
         itemName = '-';
 
         audioPlayer.setVolume(100);
         audioPlayer.play(AssetSource('error.mp3'));
-        //FlutterBeep.playSysSound(soundId).beep(false);
-        itemuid = "";
+
+        itemUid = "";
         itemCount = 1;
       } else {
-        itemName = tovar_info.art;
-        itemuid = tovar_info.uid;
-        itemCount = tovar_info.inPack;
+        itemName = tovarInfo.art;
+        itemUid = tovarInfo.uid;
+        itemCount = tovarInfo.inPack;
       }
-      var str = ItemModel(sh: bar, itemCount: itemCount, itemName: itemName,uid:itemuid);
+      var str = ItemModel(sh: bar, itemCount: itemCount, itemName: itemName,uid:itemUid);
 
 
 
@@ -120,18 +119,17 @@ final AudioPlayer audioPlayer = AudioPlayer();
 
     }
     else{
+      if (bar.length>6){
+        audioPlayer.setVolume(100);
+        audioPlayer.play(AssetSource('error.mp3'));
+      }else{
+        var lastLine =docInventory.items[editLine];
+        lastLine.itemCount =  int.parse(bar);
 
-
-
-       var lastLine =docInventory.items[editLine];
-       lastLine.itemCount =  int.parse(bar);
-
-       docInventory.items.add(lastLine);
-       objectBox.PutOrder(docInventory);
-      setState(() {tekStage = 1;
-
-      });
-
+        docInventory.items.add(lastLine);
+        objectBox.PutOrder(docInventory);
+        setState(() {tekStage = 1;});
+      }
     }
     _controller.clear();
     _focusNode.requestFocus();
@@ -198,7 +196,7 @@ final AudioPlayer audioPlayer = AudioPlayer();
                                   child:
                                   DataTable2(
                                     scrollController: _scrollController,
-                                dataTextStyle: TextStyle(color: Colors.lightGreenAccent),
+                                dataTextStyle: const TextStyle(color: Colors.lightGreenAccent),
                                   columnSpacing: 16,
                                   border: TableBorder.all(width: 1),
 
@@ -208,12 +206,12 @@ final AudioPlayer audioPlayer = AudioPlayer();
                                 columns: <DataColumn2>[
                                   DataColumn2(
                                     size:ColumnSize.L,
-                                    label: Text('ШК', style: TextStyle(fontStyle: FontStyle.italic)),
+                                    label: const Text('ШК', style: TextStyle(fontStyle: FontStyle.italic)),
                                   ),
 
                                   DataColumn2(
                                     label: const Text(                                  'Артикул',
-                                      style: const TextStyle(fontStyle: FontStyle.italic),
+                                      style: TextStyle(fontStyle: FontStyle.italic),
                                     ),
                                     numeric: false,
                                   ),
@@ -221,7 +219,7 @@ final AudioPlayer audioPlayer = AudioPlayer();
                                       size:ColumnSize.S,
                                     label: const Text(
                                       'Кол',
-                                      style: const TextStyle(fontStyle: FontStyle.italic),
+                                      style: TextStyle(fontStyle: FontStyle.italic),
                                     ),
                                     numeric: true
                                   ),
@@ -249,11 +247,13 @@ final AudioPlayer audioPlayer = AudioPlayer();
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             ListTile(
-                                              leading: Icon(Icons.edit),
-                                              title: Text('Поправить'),
+                                              leading: const Icon(Icons.edit),
+                                              title: const Text('Поправить'),
                                               onTap: () {
                                                 Navigator.pop(context);
                                                 tekStage = 2;
+                                                editLine = docInventory.items.indexWhere((value)=>value.id==item.id);
+
                                                 _controller.text = item.itemCount.toString();
                                                 _focusNode.requestFocus();
 
@@ -266,7 +266,8 @@ final AudioPlayer audioPlayer = AudioPlayer();
                                               onTap: () {
                                                 setState(() {
                                                   Navigator.pop(context);
-                                                  docInventory.items.removeAt(index);
+                                                  var findIndex = docInventory.items.indexWhere((value)=>value.id==item.id);
+                                                  docInventory.items.removeAt(findIndex);
                                                   docInventory.items.applyToDb();
                                                 });
                                                     },
@@ -287,8 +288,6 @@ final AudioPlayer audioPlayer = AudioPlayer();
                                 ))
                                     .values
                                     .toList() )
-
-
 
                           );
 

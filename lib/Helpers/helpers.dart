@@ -67,11 +67,18 @@ class ObjectBoxBase {
   List<TovarDetail> getTovar_list() => _personDetailBox
       .query().build().find();
 
-  Stream<List<OrderModel>> getorder() => _docInventoryBoxPlus
+  Stream<List<OrderModel>> getorder(bool all) {
+    if (all==true){
+    return _docInventoryBoxPlus
       .query()
       .watch(triggerImmediately: true)
-      .map((query) => query.find()
-  );
+      .map((query) => query.find());}
+    else{
+      return _docInventoryBoxPlus
+        .query(OrderModel_.isSend.equals(false))
+        .watch(triggerImmediately: true)
+        .map((query) => query.find());}
+  }
 
 
   Stream<List<ItemModel>> getLineorder(int orderModel) => _docInventoryLineBox

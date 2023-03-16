@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    tryOtaUpdate();
+   // tryOtaUpdate();
     var _str = sklad.split('#');
     if (_str.length>2) {
       skladCod =_str[0];
