@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_barcode_listener/flutter_barcode_listener.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 import 'package:tsd_estel/UI/home_screen.dart';
 import 'package:uuid/uuid.dart';
+
 
 import 'bg_drawer.dart';
 
@@ -28,6 +27,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State {
 
+
   final TextEditingController _controller = TextEditingController();
   late bool visible;
 
@@ -36,17 +36,10 @@ class _LoginPageState extends State {
   void initState() {
     super.initState();
     showInput = false;
-    _controller.addListener(() {
-      final String text = _controller.text.toLowerCase();
-      _controller.value = _controller.value.copyWith(
-        text: text,
-        selection:
-        TextSelection(baseOffset: text.length, extentOffset: text.length),
-        composing: TextRange.empty,
-      );
-    });
+
   }
-  @override
+
+      @override
   void dispose() {
     _controller.dispose();
 
@@ -82,23 +75,7 @@ class _LoginPageState extends State {
                 children: <Widget>[
                   _getHeader(),
                   _getHeader_dop(),
-                  BarcodeKeyboardListener(
-                      bufferDuration: Duration(milliseconds: 400),
-                      onBarcodeScanned: (barcode) {
-                        if (barcode=='') {barcode = _controller.text;}
-                        var _str = barcode.split('#');
-                       if (_str.length ==3){
-                        setState(() {
-                          save_sklad(barcode);
-                          _doOpenPage();
-                        });
-                        _controller.clear();
-                       };
-                      },
-                      child:Container(
-                      )
-                    //_getInputs(_controller,showInput),
-                  ),
+
                   Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[   Row(
@@ -110,11 +87,24 @@ class _LoginPageState extends State {
                           Expanded(
                             flex: 1,
                             child:
-                            TextFormField(        controller: _controller,
-                                  textInputAction:  TextInputAction.newline,
-                                decoration: const InputDecoration(border: OutlineInputBorder()),
-                                style: TextStyle(color: Colors.white),
-                              ),
+                            TextFormField(   autofocus: true,autocorrect: false,
+                              controller: _controller,
+                              textInputAction:  TextInputAction.newline,
+                              decoration: const InputDecoration(border: OutlineInputBorder()),
+                              style: TextStyle(color: Colors.white),
+                              onFieldSubmitted: (barcode) {
+                              if (barcode=='') {barcode = _controller.text;}
+                              var _str = barcode.split('#');
+                              if (_str.length ==3){
+                                setState(() {
+                                save_sklad(barcode);
+                                _doOpenPage();
+                                });
+      _controller.clear();
+      };
+
+                          } ,
+                            ),
 
                           ),
 

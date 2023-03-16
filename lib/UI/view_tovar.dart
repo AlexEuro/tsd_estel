@@ -46,8 +46,8 @@ class _TovarScreenState extends State<TovarScreen> {
       setState(() {
         streamUsers = objectBox.getTovar(value);
       });
-
-    },),
+    },
+    ),
 
 
 

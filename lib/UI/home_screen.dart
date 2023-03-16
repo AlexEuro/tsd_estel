@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
-import 'package:tsd_estel/Helpers/update.dart';
+
 import 'package:tsd_estel/UI/view_tovar.dart';
 import 'package:tsd_estel/UI/view_orders.dart';
 
@@ -10,7 +10,6 @@ import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
 
 import 'bg_drawer.dart';
-
 
 
 class HomeScreen extends StatefulWidget {
@@ -48,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
       skladNaim ='';
 
     }
-    tryOtaUpdate();
+
 
   }
   @override
@@ -56,11 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
     super.dispose();
   }
+  Future<String> getVersionNumber() async {
 
 
+    return '1.0.3';
 
 
-
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ListTile(
                         leading: const Icon(Icons.logout),
                         title: const Text('Сменить склад'),
-                        subtitle: const Text('Sub title test'),
+
                       onTap: (){Dialogs.materialDialog(
                           msg: 'Сменить склад?',
                           title: "Авторизация",
@@ -163,10 +164,33 @@ class _HomeScreenState extends State<HomeScreen> {
                           ]);},),
                     ],
 
-                  ))
+                  )
+              ),Container( child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: Column(
+                    children: <Widget>[
+                      Divider(),
+                      ListTile(
+                        leading: Icon(Icons.info),
+                        title: Text('Версия'),
+                        subtitle: FutureBuilder<String>(
+                          future: getVersionNumber(),
+                          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(snapshot.data!);
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ))),
             ],
+
           ),
         ),
+
       ),
 
 
