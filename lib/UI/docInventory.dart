@@ -69,11 +69,14 @@ final AudioPlayer audioPlayer = AudioPlayer();
       if (bar == '') {
         bar = _controller.text;
       }
+      int itemCount;
+      itemCount =0;
       var splitBarcode = bar.split('#');
       _controller.clear();
       String tovarCod;
       if (splitBarcode.length == 5 || splitBarcode.length == 6) {
         tovarCod = splitBarcode[0];
+        itemCount =int.parse(splitBarcode[4]);
       } else {
         tovarCod = '';
       };
@@ -81,7 +84,7 @@ final AudioPlayer audioPlayer = AudioPlayer();
       var tovarInfo = objectBox.getinfo(bar, tovarCod);
       String itemName;
       String itemUid;
-      int itemCount;
+
       if (tovarInfo == null || tovarInfo == '') {
         itemName = '-';
 
@@ -89,11 +92,14 @@ final AudioPlayer audioPlayer = AudioPlayer();
         audioPlayer.play(AssetSource('error.mp3'));
 
         itemUid = "";
-        itemCount = 1;
+        if (itemCount==0){
+        itemCount = 1;}
       } else {
         itemName = tovarInfo.art;
         itemUid = tovarInfo.uid;
+        if (itemCount==0){
         itemCount = tovarInfo.inPack;
+        }
       }
       var str = ItemModel(sh: bar, itemCount: itemCount, itemName: itemName,uid:itemUid);
 
@@ -161,6 +167,7 @@ final AudioPlayer audioPlayer = AudioPlayer();
               value: needcol,
               onChanged: (bool value) {
                 setState(() {
+                  if (value==false){tekStage=1;}
                   needcol = value;
                   _focusNode.requestFocus();
                 });

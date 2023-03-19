@@ -68,8 +68,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
               final user = users[index];
 
               return ListTile(
-                title: Text('Инвентразация №' +user.id.toString()),
-                subtitle: Text(user.dateDoc),
+                title: Text('Инвентаризация №' +user.id.toString() ),
+                subtitle: Text(user.dateDoc+'('+user.items.length.toString()+')'),
 
                 tileColor: user.isSend ==true ?Colors.deepOrangeAccent : Colors.white ,
                 onTap: () {

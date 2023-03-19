@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<String> getVersionNumber() async {
 
 
-    return '1.0.3';
+    return '1.0.8';
 
 
   }
