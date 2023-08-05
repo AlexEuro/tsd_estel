@@ -4,7 +4,7 @@
 // With a Dart package, run `dart run build_runner build`.
 // See also https://docs.objectbox.io/getting-started#generate-objectbox-code
 
-// ignore_for_file: camel_case_types
+// ignore_for_file: camel_case_types, depend_on_referenced_packages
 // coverage:ignore-file
 
 import 'dart:typed_data';
@@ -14,7 +14,11 @@ import 'package:objectbox/internal.dart'; // generated code can access "internal
 import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_sync_flutter_libs/objectbox_sync_flutter_libs.dart';
 
-import 'model/orders.dart';
+import 'model/Razmeshenie.dart';
+import 'model/ah_transaction.dart';
+import 'model/cells.dart';
+import 'model/inventory.dart';
+import 'model/prihod.dart';
 import 'model/products.dart';
 import 'model/warehouse.dart';
 
@@ -74,7 +78,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(6, 7865686015255139639),
       name: 'ItemModel',
-      lastPropertyId: const IdUid(6, 8638696063699723444),
+      lastPropertyId: const IdUid(7, 7177962180944088775),
       flags: 2,
       properties: <ModelProperty>[
         ModelProperty(
@@ -93,13 +97,6 @@ final _entities = <ModelEntity>[
             type: 6,
             flags: 0),
         ModelProperty(
-            id: const IdUid(4, 9072381108795352534),
-            name: 'orderModelId',
-            type: 11,
-            flags: 520,
-            indexId: const IdUid(3, 4538368992845807142),
-            relationTarget: 'OrderModel'),
-        ModelProperty(
             id: const IdUid(5, 8463883531267366558),
             name: 'sh',
             type: 9,
@@ -108,50 +105,21 @@ final _entities = <ModelEntity>[
             id: const IdUid(6, 8638696063699723444),
             name: 'uid',
             type: 9,
-            flags: 0)
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 7177962180944088775),
+            name: 'inventoryModelId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(4, 1404136103334581216),
+            relationTarget: 'InventoryModel')
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[]),
   ModelEntity(
-      id: const IdUid(7, 1035935039992077224),
-      name: 'OrderModel',
-      lastPropertyId: const IdUid(5, 4713609547231897078),
-      flags: 2,
-      properties: <ModelProperty>[
-        ModelProperty(
-            id: const IdUid(1, 8790534327641745547),
-            name: 'id',
-            type: 6,
-            flags: 1),
-        ModelProperty(
-            id: const IdUid(2, 4245673108810367446),
-            name: 'ordered',
-            type: 1,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(3, 1545556014793902598),
-            name: 'dateDoc',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(4, 7892275245849358768),
-            name: 'user',
-            type: 9,
-            flags: 0),
-        ModelProperty(
-            id: const IdUid(5, 4713609547231897078),
-            name: 'isSend',
-            type: 1,
-            flags: 0)
-      ],
-      relations: <ModelRelation>[],
-      backlinks: <ModelBacklink>[
-        ModelBacklink(name: 'items', srcEntity: 'ItemModel', srcField: '')
-      ]),
-  ModelEntity(
       id: const IdUid(8, 5048923316842701673),
       name: 'WarehoseModel',
-      lastPropertyId: const IdUid(3, 5054978627514725968),
+      lastPropertyId: const IdUid(5, 7543668760517241976),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -167,6 +135,341 @@ final _entities = <ModelEntity>[
         ModelProperty(
             id: const IdUid(3, 5054978627514725968),
             name: 'naim',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 7172648447996840466),
+            name: 'isAh',
+            type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 7543668760517241976),
+            name: 'simpleAh',
+            type: 1,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(9, 3652619916682444786),
+      name: 'InventoryModel',
+      lastPropertyId: const IdUid(8, 6899260382832009889),
+      flags: 2,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 3576744010772587676),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 3529848249165984945),
+            name: 'ordered',
+            type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 8818795509721634713),
+            name: 'dateDoc',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 7178824903320621220),
+            name: 'user',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 4787181148563230655),
+            name: 'isSend',
+            type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 3178957867036413532),
+            name: 'comment',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 9015196488705811806),
+            name: 'mainDocUID',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 6899260382832009889),
+            name: 'isfinalCount',
+            type: 1,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[
+        ModelBacklink(name: 'items', srcEntity: 'ItemModel', srcField: '')
+      ]),
+  ModelEntity(
+      id: const IdUid(10, 5142617557361554030),
+      name: 'ItemPrihodModel',
+      lastPropertyId: const IdUid(8, 8615179833377959863),
+      flags: 2,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 6420278254209914292),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 7632619962267354899),
+            name: 'sh',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 409280244233028809),
+            name: 'pallet',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 4300033626688859427),
+            name: 'itemName',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 8062122631691443255),
+            name: 'itemCount',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 9041634859199267767),
+            name: 'uid',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 8615179833377959863),
+            name: 'prihodModelId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(6, 1643800360540136991),
+            relationTarget: 'PrihodModel')
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(11, 2530669989228116426),
+      name: 'PrihodModel',
+      lastPropertyId: const IdUid(7, 4293068566375740340),
+      flags: 2,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 7777952212396890057),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 5637545094596241067),
+            name: 'ordered',
+            type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 6348532205494533907),
+            name: 'dateDoc',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 6736614541480508881),
+            name: 'user',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 1333560762265135261),
+            name: 'isSend',
+            type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 1913201008340598936),
+            name: 'comment',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 4293068566375740340),
+            name: 'mainDocUID',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[
+        ModelBacklink(name: 'items', srcEntity: 'ItemPrihodModel', srcField: '')
+      ]),
+  ModelEntity(
+      id: const IdUid(12, 8516908751977308104),
+      name: 'ItemRazmeshenieModel',
+      lastPropertyId: const IdUid(9, 6736953738632858528),
+      flags: 2,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 5812134956487750150),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 4623247300677600195),
+            name: 'sh_yacheika',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 3528222225955809739),
+            name: 'sh',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 7367758939218328437),
+            name: 'pallet',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 2072981400241321211),
+            name: 'uid_yacheika',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 6466284041334614339),
+            name: 'naim_yacheika',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 6736953738632858528),
+            name: 'razmeshenieModelId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(7, 107409822237626749),
+            relationTarget: 'RazmeshenieModel')
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(13, 2340165226342586600),
+      name: 'RazmeshenieModel',
+      lastPropertyId: const IdUid(6, 3269857566744430116),
+      flags: 2,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 1489536604899329640),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 4740617477956745760),
+            name: 'finished',
+            type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 2927151224883621669),
+            name: 'isSend',
+            type: 1,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 2290701835237909558),
+            name: 'dateDoc',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 5654900491773547577),
+            name: 'user',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[
+        ModelBacklink(
+            name: 'items', srcEntity: 'ItemRazmeshenieModel', srcField: '')
+      ]),
+  ModelEntity(
+      id: const IdUid(14, 5958444094032367478),
+      name: 'TransactionModel',
+      lastPropertyId: const IdUid(10, 4381065137983235228),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 6477689564172640217),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 1574651549840006590),
+            name: 'cell_uid',
+            type: 9,
+            flags: 2048,
+            indexId: const IdUid(9, 4837013977532821342)),
+        ModelProperty(
+            id: const IdUid(3, 44396826878918952),
+            name: 'pallet',
+            type: 9,
+            flags: 2048,
+            indexId: const IdUid(10, 5716032805015654840)),
+        ModelProperty(
+            id: const IdUid(4, 1922466083090920861),
+            name: 'party_uid',
+            type: 9,
+            flags: 2048,
+            indexId: const IdUid(11, 3154936375101328298)),
+        ModelProperty(
+            id: const IdUid(5, 7996106378392388937),
+            name: 'product_uid',
+            type: 9,
+            flags: 2048,
+            indexId: const IdUid(12, 4410433050821261926)),
+        ModelProperty(
+            id: const IdUid(6, 478682773328603028),
+            name: 'count',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 8129723845003027846),
+            name: 'timeTransaction',
+            type: 10,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 3266220896759765215),
+            name: 'sended',
+            type: 1,
+            flags: 8,
+            indexId: const IdUid(13, 6486163733908447061)),
+        ModelProperty(
+            id: const IdUid(9, 6040910193256913839),
+            name: 'sklad_uid',
+            type: 9,
+            flags: 2048,
+            indexId: const IdUid(8, 3412638022587013585)),
+        ModelProperty(
+            id: const IdUid(10, 4381065137983235228),
+            name: 'user',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[]),
+  ModelEntity(
+      id: const IdUid(15, 8219073884695168312),
+      name: 'CellsModel',
+      lastPropertyId: const IdUid(5, 7487476557555440751),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 7165732817198829761),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 1202443520424985591),
+            name: 'uid',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 3820151062869949688),
+            name: 'naim',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 773756719502580407),
+            name: 'defaultPallet',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 7487476557555440751),
+            name: 'uidWarehouse',
             type: 9,
             flags: 0)
       ],
@@ -194,17 +497,18 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(8, 5048923316842701673),
-      lastIndexId: const IdUid(3, 4538368992845807142),
+      lastEntityId: const IdUid(15, 8219073884695168312),
+      lastIndexId: const IdUid(13, 6486163733908447061),
       lastRelationId: const IdUid(0, 0),
       lastSequenceId: const IdUid(0, 0),
       retiredEntityUids: const [
         2843137606981206170,
         2951546399477514165,
         6015077569082527311,
-        4632691237960483433
+        4632691237960483433,
+        1035935039992077224
       ],
-      retiredIndexUids: const [],
+      retiredIndexUids: const [4538368992845807142, 519330258021466743],
       retiredPropertyUids: const [
         6353778055886196502,
         5403566294848047219,
@@ -219,7 +523,20 @@ ModelDefinition getObjectBoxModel() {
         1004307156911162246,
         7913652677828231474,
         3684787499429182579,
-        3642768633567617344
+        3642768633567617344,
+        9072381108795352534,
+        8790534327641745547,
+        4245673108810367446,
+        1545556014793902598,
+        7892275245849358768,
+        4713609547231897078,
+        7789347871613824341,
+        5635397363345383405,
+        5458807617635557543,
+        8393561303554072617,
+        3302498954221110754,
+        3533692875348493440,
+        3269857566744430116
       ],
       retiredRelationUids: const [],
       modelVersion: 5,
@@ -279,7 +596,7 @@ ModelDefinition getObjectBoxModel() {
         }),
     ItemModel: EntityDefinition<ItemModel>(
         model: _entities[1],
-        toOneRelations: (ItemModel object) => [object.orderModel],
+        toOneRelations: (ItemModel object) => [object.inventoryModel],
         toManyRelations: (ItemModel object) => {},
         getId: (ItemModel object) => object.id,
         setId: (ItemModel object, int id) {
@@ -289,13 +606,13 @@ ModelDefinition getObjectBoxModel() {
           final itemNameOffset = fbb.writeString(object.itemName);
           final shOffset = fbb.writeString(object.sh);
           final uidOffset = fbb.writeString(object.uid);
-          fbb.startTable(7);
+          fbb.startTable(8);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, itemNameOffset);
           fbb.addInt64(2, object.itemCount);
-          fbb.addInt64(3, object.orderModel.targetId);
           fbb.addOffset(4, shOffset);
           fbb.addOffset(5, uidOffset);
+          fbb.addInt64(6, object.inventoryModel.targetId);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -313,58 +630,13 @@ ModelDefinition getObjectBoxModel() {
               itemName: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''))
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-          object.orderModel.targetId =
-              const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0);
-          object.orderModel.attach(store);
-          return object;
-        }),
-    OrderModel: EntityDefinition<OrderModel>(
-        model: _entities[2],
-        toOneRelations: (OrderModel object) => [],
-        toManyRelations: (OrderModel object) => {
-              RelInfo<ItemModel>.toOneBacklink(4, object.id,
-                  (ItemModel srcObject) => srcObject.orderModel): object.items
-            },
-        getId: (OrderModel object) => object.id,
-        setId: (OrderModel object, int id) {
-          object.id = id;
-        },
-        objectToFB: (OrderModel object, fb.Builder fbb) {
-          final dateDocOffset = fbb.writeString(object.dateDoc);
-          final userOffset = fbb.writeString(object.user);
-          fbb.startTable(6);
-          fbb.addInt64(0, object.id);
-          fbb.addBool(1, object.ordered);
-          fbb.addOffset(2, dateDocOffset);
-          fbb.addOffset(3, userOffset);
-          fbb.addBool(4, object.isSend);
-          fbb.finish(fbb.endTable());
-          return object.id;
-        },
-        objectFromFB: (Store store, ByteData fbData) {
-          final buffer = fb.BufferContext(fbData);
-          final rootOffset = buffer.derefObject(0);
-
-          final object = OrderModel(
-              dateDoc: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, ''),
-              user: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 10, ''))
-            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
-            ..ordered =
-                const fb.BoolReader().vTableGet(buffer, rootOffset, 6, false)
-            ..isSend =
-                const fb.BoolReader().vTableGet(buffer, rootOffset, 12, false);
-          InternalToManyAccess.setRelInfo(
-              object.items,
-              store,
-              RelInfo<ItemModel>.toOneBacklink(
-                  4, object.id, (ItemModel srcObject) => srcObject.orderModel),
-              store.box<OrderModel>());
+          object.inventoryModel.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0);
+          object.inventoryModel.attach(store);
           return object;
         }),
     WarehoseModel: EntityDefinition<WarehoseModel>(
-        model: _entities[3],
+        model: _entities[2],
         toOneRelations: (WarehoseModel object) => [],
         toManyRelations: (WarehoseModel object) => {},
         getId: (WarehoseModel object) => object.id,
@@ -374,10 +646,12 @@ ModelDefinition getObjectBoxModel() {
         objectToFB: (WarehoseModel object, fb.Builder fbb) {
           final uidOffset = fbb.writeString(object.uid);
           final naimOffset = fbb.writeString(object.naim);
-          fbb.startTable(4);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
           fbb.addOffset(1, uidOffset);
           fbb.addOffset(2, naimOffset);
+          fbb.addBool(3, object.isAh);
+          fbb.addBool(4, object.simpleAh);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -390,7 +664,356 @@ ModelDefinition getObjectBoxModel() {
               uid: const fb.StringReader(asciiOptimization: true)
                   .vTableGet(buffer, rootOffset, 6, ''),
               naim: const fb.StringReader(asciiOptimization: true)
-                  .vTableGet(buffer, rootOffset, 8, ''));
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              isAh: const fb.BoolReader()
+                  .vTableGet(buffer, rootOffset, 10, false),
+              simpleAh: const fb.BoolReader()
+                  .vTableGet(buffer, rootOffset, 12, false));
+
+          return object;
+        }),
+    InventoryModel: EntityDefinition<InventoryModel>(
+        model: _entities[3],
+        toOneRelations: (InventoryModel object) => [],
+        toManyRelations: (InventoryModel object) => {
+              RelInfo<ItemModel>.toOneBacklink(7, object.id,
+                      (ItemModel srcObject) => srcObject.inventoryModel):
+                  object.items
+            },
+        getId: (InventoryModel object) => object.id,
+        setId: (InventoryModel object, int id) {
+          object.id = id;
+        },
+        objectToFB: (InventoryModel object, fb.Builder fbb) {
+          final dateDocOffset = fbb.writeString(object.dateDoc);
+          final userOffset = fbb.writeString(object.user);
+          final commentOffset = fbb.writeString(object.comment);
+          final mainDocUIDOffset = fbb.writeString(object.mainDocUID);
+          fbb.startTable(9);
+          fbb.addInt64(0, object.id);
+          fbb.addBool(1, object.ordered);
+          fbb.addOffset(2, dateDocOffset);
+          fbb.addOffset(3, userOffset);
+          fbb.addBool(4, object.isSend);
+          fbb.addOffset(5, commentOffset);
+          fbb.addOffset(6, mainDocUIDOffset);
+          fbb.addBool(7, object.isfinalCount);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = InventoryModel(
+              dateDoc: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              user: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              mainDocUID: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 16, ''))
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+            ..ordered =
+                const fb.BoolReader().vTableGet(buffer, rootOffset, 6, false)
+            ..isSend =
+                const fb.BoolReader().vTableGet(buffer, rootOffset, 12, false)
+            ..comment = const fb.StringReader(asciiOptimization: true)
+                .vTableGet(buffer, rootOffset, 14, '')
+            ..isfinalCount =
+                const fb.BoolReader().vTableGet(buffer, rootOffset, 18, false);
+          InternalToManyAccess.setRelInfo<InventoryModel>(
+              object.items,
+              store,
+              RelInfo<ItemModel>.toOneBacklink(7, object.id,
+                  (ItemModel srcObject) => srcObject.inventoryModel));
+          return object;
+        }),
+    ItemPrihodModel: EntityDefinition<ItemPrihodModel>(
+        model: _entities[4],
+        toOneRelations: (ItemPrihodModel object) => [object.prihodModel],
+        toManyRelations: (ItemPrihodModel object) => {},
+        getId: (ItemPrihodModel object) => object.id,
+        setId: (ItemPrihodModel object, int id) {
+          object.id = id;
+        },
+        objectToFB: (ItemPrihodModel object, fb.Builder fbb) {
+          final shOffset = fbb.writeString(object.sh);
+          final palletOffset = fbb.writeString(object.pallet);
+          final itemNameOffset = fbb.writeString(object.itemName);
+          final uidOffset = fbb.writeString(object.uid);
+          fbb.startTable(9);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, shOffset);
+          fbb.addOffset(2, palletOffset);
+          fbb.addOffset(3, itemNameOffset);
+          fbb.addInt64(4, object.itemCount);
+          fbb.addOffset(5, uidOffset);
+          fbb.addInt64(7, object.prihodModel.targetId);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = ItemPrihodModel(
+              sh: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              pallet: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              uid: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 14, ''),
+              itemCount:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
+              itemName: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''))
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          object.prihodModel.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0);
+          object.prihodModel.attach(store);
+          return object;
+        }),
+    PrihodModel: EntityDefinition<PrihodModel>(
+        model: _entities[5],
+        toOneRelations: (PrihodModel object) => [],
+        toManyRelations: (PrihodModel object) => {
+              RelInfo<ItemPrihodModel>.toOneBacklink(8, object.id,
+                      (ItemPrihodModel srcObject) => srcObject.prihodModel):
+                  object.items
+            },
+        getId: (PrihodModel object) => object.id,
+        setId: (PrihodModel object, int id) {
+          object.id = id;
+        },
+        objectToFB: (PrihodModel object, fb.Builder fbb) {
+          final dateDocOffset = fbb.writeString(object.dateDoc);
+          final userOffset = fbb.writeString(object.user);
+          final commentOffset = fbb.writeString(object.comment);
+          final mainDocUIDOffset = fbb.writeString(object.mainDocUID);
+          fbb.startTable(8);
+          fbb.addInt64(0, object.id);
+          fbb.addBool(1, object.ordered);
+          fbb.addOffset(2, dateDocOffset);
+          fbb.addOffset(3, userOffset);
+          fbb.addBool(4, object.isSend);
+          fbb.addOffset(5, commentOffset);
+          fbb.addOffset(6, mainDocUIDOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = PrihodModel(
+              dateDoc: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              user: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              mainDocUID: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 16, ''))
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+            ..ordered =
+                const fb.BoolReader().vTableGet(buffer, rootOffset, 6, false)
+            ..isSend =
+                const fb.BoolReader().vTableGet(buffer, rootOffset, 12, false)
+            ..comment = const fb.StringReader(asciiOptimization: true)
+                .vTableGet(buffer, rootOffset, 14, '');
+          InternalToManyAccess.setRelInfo<PrihodModel>(
+              object.items,
+              store,
+              RelInfo<ItemPrihodModel>.toOneBacklink(8, object.id,
+                  (ItemPrihodModel srcObject) => srcObject.prihodModel));
+          return object;
+        }),
+    ItemRazmeshenieModel: EntityDefinition<ItemRazmeshenieModel>(
+        model: _entities[6],
+        toOneRelations: (ItemRazmeshenieModel object) =>
+            [object.razmeshenieModel],
+        toManyRelations: (ItemRazmeshenieModel object) => {},
+        getId: (ItemRazmeshenieModel object) => object.id,
+        setId: (ItemRazmeshenieModel object, int id) {
+          object.id = id;
+        },
+        objectToFB: (ItemRazmeshenieModel object, fb.Builder fbb) {
+          final sh_yacheikaOffset = fbb.writeString(object.sh_yacheika);
+          final shOffset = fbb.writeString(object.sh);
+          final palletOffset = fbb.writeString(object.pallet);
+          final uid_yacheikaOffset = fbb.writeString(object.uid_yacheika);
+          final naim_yacheikaOffset = fbb.writeString(object.naim_yacheika);
+          fbb.startTable(10);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, sh_yacheikaOffset);
+          fbb.addOffset(4, shOffset);
+          fbb.addOffset(5, palletOffset);
+          fbb.addOffset(6, uid_yacheikaOffset);
+          fbb.addOffset(7, naim_yacheikaOffset);
+          fbb.addInt64(8, object.razmeshenieModel.targetId);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = ItemRazmeshenieModel(
+              sh_yacheika: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              uid_yacheika: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 16, ''),
+              naim_yacheika: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 18, ''),
+              sh: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''),
+              pallet: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 14, ''))
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
+          object.razmeshenieModel.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0);
+          object.razmeshenieModel.attach(store);
+          return object;
+        }),
+    RazmeshenieModel: EntityDefinition<RazmeshenieModel>(
+        model: _entities[7],
+        toOneRelations: (RazmeshenieModel object) => [],
+        toManyRelations: (RazmeshenieModel object) => {
+              RelInfo<ItemRazmeshenieModel>.toOneBacklink(
+                  9,
+                  object.id,
+                  (ItemRazmeshenieModel srcObject) =>
+                      srcObject.razmeshenieModel): object.items
+            },
+        getId: (RazmeshenieModel object) => object.id,
+        setId: (RazmeshenieModel object, int id) {
+          object.id = id;
+        },
+        objectToFB: (RazmeshenieModel object, fb.Builder fbb) {
+          final dateDocOffset = fbb.writeString(object.dateDoc);
+          final userOffset = fbb.writeString(object.user);
+          fbb.startTable(7);
+          fbb.addInt64(0, object.id);
+          fbb.addBool(1, object.finished);
+          fbb.addBool(2, object.isSend);
+          fbb.addOffset(3, dateDocOffset);
+          fbb.addOffset(4, userOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = RazmeshenieModel(
+              dateDoc: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              user: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''))
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+            ..finished =
+                const fb.BoolReader().vTableGet(buffer, rootOffset, 6, false)
+            ..isSend =
+                const fb.BoolReader().vTableGet(buffer, rootOffset, 8, false);
+          InternalToManyAccess.setRelInfo<RazmeshenieModel>(
+              object.items,
+              store,
+              RelInfo<ItemRazmeshenieModel>.toOneBacklink(
+                  9,
+                  object.id,
+                  (ItemRazmeshenieModel srcObject) =>
+                      srcObject.razmeshenieModel));
+          return object;
+        }),
+    TransactionModel: EntityDefinition<TransactionModel>(
+        model: _entities[8],
+        toOneRelations: (TransactionModel object) => [],
+        toManyRelations: (TransactionModel object) => {},
+        getId: (TransactionModel object) => object.id,
+        setId: (TransactionModel object, int id) {
+          object.id = id;
+        },
+        objectToFB: (TransactionModel object, fb.Builder fbb) {
+          final cell_uidOffset = fbb.writeString(object.cell_uid);
+          final palletOffset = fbb.writeString(object.pallet);
+          final party_uidOffset = fbb.writeString(object.party_uid);
+          final product_uidOffset = fbb.writeString(object.product_uid);
+          final sklad_uidOffset = fbb.writeString(object.sklad_uid);
+          final userOffset = fbb.writeString(object.user);
+          fbb.startTable(11);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, cell_uidOffset);
+          fbb.addOffset(2, palletOffset);
+          fbb.addOffset(3, party_uidOffset);
+          fbb.addOffset(4, product_uidOffset);
+          fbb.addInt64(5, object.count);
+          fbb.addInt64(6, object.timeTransaction.millisecondsSinceEpoch);
+          fbb.addBool(7, object.sended);
+          fbb.addOffset(8, sklad_uidOffset);
+          fbb.addOffset(9, userOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = TransactionModel(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              timeTransaction: DateTime.fromMillisecondsSinceEpoch(
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 16, 0)),
+              user: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 22, ''),
+              sklad_uid: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 20, ''),
+              cell_uid: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              pallet: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              party_uid: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''),
+              product_uid: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''),
+              count:
+                  const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0),
+              sended: const fb.BoolReader().vTableGet(buffer, rootOffset, 18, false));
+
+          return object;
+        }),
+    CellsModel: EntityDefinition<CellsModel>(
+        model: _entities[9],
+        toOneRelations: (CellsModel object) => [],
+        toManyRelations: (CellsModel object) => {},
+        getId: (CellsModel object) => object.id,
+        setId: (CellsModel object, int id) {
+          object.id = id;
+        },
+        objectToFB: (CellsModel object, fb.Builder fbb) {
+          final uidOffset = fbb.writeString(object.uid);
+          final naimOffset = fbb.writeString(object.naim);
+          final defaultPalletOffset = fbb.writeString(object.defaultPallet);
+          final uidWarehouseOffset = fbb.writeString(object.uidWarehouse);
+          fbb.startTable(6);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, uidOffset);
+          fbb.addOffset(2, naimOffset);
+          fbb.addOffset(3, defaultPalletOffset);
+          fbb.addOffset(4, uidWarehouseOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = CellsModel(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              uid: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 6, ''),
+              naim: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 8, ''),
+              uidWarehouse: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 12, ''),
+              defaultPallet: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 10, ''));
 
           return object;
         })
@@ -447,51 +1070,254 @@ class ItemModel_ {
   static final itemCount =
       QueryIntegerProperty<ItemModel>(_entities[1].properties[2]);
 
-  /// see [ItemModel.orderModel]
-  static final orderModel =
-      QueryRelationToOne<ItemModel, OrderModel>(_entities[1].properties[3]);
-
   /// see [ItemModel.sh]
-  static final sh = QueryStringProperty<ItemModel>(_entities[1].properties[4]);
+  static final sh = QueryStringProperty<ItemModel>(_entities[1].properties[3]);
 
   /// see [ItemModel.uid]
-  static final uid = QueryStringProperty<ItemModel>(_entities[1].properties[5]);
-}
+  static final uid = QueryStringProperty<ItemModel>(_entities[1].properties[4]);
 
-/// [OrderModel] entity fields to define ObjectBox queries.
-class OrderModel_ {
-  /// see [OrderModel.id]
-  static final id =
-      QueryIntegerProperty<OrderModel>(_entities[2].properties[0]);
-
-  /// see [OrderModel.ordered]
-  static final ordered =
-      QueryBooleanProperty<OrderModel>(_entities[2].properties[1]);
-
-  /// see [OrderModel.dateDoc]
-  static final dateDoc =
-      QueryStringProperty<OrderModel>(_entities[2].properties[2]);
-
-  /// see [OrderModel.user]
-  static final user =
-      QueryStringProperty<OrderModel>(_entities[2].properties[3]);
-
-  /// see [OrderModel.isSend]
-  static final isSend =
-      QueryBooleanProperty<OrderModel>(_entities[2].properties[4]);
+  /// see [ItemModel.inventoryModel]
+  static final inventoryModel =
+      QueryRelationToOne<ItemModel, InventoryModel>(_entities[1].properties[5]);
 }
 
 /// [WarehoseModel] entity fields to define ObjectBox queries.
 class WarehoseModel_ {
   /// see [WarehoseModel.id]
   static final id =
-      QueryIntegerProperty<WarehoseModel>(_entities[3].properties[0]);
+      QueryIntegerProperty<WarehoseModel>(_entities[2].properties[0]);
 
   /// see [WarehoseModel.uid]
   static final uid =
-      QueryStringProperty<WarehoseModel>(_entities[3].properties[1]);
+      QueryStringProperty<WarehoseModel>(_entities[2].properties[1]);
 
   /// see [WarehoseModel.naim]
   static final naim =
-      QueryStringProperty<WarehoseModel>(_entities[3].properties[2]);
+      QueryStringProperty<WarehoseModel>(_entities[2].properties[2]);
+
+  /// see [WarehoseModel.isAh]
+  static final isAh =
+      QueryBooleanProperty<WarehoseModel>(_entities[2].properties[3]);
+
+  /// see [WarehoseModel.simpleAh]
+  static final simpleAh =
+      QueryBooleanProperty<WarehoseModel>(_entities[2].properties[4]);
+}
+
+/// [InventoryModel] entity fields to define ObjectBox queries.
+class InventoryModel_ {
+  /// see [InventoryModel.id]
+  static final id =
+      QueryIntegerProperty<InventoryModel>(_entities[3].properties[0]);
+
+  /// see [InventoryModel.ordered]
+  static final ordered =
+      QueryBooleanProperty<InventoryModel>(_entities[3].properties[1]);
+
+  /// see [InventoryModel.dateDoc]
+  static final dateDoc =
+      QueryStringProperty<InventoryModel>(_entities[3].properties[2]);
+
+  /// see [InventoryModel.user]
+  static final user =
+      QueryStringProperty<InventoryModel>(_entities[3].properties[3]);
+
+  /// see [InventoryModel.isSend]
+  static final isSend =
+      QueryBooleanProperty<InventoryModel>(_entities[3].properties[4]);
+
+  /// see [InventoryModel.comment]
+  static final comment =
+      QueryStringProperty<InventoryModel>(_entities[3].properties[5]);
+
+  /// see [InventoryModel.mainDocUID]
+  static final mainDocUID =
+      QueryStringProperty<InventoryModel>(_entities[3].properties[6]);
+
+  /// see [InventoryModel.isfinalCount]
+  static final isfinalCount =
+      QueryBooleanProperty<InventoryModel>(_entities[3].properties[7]);
+}
+
+/// [ItemPrihodModel] entity fields to define ObjectBox queries.
+class ItemPrihodModel_ {
+  /// see [ItemPrihodModel.id]
+  static final id =
+      QueryIntegerProperty<ItemPrihodModel>(_entities[4].properties[0]);
+
+  /// see [ItemPrihodModel.sh]
+  static final sh =
+      QueryStringProperty<ItemPrihodModel>(_entities[4].properties[1]);
+
+  /// see [ItemPrihodModel.pallet]
+  static final pallet =
+      QueryStringProperty<ItemPrihodModel>(_entities[4].properties[2]);
+
+  /// see [ItemPrihodModel.itemName]
+  static final itemName =
+      QueryStringProperty<ItemPrihodModel>(_entities[4].properties[3]);
+
+  /// see [ItemPrihodModel.itemCount]
+  static final itemCount =
+      QueryIntegerProperty<ItemPrihodModel>(_entities[4].properties[4]);
+
+  /// see [ItemPrihodModel.uid]
+  static final uid =
+      QueryStringProperty<ItemPrihodModel>(_entities[4].properties[5]);
+
+  /// see [ItemPrihodModel.prihodModel]
+  static final prihodModel = QueryRelationToOne<ItemPrihodModel, PrihodModel>(
+      _entities[4].properties[6]);
+}
+
+/// [PrihodModel] entity fields to define ObjectBox queries.
+class PrihodModel_ {
+  /// see [PrihodModel.id]
+  static final id =
+      QueryIntegerProperty<PrihodModel>(_entities[5].properties[0]);
+
+  /// see [PrihodModel.ordered]
+  static final ordered =
+      QueryBooleanProperty<PrihodModel>(_entities[5].properties[1]);
+
+  /// see [PrihodModel.dateDoc]
+  static final dateDoc =
+      QueryStringProperty<PrihodModel>(_entities[5].properties[2]);
+
+  /// see [PrihodModel.user]
+  static final user =
+      QueryStringProperty<PrihodModel>(_entities[5].properties[3]);
+
+  /// see [PrihodModel.isSend]
+  static final isSend =
+      QueryBooleanProperty<PrihodModel>(_entities[5].properties[4]);
+
+  /// see [PrihodModel.comment]
+  static final comment =
+      QueryStringProperty<PrihodModel>(_entities[5].properties[5]);
+
+  /// see [PrihodModel.mainDocUID]
+  static final mainDocUID =
+      QueryStringProperty<PrihodModel>(_entities[5].properties[6]);
+}
+
+/// [ItemRazmeshenieModel] entity fields to define ObjectBox queries.
+class ItemRazmeshenieModel_ {
+  /// see [ItemRazmeshenieModel.id]
+  static final id =
+      QueryIntegerProperty<ItemRazmeshenieModel>(_entities[6].properties[0]);
+
+  /// see [ItemRazmeshenieModel.sh_yacheika]
+  static final sh_yacheika =
+      QueryStringProperty<ItemRazmeshenieModel>(_entities[6].properties[1]);
+
+  /// see [ItemRazmeshenieModel.sh]
+  static final sh =
+      QueryStringProperty<ItemRazmeshenieModel>(_entities[6].properties[2]);
+
+  /// see [ItemRazmeshenieModel.pallet]
+  static final pallet =
+      QueryStringProperty<ItemRazmeshenieModel>(_entities[6].properties[3]);
+
+  /// see [ItemRazmeshenieModel.uid_yacheika]
+  static final uid_yacheika =
+      QueryStringProperty<ItemRazmeshenieModel>(_entities[6].properties[4]);
+
+  /// see [ItemRazmeshenieModel.naim_yacheika]
+  static final naim_yacheika =
+      QueryStringProperty<ItemRazmeshenieModel>(_entities[6].properties[5]);
+
+  /// see [ItemRazmeshenieModel.razmeshenieModel]
+  static final razmeshenieModel =
+      QueryRelationToOne<ItemRazmeshenieModel, RazmeshenieModel>(
+          _entities[6].properties[6]);
+}
+
+/// [RazmeshenieModel] entity fields to define ObjectBox queries.
+class RazmeshenieModel_ {
+  /// see [RazmeshenieModel.id]
+  static final id =
+      QueryIntegerProperty<RazmeshenieModel>(_entities[7].properties[0]);
+
+  /// see [RazmeshenieModel.finished]
+  static final finished =
+      QueryBooleanProperty<RazmeshenieModel>(_entities[7].properties[1]);
+
+  /// see [RazmeshenieModel.isSend]
+  static final isSend =
+      QueryBooleanProperty<RazmeshenieModel>(_entities[7].properties[2]);
+
+  /// see [RazmeshenieModel.dateDoc]
+  static final dateDoc =
+      QueryStringProperty<RazmeshenieModel>(_entities[7].properties[3]);
+
+  /// see [RazmeshenieModel.user]
+  static final user =
+      QueryStringProperty<RazmeshenieModel>(_entities[7].properties[4]);
+}
+
+/// [TransactionModel] entity fields to define ObjectBox queries.
+class TransactionModel_ {
+  /// see [TransactionModel.id]
+  static final id =
+      QueryIntegerProperty<TransactionModel>(_entities[8].properties[0]);
+
+  /// see [TransactionModel.cell_uid]
+  static final cell_uid =
+      QueryStringProperty<TransactionModel>(_entities[8].properties[1]);
+
+  /// see [TransactionModel.pallet]
+  static final pallet =
+      QueryStringProperty<TransactionModel>(_entities[8].properties[2]);
+
+  /// see [TransactionModel.party_uid]
+  static final party_uid =
+      QueryStringProperty<TransactionModel>(_entities[8].properties[3]);
+
+  /// see [TransactionModel.product_uid]
+  static final product_uid =
+      QueryStringProperty<TransactionModel>(_entities[8].properties[4]);
+
+  /// see [TransactionModel.count]
+  static final count =
+      QueryIntegerProperty<TransactionModel>(_entities[8].properties[5]);
+
+  /// see [TransactionModel.timeTransaction]
+  static final timeTransaction =
+      QueryIntegerProperty<TransactionModel>(_entities[8].properties[6]);
+
+  /// see [TransactionModel.sended]
+  static final sended =
+      QueryBooleanProperty<TransactionModel>(_entities[8].properties[7]);
+
+  /// see [TransactionModel.sklad_uid]
+  static final sklad_uid =
+      QueryStringProperty<TransactionModel>(_entities[8].properties[8]);
+
+  /// see [TransactionModel.user]
+  static final user =
+      QueryStringProperty<TransactionModel>(_entities[8].properties[9]);
+}
+
+/// [CellsModel] entity fields to define ObjectBox queries.
+class CellsModel_ {
+  /// see [CellsModel.id]
+  static final id =
+      QueryIntegerProperty<CellsModel>(_entities[9].properties[0]);
+
+  /// see [CellsModel.uid]
+  static final uid =
+      QueryStringProperty<CellsModel>(_entities[9].properties[1]);
+
+  /// see [CellsModel.naim]
+  static final naim =
+      QueryStringProperty<CellsModel>(_entities[9].properties[2]);
+
+  /// see [CellsModel.defaultPallet]
+  static final defaultPallet =
+      QueryStringProperty<CellsModel>(_entities[9].properties[3]);
+
+  /// see [CellsModel.uidWarehouse]
+  static final uidWarehouse =
+      QueryStringProperty<CellsModel>(_entities[9].properties[4]);
 }

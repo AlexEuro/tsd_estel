@@ -1,33 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:tsd_estel/Helpers/work_with_preference.dart';
 
 import 'package:tsd_estel/UI/home_screen.dart';
 
-import 'package:tsd_estel/UI/Auth_new.dart';
+import 'package:tsd_estel/UI/auth_New.dart';
 import 'package:tsd_estel/helpers/helpers.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tsd_estel/Helpers/tovar.dart';
+import 'package:tsd_estel/Helpers/exchange.dart';
 
 
 
 
 
 late ObjectBoxBase objectBox;
+
 late String sklad;
 late String uid_user;
+late String last_update;
+late String main_doc;
+late String auth_date;
+late int warehouse_id;
 
 
 Future main() async {
-
+debugPrint(DateTime.now().toString());
   await WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
-  sklad = prefs.getString('estel_sklad')??'-';
-  uid_user = prefs.getString('uid_user')??'-';
+  sklad = await getPreference('estel_sklad');
+  uid_user = await getPreference('uid_user');
+  last_update = await getPreference('last_update');
+  main_doc = await getPreference('main_doc');
+  auth_date = await getPreference('auth_date');
 
+  final relogon =await needRelogon();
+debugPrint(DateTime.now().toString());
+  if(relogon==true){
+    clearSetting();
+    sklad = '-';
+    }
+
+debugPrint(DateTime.now().toString());
   objectBox = await ObjectBoxBase.init();
-  await load_tovar_from_http();
+debugPrint(DateTime.now().toString());
+  load_tovar_from_http();
+  load_warehouse_from_http();
+debugPrint(DateTime.now().toString());
   runApp(const MyApp());
 }
 
@@ -43,7 +62,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         useMaterial3 : true,
       ),
+
       home: sklad == '-'?LoginPage():const HomeScreen(),
+
     );
   }
 }

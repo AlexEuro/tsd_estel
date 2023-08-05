@@ -3,8 +3,9 @@ import '../main.dart';
 
 import 'package:tsd_estel/UI/view_tovar.dart';
 import 'package:tsd_estel/UI/view_orders.dart';
-
-import 'package:tsd_estel/UI/Auth_new.dart';
+import 'package:tsd_estel/UI/ResultInventory.dart';
+import 'package:tsd_estel/UI/auth_New.dart';
+import 'package:tsd_estel/UI/listPrihod.dart';
 
 import 'package:material_dialogs/material_dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_outline_button.dart';
@@ -31,15 +32,28 @@ class _HomeScreenState extends State<HomeScreen> {
   late String skladCod;
   late String skladNaim;
   late String fio;
-
+  late bool ah;
   @override
   void initState() {
     super.initState();
    // tryOtaUpdate();
+
+
     var _str = sklad.split('#');
+
     if (_str.length>2) {
       skladCod =_str[0];
-      skladNaim =_str[1];
+      var skladob = objectBox.getWarehouse(skladCod);
+      skladNaim = '-';
+      if (skladob ==null){
+        warehouse_id =0;
+      } else{warehouse_id = skladob.id;
+      skladNaim = skladob.naim;
+      }
+
+
+
+      ah = skladob == null ? '-' : skladob.isAh;
       fio =_str[2];}
     else{
       fio ='';
@@ -58,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<String> getVersionNumber() async {
 
 
-    return '1.0.8';
+    return '1.1.8';
 
 
   }
@@ -95,7 +109,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   sklad == null ? '' : 'Склад: $fio ( $skladNaim ) ',
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
-
+                Text(
+                  ah == false ? 'Адресный склад не используется' : 'Адресный склад используется',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
               ],
             ),
 
@@ -122,10 +139,28 @@ class _HomeScreenState extends State<HomeScreen> {
                       ListTile(
                         leading: const Icon(Icons.account_balance),
                         title: const Text('Инвентаризации'),
-                        subtitle:const Text('открыть список документов'),
                         onTap: (){
                           Navigator.push(    context,      MaterialPageRoute(builder: (context) => const OrdersScreen()),);
                         },
+                      ),
+                      Visibility(child:  ListTile(
+                        leading: const Icon(Icons.account_balance),
+                        title: const Text('Результат пересчета'),
+
+                        onTap: (){
+                          Navigator.push(    context,      MaterialPageRoute(builder: (context) => ResultScreen(mainDoc: main_doc,)),);
+                        },
+                      ),
+                      ),
+                      Visibility(visible: ah,
+                        child:  ListTile(
+                        leading: const Icon(Icons.insert_drive_file_rounded),
+                        title: const Text('Приёмка'),
+
+                        onTap: (){
+                          Navigator.push(    context,      MaterialPageRoute(builder: (context) => PrihodScreen()),);
+                        },
+                      ),
                       ),
                       ListTile(
                         leading: const Icon(Icons.mail),
@@ -169,17 +204,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   alignment: FractionalOffset.bottomCenter,
                   child: Column(
                     children: <Widget>[
-                      Divider(),
+                      const Divider(),
                       ListTile(
-                        leading: Icon(Icons.info),
-                        title: Text('Версия'),
+                        leading: const Icon(Icons.info),
+                        title: const Text('Версия'),
                         subtitle: FutureBuilder<String>(
                           future: getVersionNumber(),
                           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
                             if (snapshot.hasData) {
                               return Text(snapshot.data!);
                             } else {
-                              return CircularProgressIndicator();
+                              return const CircularProgressIndicator();
                             }
                           },
                         ),

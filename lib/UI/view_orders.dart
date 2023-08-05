@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'package:tsd_estel/Helpers/tovar.dart';
+import 'package:tsd_estel/Helpers/exchange.dart';
 
 import '../main.dart';
-import 'package:tsd_estel/model/orders.dart';
+import 'package:tsd_estel/model/inventory.dart';
 
 import 'package:tsd_estel/UI/docInventory.dart';
+import 'package:tsd_estel/UI/editDocSettings.dart';
+import 'package:tsd_estel/UI/auth_New.dart';
+import 'package:tsd_estel/Helpers/work_with_preference.dart';
 
 class OrdersScreen extends StatefulWidget {
   const OrdersScreen({Key? key}) : super(key: key);
@@ -15,7 +18,7 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  late Stream<List<OrderModel>> streamUsers;
+  late Stream<List<InventoryModel>> streamUsers;
   late bool allDocs;
    @override
   void initState() {
@@ -50,14 +53,21 @@ class _OrdersScreenState extends State<OrdersScreen> {
   flex: 1,
   child:
 
-    StreamBuilder<List<OrderModel>>(
+    StreamBuilder<List<InventoryModel>>(
       stream: streamUsers,
-      builder: (context, AsyncSnapshot<List<OrderModel>> snapshot) {
+      builder: (context, AsyncSnapshot<List<InventoryModel>> snapshot) {
         if (!snapshot.hasData) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         } else {
+          final relogon =needRelogon().then((value) {if(value==true){
+            clearSetting();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => LoginPage()),
+            );};
+          });
           final users = snapshot.data!;
 
           return ListView.separated(
@@ -66,18 +76,29 @@ class _OrdersScreenState extends State<OrdersScreen> {
             itemCount: users.length,
             itemBuilder: (context, index) {
               final user = users[index];
-
+              Color tileColor = user.isSend == true
+                  ? Colors.red // Set red color if user.isSend is true
+                  : user.ordered == true
+                  ? Colors.deepOrangeAccent // Set orange color if user.send is true
+                  : Colors.white;
               return ListTile(
                 title: Text('Инвентаризация №' +user.id.toString() ),
                 subtitle: Text(user.dateDoc+'('+user.items.length.toString()+')'),
 
                 tileColor: user.isSend ==true ?Colors.deepOrangeAccent : Colors.white ,
                 onTap: () {
+                    if (user.isSend ==true){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => DocSettingsScreen(docId: user.id)),
+                      );
 
+                    }
+                    else{
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => DocInventoryScreen(docId: user.id)),
-                  );
+                  );}
                 }
                 ,onLongPress: (){
                     var j = sendDoc(user).then((value) {
@@ -90,7 +111,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
                       final snackBar = SnackBar(
                         content: Text(textResult),
-                        backgroundColor: value==true?Colors.greenAccent:Colors.redAccent,
+                        backgroundColor:value==true?Colors.greenAccent:Colors.redAccent,
                         action: SnackBarAction(
                           label: 'отмена',
                           onPressed: () {

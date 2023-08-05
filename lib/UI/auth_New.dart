@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
+
 import '../main.dart';
 import 'package:tsd_estel/UI/home_screen.dart';
 import 'package:uuid/uuid.dart';
-
+import 'package:tsd_estel/Helpers/work_with_preference.dart';
 
 import 'bg_drawer.dart';
 
@@ -46,20 +46,28 @@ class _LoginPageState extends State {
     super.dispose();
   }
   @override
-  void save_sklad(String _sklad) async{
+  void save_sklad(String _sklad,String main_Doc) async{
     sklad = _sklad;
 
     uid_user = Uuid().v1();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('estel_sklad', _sklad);
-    await prefs.setString('uid_user', uid_user);
+    savePreference('estel_sklad', _sklad);
+    savePreference('uid_user', uid_user);
+    main_doc = main_Doc;
+    if (main_doc==''){
+      savePreference('main_doc', '');
+      savePreference('auth_date', '');
+    }else{
+      savePreference('main_doc', main_doc);
+      savePreference('auth_date', DateTime.now().toString());
+    }
+
 
   }
   void _doOpenPage() {
     Navigator.pushReplacement(
         context,
-        new MaterialPageRoute(
-            builder: (BuildContext context) => new HomeScreen()));
+        MaterialPageRoute(
+            builder: (BuildContext context) => HomeScreen()));
   }
 
   @override
@@ -91,19 +99,23 @@ class _LoginPageState extends State {
                               controller: _controller,
                               textInputAction:  TextInputAction.newline,
                               decoration: const InputDecoration(border: OutlineInputBorder()),
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                               onFieldSubmitted: (barcode) {
                               if (barcode=='') {barcode = _controller.text;}
-                              var _str = barcode.split('#');
-                              if (_str.length ==3){
-                                setState(() {
-                                save_sklad(barcode);
-                                _doOpenPage();
-                                });
-      _controller.clear();
-      };
+                              var splittedString = barcode.split('#');
+                              if (splittedString.length ==3){
 
-                          } ,
+                                save_sklad(barcode,'');
+                                _doOpenPage();
+
+
+                              }else if(splittedString.length ==4){
+
+                                save_sklad(barcode,splittedString[3]);
+                                _doOpenPage();
+
+                              }
+                              _controller.clear();} ,
                             ),
 
                           ),
@@ -129,7 +141,7 @@ _getHeader() {
     flex: 1,
     child: Container(
       alignment: Alignment.bottomCenter,
-      child: Text(
+      child: const Text(
         'Добро пожаловать',
 
         style: TextStyle(color: Colors.white, fontSize: 37),
@@ -143,7 +155,7 @@ _getHeader_dop() {
     flex: 2,
     child: Container(
       alignment: Alignment.bottomCenter,
-      child: Text(
+      child: const Text(
         'Отсканируйте QR для начала работы',
         style: TextStyle(color: Colors.white, fontSize: 37),
       ),

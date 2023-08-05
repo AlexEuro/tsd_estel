@@ -4,19 +4,22 @@ import 'package:objectbox/objectbox.dart';
 @Entity()
 @Sync()
 
-class OrderModel {
+class InventoryModel {
   int id = 0;
   bool ordered = false;
   String dateDoc= '';
   String user= '';
   bool isSend = false;
-
+  String comment= '';
+  String mainDocUID= '';
+  bool isfinalCount =  false;
 
   @Backlink()
   final items = ToMany<ItemModel>();
-  OrderModel({
+  InventoryModel({
     required this.dateDoc,
     required this.user,
+    required this.mainDocUID
 
   });
   Map<String, dynamic> toJson() => {
@@ -25,6 +28,9 @@ class OrderModel {
     'isSend': isSend,
     'dateDoc': dateDoc,
     'user': user,
+    'comment': comment,
+    'mainDocUID': mainDocUID,
+    'isfinalCount': isfinalCount,
     'items': items,
   };
 }
@@ -40,7 +46,7 @@ class ItemModel {
   String uid='';
 
 
-  final orderModel = ToOne<OrderModel>();
+  final inventoryModel = ToOne<InventoryModel>();
 
   ItemModel({
     required this.sh,
@@ -56,5 +62,3 @@ class ItemModel {
     'itemCount': itemCount,
   };
 }
-
-

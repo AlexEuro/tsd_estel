@@ -1,9 +1,6 @@
-import 'package:tsd_estel/Helpers/work_with_preference.dart';
-import 'package:tsd_estel/UI/auth_New.dart';
-
 
 import 'package:flutter/material.dart';
-import 'package:tsd_estel/model/inventory.dart';
+import 'package:tsd_estel/model/prihod.dart';
 import 'package:vibration/vibration.dart';
 
 import '../main.dart';
@@ -15,39 +12,41 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:tsd_estel/UI/editDocSettings.dart';
 
-class DocInventoryScreen extends StatefulWidget {
-  const DocInventoryScreen({Key? key,
+class DocPrihodScreen extends StatefulWidget {
+  const DocPrihodScreen({Key? key,
     required this.docId,
   }) : super(key: key);
 
   final int docId;
 
   @override
-  State<DocInventoryScreen> createState() => _DocInventoryScreenState();
+  State<DocPrihodScreen> createState() => _DocPrihodScreenState();
 }
 
-class _DocInventoryScreenState extends State<DocInventoryScreen> {
+class _DocPrihodScreenState extends State<DocPrihodScreen> {
 final AudioPlayer audioPlayer = AudioPlayer();
   late int tekStage;
   late int docID;
-  late InventoryModel docInventory;
-  late Stream<List<ItemModel>> streamUsers;
+  late PrihodModel docPrihod;
+  late Stream<List<ItemPrihodModel>> streamUsers;
 
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   late bool needcol;
+  late bool needPallet;
   late bool visible;
   late double screenWidth;
   late FocusNode _focusNode ;
+  String pallet='';
+  List<String> textHint=['Отсканируйте паллет','Штрих-код номенклатуры','Введите количество'];
   int editLine = -1;
   @override
   void initState() {
     super.initState();
 
-
-
     tekStage = 1;
     needcol = false;
+    needPallet = false;
     _focusNode =FocusNode();
 
     _controller.addListener(() {
@@ -56,9 +55,9 @@ final AudioPlayer audioPlayer = AudioPlayer();
         _focusNode.requestFocus();
       }});
 
-    docInventory =  objectBox.getOrder(widget.docId,main_doc);
+    docPrihod =  objectBox.getPrihod(widget.docId,main_doc);
 
-    streamUsers = objectBox.getLineorder(docInventory.id );
+    streamUsers = objectBox.getLinePrihod(docPrihod.id );
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
@@ -116,13 +115,10 @@ final AudioPlayer audioPlayer = AudioPlayer();
         itemCount = tovarInfo.inPack;
         }
       }
-      var str = ItemModel(sh: bar, itemCount: itemCount, itemName: itemName,uid:itemUid);
-
-
-
-      docInventory.items.add(str);
-      editLine = docInventory.items.length-1;
-      objectBox.PutOrder(docInventory);
+      var str = ItemPrihodModel(sh: bar, itemCount: itemCount, itemName: itemName,uid:itemUid,pallet: '-');
+      docPrihod.items.add(str);
+      editLine = docPrihod.items.length-1;
+      objectBox.PutPrihod(docPrihod);
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (_scrollController.hasClients) {
           _scrollController.animateTo(
@@ -144,21 +140,12 @@ final AudioPlayer audioPlayer = AudioPlayer();
         audioPlayer.setVolume(100);
         audioPlayer.play(AssetSource('error.mp3'));
       }else{
-        var lastLine =docInventory.items[editLine];
+        var lastLine =docPrihod.items[editLine];
         lastLine.itemCount =  int.parse(bar);
 
-        docInventory.items.add(lastLine);
-        objectBox.PutOrder(docInventory);
+        docPrihod.items.add(lastLine);
+        objectBox.PutPrihod(docPrihod);
         setState(() {tekStage = 1;});
-        final relogon =needRelogon().then((value) {if(value==true){
-          clearSetting();
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LoginPage()),
-          );};
-
-        });
-
       }
     }
     _controller.clear();
@@ -177,13 +164,11 @@ final AudioPlayer audioPlayer = AudioPlayer();
           icon: const Icon(Icons.settings),
           tooltip: 'Свойства',
           onPressed: () {
-            var isBack=Navigator.push(
+            Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) =>DocSettingsScreen(docId: docInventory.id))
+            MaterialPageRoute(builder: (context) =>DocSettingsScreen(docId: docPrihod.id))
             ,
-          ).then((value) {docInventory =  objectBox.getOrder(docInventory.id,main_doc);
-            _focusNode.requestFocus();
-          });},
+          ).then((value) {_focusNode.requestFocus();});},
         ),
       ],
         title: const Text('Estel'),
@@ -212,13 +197,35 @@ final AudioPlayer audioPlayer = AudioPlayer();
                 });
               },
             ),
+            ElevatedButton(
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                    side: BorderSide(
+                      color: Colors.teal,
+                      width: 2.0,
+                    ),
+                  ),
+                ),
+              ),
+              child: Text('Сменить паллет'),
+              onPressed: () {
+                if(tekStage==1){
+                  setState(() {
+                    tekStage=0;
+                    pallet ='';
+                  });
+                }
+              },
+            ),
             Expanded(
               flex: 1,
               child:
-                      StreamBuilder<List<ItemModel>>(
+                      StreamBuilder<List<ItemPrihodModel>>(
                         stream: streamUsers,
 
-                        builder: (context, AsyncSnapshot<List<ItemModel>> snapshot) {
+                        builder: (context, AsyncSnapshot<List<ItemPrihodModel>> snapshot) {
 
                           if (!snapshot.hasData) {
                             return const Center(
@@ -294,7 +301,7 @@ final AudioPlayer audioPlayer = AudioPlayer();
                                               onTap: () {
                                                 Navigator.pop(context);
                                                 tekStage = 2;
-                                                editLine = docInventory.items.indexWhere((value)=>value.id==item.id);
+                                                editLine = docPrihod.items.indexWhere((value)=>value.id==item.id);
 
                                                 _controller.text = item.itemCount.toString();
                                                 _focusNode.requestFocus();
@@ -308,9 +315,9 @@ final AudioPlayer audioPlayer = AudioPlayer();
                                               onTap: () {
                                                 setState(() {
                                                   Navigator.pop(context);
-                                                  var findIndex = docInventory.items.indexWhere((value)=>value.id==item.id);
-                                                  docInventory.items.removeAt(findIndex);
-                                                  docInventory.items.applyToDb();
+                                                  var findIndex = docPrihod.items.indexWhere((value)=>value.id==item.id);
+                                                  docPrihod.items.removeAt(findIndex);
+                                                  docPrihod.items.applyToDb();
                                                 });
                                                     },
                                             ),
@@ -358,7 +365,7 @@ final AudioPlayer audioPlayer = AudioPlayer();
                         },
                         //textInputAction: TextInputAction.go,
                       controller: _controller,
-                        decoration: InputDecoration(hintText: tekStage==1? 'Отсканируйте штрихкод' : 'Введите количество'),
+                        decoration: InputDecoration(hintText: textHint[tekStage]),
 
                     ),
                 )
